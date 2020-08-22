@@ -3,11 +3,11 @@
 This repository contains the source code for the [cert-manager.io](https://cert-manager.io)
 website, as well as the project documentation.
 
-## Developing
+## 开发
 
 We provide a number of scripts that can be used to build and develop the site.
 
-### Branches
+### 分行
 
 The 'master' branch should be targeted for the majority of PRs.
 
@@ -30,7 +30,7 @@ from the latest 'release branch' - this means that all versions of our
 documentation have a consistent style, and avoids us having to run the
 `hugo` command from multiple different release branches.
 
-### Multi-versioning
+### 多版本
 
 Because we publish documentation for multiple versions of cert-manager, we have
 an additional 'release' mode that can be used when building, developing or
@@ -44,7 +44,7 @@ This is **not** enabled by default as it requires running `git clone` multiple
 times against multiple copies of the repository, which is a time consuming
 operation.
 
-### Requirements
+### 要求
 
 The majority of tools needed to build the website are automatically installed
 and versioned when you build the site by the tools in `scripts/`.
@@ -52,10 +52,10 @@ and versioned when you build the site by the tools in `scripts/`.
 You also need to ensure you have the following tool(s) installed on your system
 as they are not managed by the `scripts/` directory:
 
-* npm/nodejs
-* Golang 1.12+
+- npm/nodejs
+- Golang 1.12+
 
-### Local development
+### 本地开发
 
 When developing locally, you can use the `hugo server` mode to start a local
 webserver that watches for changes on your filesystem and automatically
@@ -74,7 +74,7 @@ There is also a `./scripts/server-release` command which will fetch all
 versions of the documentation content before running the regular `server`
 script.
 
-### Building output HTML
+### 构建输出 HTML
 
 If you want to build a directory containing the built HTML, you can run the
 following command:
@@ -90,7 +90,7 @@ There is also a `./scripts/build-release` command which will fetch all
 versions of the documentation content before running the regular `build`
 script.
 
-### Running verification scripts
+### 运行验证脚本
 
 After you have made changes to the website, you should run the `verify` scripts
 to ensure things like spelling and links are valid.
