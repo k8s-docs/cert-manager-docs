@@ -1,0 +1,308 @@
+site_name: cert-manager
+site_url: https://cert-manager.io/
+site_author: James Munnelly
+site_description: >-
+  Automatically provision and manage TLS certificates in Kubernetes
+docs_dir: source
+site_dir: docs
+
+# Repository
+repo_name: cert-manager/cert-manager
+repo_url: https://github.com/cert-manager/cert-manager
+
+# Copyright
+copyright: >-
+  © 2022 The cert-manager Authors. 
+
+  © 2022 The Linux Foundation. All rights reserved.
+
+# Configuration
+theme:
+  name: material
+  features:
+    # - announce.dismiss
+    - content.code.annotate
+    # - content.tabs.link
+    - content.tooltips
+    # - header.autohide
+    # - navigation.expand
+    - navigation.indexes
+    # - navigation.instant
+    # - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    # - toc.integrate
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  favicon: assets/favicon.png
+  icon:
+    logo: logo
+
+# Plugins
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+# Customization
+extra:
+  # analytics:
+  #   provider: google
+  #   property: !ENV GOOGLE_ANALYTICS_KEY
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/cert-manager/cert-manager
+    - icon: fontawesome/brands/mastodon
+      link: https://infosec.exchange/@CertManager
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/CertManager/
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:materialx.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+# Page tree
+nav:
+  - 简介: README.md
+  - 入门: getting-started/README.md
+  - 安装:
+      - 介绍: installation/README.md
+      - 支持版本: installation/supported-releases.md
+      - 云兼容性: installation/compatibility.md
+      - kubectl apply: installation/kubectl.md
+      - Helm: installation/helm.md
+      - OperatorHub (OLM): installation/operator-lifecycle-manager.md
+      - 其他工具: installation/other-tools.md
+      - 验证: installation/verify.md
+
+        # Upgrading
+        # Introduction
+        # Notes on Ingress Class Compatibility
+        # Migrating Deprecated API Resources
+        # v1.9 to v1.10
+        # v1.8 to v1.9
+        # v1.7 to v1.8
+        # v1.6 to v1.7
+        # v1.5 to v1.6
+        # v1.4 to v1.5
+        # v1.3 to v1.4
+        # v1.2 to v1.3
+        # v1.1 to v1.2
+        # v1.0 to v1.1
+        # v0.16 to v1.0
+        # v0.15 to v0.16
+        # v0.14 to v0.15
+        # v0.13 to v0.14
+        # v0.12 to v0.13
+        # v0.11 to v0.12
+        # v0.10 to v0.11
+        # v0.9 to v0.10
+        # v0.8 to v0.9
+        # v0.7 to v0.8
+        # v0.6 to v0.7
+        # v0.5 to v0.6
+        # v0.4 to v0.5
+        # v0.3 to v0.4
+        # v0.2 to v0.3
+        # Uninstall
+        # API compatibility
+        # Signature Verification
+  - 配置:
+      - 介绍: configuration/README.md
+  # SelfSigned
+  # CA
+  # Vault
+  # Venafi
+  # External
+
+  # ACME
+  # Introduction
+
+  # HTTP01
+  # Introduction
+  # External Load Balancer
+
+  # DNS01
+  # Introduction
+  # ACMEDNS
+  # Akamai
+  # AzureDNS
+  # Cloudflare
+  # DigitalOcean
+  # Google CloudDNS
+  # RFC-2136
+  # Route53
+  # Webhook
+
+  - 使用:
+      - 介绍: usage/README.md
+  # Certificate Resources
+  # Prometheus Metrics
+  # Securing Ingress Resources
+  # Securing Gateway Resources
+  # Securing Istio Service Mesh
+  # CSI Driver
+  # Kubernetes CertificateSigningRequests
+  # Policy for cert-manager certificates
+
+  - 项目:
+      - 内容: projects/README.md
+  # istio-csr
+  # csi-driver
+  # csi-driver-spiffe
+  # approver-policy
+  # trust-manager
+
+  - 手册:
+      - 介绍: tutorials/README.md
+  # GKE + Ingress + Let's Encrypt
+  # Migrating from Kube-LEGO
+  # Backup and Restore Resources
+  # DNS Validation
+  # HTTP Validation
+  # Securing NGINX-ingress
+  # Pomerium Ingress
+  # EKS + Ingress + Venafi
+  # Securing the istio Service Mesh using cert-manager
+  # Syncing Secrets Across Namespaces
+  # Securing Ingresses with ZeroSSL
+
+  - 故障排除:
+      - 介绍: troubleshooting/README.md
+  # Troubleshooting ACME / Let's Encrypt Certificates
+  # Troubleshooting webhook
+  - FAQ: faq/README.md
+  - 贡献:
+      - Introduction: contributing/README.md
+  # Feature Policy
+  # Building cert-manager
+  # Contributing Flow
+  # CRDs
+  # DNS Providers
+  # Running End-to-End Tests
+  # Implementing External Issuers
+  # DCO Sign Off
+  # Release Process
+  # Developing with Kind
+
+  # Google Season of Docs
+  # Introduction
+
+  # 2022
+  # Introduction
+  # Improve the Navigation and Structure of the cert-manager Website
+  # Reporting Security Issues
+  # Coding Conventions
+  # Third Party Code Donations
+  # Signing Keys
+  # Importing cert-manager in Go
+
+  - 发布说明:
+      - 介绍: release-notes/README.md
+  # v1.10
+  # v1.9
+  # v1.8
+  # v1.7
+  # v1.6
+  # v1.5
+  # v1.4
+  # v1.3
+  # v1.2
+  # v1.1
+  # v1.0
+  # v0.16
+  # v0.15
+  # v0.14
+  # v0.13
+  # v0.12
+  # v0.11
+  # v0.10
+  # v0.9
+  # v0.8
+  # v0.7
+  # v0.6
+  # v0.5
+  # v0.4
+  # v0.3
+  # v0.2
+  # v0.1
+
+  - 概念:
+      - 介绍: concepts/README.md
+  # Issuer
+  # Certificate
+  # CertificateRequest
+  # ACME Orders and Challenges
+  # Webhook
+  # CA Injector
+
+  - 参考:
+      - 介绍: reference//README.md
+# Command Line Tool (cmctl)
+# TLS Terminology
+
+# Components / Docker Images
+# Introduction
+# acmesolver
+# cainjector
+# cmctl
+# controller
+# webhook
+# API Reference
+
