@@ -16,19 +16,24 @@ ACME HTTP-01 挑战使用外部负载均衡器
 
 要检查你是否遇到了这个问题:
 
-1. Check that the endpoint of the challenge is accessible to the public : `curl <endpoint>`
-2. Check that the challenge endpoint is NOT accessible from inside behind the Load Balancer: use SSH to open a session on a node places behind the LB; then launch the same command than before : `curl <endpoint>`
+1. 检查挑战的终点是否对公众开放: `curl <endpoint>`
+2. 检查挑战端点不能从负载均衡器后面的内部访问:使用 SSH 在负载均衡器后面的节点上打开一个会话;然后启动与之前相同的命令: `curl <endpoint>`
 
-The `HTTP-01` challenge's endpoint can be found in the logs when the `pre-check` fails. If it does not appear in the logs, you can check the challenge URL by `kubectl`command.
+当`pre-check`失败时，可以在日志中找到`HTTP-01`挑战的端点。
+如果没有出现在日志中，您可以通过`kubectl`命令检查挑战 URL。
 
-`<endpoint>` is the URL used to test the HTTP-01 from the certificate `Issuer`. For Let's Encrypt for example, the URL is formed like `<domain>/.well-known/acme-challenge/<hash>`
+`<endpoint>` 是用于从证书`Issuer`测试 HTTP-01 的 URL。
+以 Let's Encrypt 为例，URL 的格式为`<domain>/.well-known/acme-challenge/<hash>`
 
 ## 负载均衡器 HTTP 端点
 
-If you are using a Load Balancer (outside a managed Kubernetes service), you should be able to configure the Load Balancer protocol as HTTP, HTTPS, TCP, UDP. Several Load Balancer now offer free TLS certificates with Let's Encrypt.
+如果您正在使用负载均衡器(在托管的 Kubernetes 服务之外)，您应该能够将负载均衡器协议配置为 HTTP, HTTPS, TCP, UDP。
+一些负载均衡器现在通过 Let's Encrypt 提供免费 TLS 证书。
 
-When using HTTP(s) protocols for your Load Balancer, it can intercept the challenge URL to replace the response's verification hash with their hash.
+当您的负载均衡器使用 HTTP 协议时，它可以拦截挑战 URL，用它们的哈希替换响应的验证哈希。
 
-In this case, cert-manager will fail `did not get expected response when querying endpoint, expected 'xxxx' but got: yyyy (truncated)`.
+在这种情况下，cert-manager 将失败 `did not get expected response when querying endpoint, expected 'xxxx' but got: yyyy (truncated)`.
 
-This kind of error can be thrown for multiple reasons. This case shows a correctly formatted response, but not the expected one. The solution is to configure the Load Balancer with TCP protocol so that the HTTP request will not be intercepted by the host.
+由于多种原因，可以抛出这种错误。
+这个案例显示了一个格式正确的响应，但不是预期的响应。
+解决方案是使用 TCP 协议配置负载均衡器，这样 HTTP 请求就不会被主机拦截。

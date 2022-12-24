@@ -1,14 +1,9 @@
 ---
 title: Policy for cert-manager certificates
-description: 'cert-manager usage: approver-policy'
+description: "cert-manager usage: approver-policy"
 ---
 
-cert-manager [CertificateRequests](../concepts/certificaterequest/) can be
-rejected from being signed by using the [approval
-API](../concepts/certificaterequest/#approval).
-[approver-policy](https://github.com/cert-manager/approver-policy) is a
-cert-manager project that enables you to write policy to automatically manage
-this approval mechanism.
+cert-manager [CertificateRequests](../concepts/certificaterequest.md)可以通过使用[approval API](../concepts/certificaterequest.md#approval)拒绝被签名。
+[approver-policy](https://github.com/cert-manager/approver-policy)是一个证书管理器项目，允许您编写策略来自动管理此审批机制。
 
-Please read the [project page](../projects/approver-policy/) for more
-information on how to install and use approver-policy.
+有关如何安装和使用 approver-policy 的更多信息，请阅读[项目页面](../projects/approver-policy.md)。

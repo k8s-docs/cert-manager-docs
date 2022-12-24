@@ -65,7 +65,7 @@ cert-manager 支持对您的 ACME 帐户使用外部帐户绑定。
 - `keyID` - 外部帐户管理员索引您的外部帐户绑定的密钥 ID 或帐户 ID
 - `keySecretRef` - 一个秘密的名称和密钥，包含一个 base 64 编码的 URL 字符串的外部帐户对称 MAC 密钥
 
-!!! Note:
+!!! note
 
     在大多数情况下，MAC密钥必须编码为`base64URL`。
     下面的命令将对一个键进行base64-encode，并将其转换为`base64URL`:
@@ -133,14 +133,14 @@ spec:
 
 ### 添加多个求解器类型
 
-您可能希望为不同的入口控制器使用不同类型的挑战解决器配置，例如，如果您想使用`DNS01`颁发通配符证书，同时使用`HTTP01`验证其他证书。
+您可能希望为不同的入口控制器使用不同类型的挑战求解器配置，例如，如果您想使用`DNS01`颁发通配符证书，同时使用`HTTP01`验证其他证书。
 
 `solvers`节有一个可选的`selector`字段，可以用来指定哪些`Certificates`，以及这些`Certificates`上的哪些 DNS 名称应该用于解决挑战。
 
-有三种选择器类型可以用来形成`Certificates`必须满足的要求，以便被选择为求解器-`matchLabels`,`dnsNames` and `dnsZones`。
+有三种选择器类型可以用来形成`Certificates`必须满足的要求，以便被选择为求解器-`matchLabels`,`dnsNames` 和 `dnsZones`。
 你可以在一个求解器中使用任意数量的这三个选择器。
 
-#### 匹配标签
+#### matchLabel(匹配标签)
 
 `matchLabel`选择器要求所有`Certificates`匹配该节字符串映射列表中定义的所有标签。
 例如，下面的`Issuer`只会匹配标签为`"user-cloudflare-solver": "true"` 和 `"email": "user@example.com"`。
@@ -166,7 +166,7 @@ spec:
           "email": "user@example.com"
 ```
 
-#### DNS 的名字
+#### dnsNames(DNS 名字)
 
 `dnsNames`选择器是一个精确的 DNS 名称列表，应该映射到一个求解器。
 这意味着包含任何这些 DNS 名称的“证书”将被选中。
@@ -174,7 +174,7 @@ spec:
 如果多个解算器匹配相同的`dnsNames`值，则在 [`matchLabels`](#match-labels)中匹配标签最多的解算器将被选中。
 如果两者都没有更多匹配项，则将选择列表中前面定义的求解器。
 
-下面的示例将解决这些域的 DNS 名称为`example.com` and `*.example.com`的`Certificates`挑战。
+下面的示例将解决这些域的 DNS 名称为 `example.com` 和 `*.example.com` 的 `Certificates` 挑战。
 
 !!! Note
 
@@ -202,7 +202,7 @@ spec:
         - '*.example.com'
 ```
 
-#### DNS 区
+#### dnsZones(DNS 区)
 
 `dnsZones`节定义了此求解器可以解决的 DNS 区域列表。
 如果一个 DNS 名称是精确匹配的，或者是任何指定的`dnsZones`的子域，这个求解器将被使用，除非配置了更具体的 [`dnsNames`](#dns-names) 匹配。

@@ -1,16 +1,15 @@
 # Webhook
 
-description: 'cert-manager configuration: ACME DNS-01 challenges using External Webhook Solvers'
+ACME DNS-01 挑战使用外部 Webhook 求解器
 
-The webhook `Issuer` is a generic ACME solver. The actual work is done by an
-external service. Look at the respective documentation of
-[`dns-providers`](../../../contributing/dns-providers.md).
+webhook `Issuer`是一个通用的 ACME 求解器。
+实际工作由外部服务完成。
+查看[`dns-providers`](../../../contributing/dns-providers.md)各自的文档。
 
-View more webhook solvers at https://github.com/topics/cert-manager-webhook.
+查看更多 webhook 求解器<https://github.com/topics/cert-manager-webhook>。
 
-Here is an example of how webhook providers are to be configured. All `DNS01`
-providers will contain their own specific configuration however all require a
-`groupName` and `solverName` field.
+下面是如何配置 webhook 提供者的一个例子。
+所有`DNS01`提供程序将包含他们自己的特定配置，但都需要一个`groupName` 和 `solverName`字段。
 
 ```yaml
 apiVersion: cert-manager.io/v1

@@ -101,6 +101,8 @@ markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: source/tutorials/acme/example
   - pymdownx.keys
   - pymdownx.magiclink:
       repo_url_shorthand: true
@@ -167,11 +169,6 @@ nav:
       - 签名验证: installation/code-signing.md
   - 配置:
       - 介绍: configuration/README.md
-      - SelfSigned: configuration/selfsigned.md
-      - CA: configuration/ca.md
-      - Vault: configuration/vault.md
-      - Venafi: configuration/venafi.md
-      - External: configuration/external.md
       - ACME:
           - 简介: configuration/acme/README.md
           - HTTP01:
@@ -188,16 +185,34 @@ nav:
               - RFC-2136: configuration/acme/dns01/rfc2136.md
               - Route53: configuration/acme/dns01/route53.md
               - Webhook: configuration/acme/dns01/webhook.md
+      - SelfSigned: configuration/selfsigned.md
+      - CA: configuration/ca.md
+      - Vault: configuration/vault.md
+      - Venafi: configuration/venafi.md
+      - External: configuration/external.md
   - 使用:
       - 介绍: usage/README.md
       - 证书源: usage/certificate.md
-      - Prometheus Metrics: usage/prometheus-metrics.md
       - 保护入口源: usage/ingress.md
       - 保护网关源: usage/gateway.md
+      - Prometheus Metrics: usage/prometheus-metrics.md
       - 保护Istio服务网格: usage/istio.md
       - CSI驱动: usage/csi.md
       - Kubernetes CertificateSigningRequests: usage/kube-csr.md
       - cert-manager 证书的策略: usage/approver-policy.md
+  - 手册:
+      - 介绍: tutorials/README.md
+      - HTTP 验证: tutorials/acme/http-validation.md
+      - DNS 验证: tutorials/acme/dns-validation.md
+      - NGINX-ingress: tutorials/acme/nginx-ingress.md
+      - 备份恢复源: tutorials/backup.md
+      - 跨命名空间同步秘密: tutorials/syncing-secrets-across-namespaces.md
+      - 保护istio Service Mesh: tutorials/istio-csr/istio-csr.md
+      - GKE+Ingress+Let's Encrypt: tutorials/getting-started-with-cert-manager-on-google-kubernetes-engine-using-lets-encrypt-for-ingress-ssl/README.md
+      - 迁移Kube-LEGO: tutorials/acme/migrating-from-kube-lego.md
+      - Pomerium Ingress: tutorials/acme/pomerium-ingress.md
+      - EKS+Ingress+Venafi: tutorials/venafi/venafi.md
+      - 用ZeroSSL保护入口: tutorials/zerossl/zerossl.md
   - 项目:
       - 内容: projects/README.md
       - istio-csr: projects/istio-csr.md
@@ -205,19 +220,6 @@ nav:
       - csi-driver-spiffe: projects/csi-driver-spiffe.md
       - approver-policy: projects/approver-policy.md
       - trust-manager: projects/trust-manager.md
-  - 手册:
-      - 介绍: tutorials/README.md
-      - GKE + Ingress + Let's Encrypt: tutorials/getting-started-with-cert-manager-on-google-kubernetes-engine-using-lets-encrypt-for-ingress-ssl/README.md
-      - 从Kube-LEGO迁移过来: tutorials/acme/migrating-from-kube-lego.md
-      - 备份与恢复源: tutorials/backup.md
-      - DNS 验证: tutorials/acme/dns-validation.md
-      - HTTP 验证: tutorials/acme/http-validation.md
-      - 确保NGINX-ingress: tutorials/acme/nginx-ingress.md
-      - Pomerium Ingress: tutorials/acme/pomerium-ingress.md
-      - EKS + Ingress + Venafi: tutorials/venafi/venafi.md
-      - 使用cert-manager保护istio Service Mesh: tutorials/istio-csr/istio-csr.md
-      - 跨命名空间同步秘密: tutorials/syncing-secrets-across-namespaces.md
-      - 用ZeroSSL保护入口: tutorials/zerossl/zerossl.md
   - 故障排除:
       - 介绍: troubleshooting/README.md
       - ACME/Let's Encrypt 证书故障处理: troubleshooting/acme.md

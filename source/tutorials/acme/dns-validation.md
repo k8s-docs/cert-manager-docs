@@ -1,24 +1,20 @@
 ---
-title: DNS Validation
-description: 'cert-manager turorials: Issuing an ACME certificate using DNS validation'
+title: DNS 验证
+description: "cert-manager turorials: 使用DNS验证颁发ACME证书"
 ---
 
-## Issuing an ACME certificate using DNS validation
+# DNS 验证
 
-cert-manager can be used to obtain certificates from a CA using the
-[ACME](https://en.wikipedia.org/wiki/Automated_Certificate_Management_Environment)
-protocol.  The ACME protocol supports various challenge mechanisms which are
-used to prove ownership of a domain so that a valid certificate can be issued
-for that domain.
+## 使用 DNS 验证颁发 ACME 证书
 
-One such challenge mechanism is DNS01. With a DNS01 challenge, you prove
-ownership of a domain by proving you control its DNS records.
-This is done by creating a TXT record with specific content that proves you
-have control of the domains DNS records.
+cert-manager 可以通过[ACME](https://en.wikipedia.org/wiki/Automated_Certificate_Management_Environment)协议从 CA 获取证书。
+ACME 协议支持各种挑战机制，这些机制用于证明域的所有权，以便为该域颁发有效的证书。
 
-The following Issuer defines the necessary information to enable DNS validation.
-You can read more about the Issuer resource in the [Issuer
-docs](../../configuration/README.md).
+DNS01 就是这样一个挑战机制。通过 DNS01 挑战，您可以通过证明您控制其 DNS 记录来证明域的所有权。
+这是通过创建具有特定内容的 TXT 记录来完成的，该记录证明您已经控制了域 DNS 记录。
+
+以下颁发者定义了启用 DNS 验证所需的信息。
+您可以在[Issuer docs](../../configuration/README.md)中阅读更多关于 Issuer 资源的信息。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -37,60 +33,52 @@ spec:
 
     # ACME DNS-01 provider configurations
     solvers:
-    # An empty 'selector' means that this solver matches all domains
-    - selector: {}
-      dns01:
-        cloudDNS:
-          # The ID of the GCP project
-          # reference: https://cert-manager.io/docs/tutorials/acme/dns-validation/
-          project: $PROJECT_ID
-          # This is the secret used to access the service account
-          serviceAccountSecretRef:
-            name: clouddns-dns01-solver-svc-acct
-            key: key.json
+      # An empty 'selector' means that this solver matches all domains
+      - selector: {}
+        dns01:
+          cloudDNS:
+            # The ID of the GCP project
+            # reference: https://cert-manager.io/docs/tutorials/acme/dns-validation/
+            project: $PROJECT_ID
+            # This is the secret used to access the service account
+            serviceAccountSecretRef:
+              name: clouddns-dns01-solver-svc-acct
+              key: key.json
 
-    # We only use cloudflare to solve challenges for example.org.
-    # Alternative options such as 'matchLabels' and 'dnsZones' can be specified
-    # as part of a solver's selector too.
-    - selector:
-        dnsNames:
-        - example.org
-      dns01:
-        cloudflare:
-          email: my-cloudflare-acc@example.com
-          # !! Remember to create a k8s secret before
-          # kubectl create secret generic cloudflare-api-key-secret
-          apiKeySecretRef:
-            name: cloudflare-api-key-secret
-            key: api-key
+      # We only use cloudflare to solve challenges for example.org.
+      # Alternative options such as 'matchLabels' and 'dnsZones' can be specified
+      # as part of a solver's selector too.
+      - selector:
+          dnsNames:
+            - example.org
+        dns01:
+          cloudflare:
+            email: my-cloudflare-acc@example.com
+            # !! Remember to create a k8s secret before
+            # kubectl create secret generic cloudflare-api-key-secret
+            apiKeySecretRef:
+              name: cloudflare-api-key-secret
+              key: api-key
 ```
 
+我们已经为 Let’s Encrypt 的[登台环境](https://letsencrypt.org/docs/staging-environment/)指定了 ACME 服务器 URL。
+登台环境不会颁发受信任的证书，但用于确保在转移到生产环境之前验证过程正常工作。
+Encrypt 的生产环境施加了更严格的[速率限制](https://letsencrypt.org/docs/rate-limits/)，因此为了减少您触及这些限制的机会，强烈建议从使用登台环境开始。
+要进入生产环境，只需将 URL 设置为`https://acme-v02.api.letsencrypt.org/directory`创建一个新的 Issuer。
 
-We have specified the ACME server URL for Let's Encrypt's [staging
-environment](https://letsencrypt.org/docs/staging-environment/).  The staging
-environment will not issue trusted certificates but is used to ensure that the
-verification process is working properly before moving to production. Let's
-Encrypt's production environment imposes much stricter [rate
-limits](https://letsencrypt.org/docs/rate-limits/), so to reduce the chance of
-you hitting those limits it is highly recommended to start by using the staging
-environment. To move to production, simply create a new Issuer with the URL set
-to `https://acme-v02.api.letsencrypt.org/directory`.
+ACME 协议的第一个阶段是客户端向 ACME 服务器注册。
+此阶段包括生成一个非对称密钥对，然后将其与发行者中指定的电子邮件地址相关联。
+请确保将此电子邮件地址更改为您拥有的有效电子邮件地址。
+它通常用于在您的证书即将更新时发送到期通知。
+生成的私钥存储在名为“letsencrypt-staging”的 Secret 中。
 
-The first stage of the ACME protocol is for the client to register with the
-ACME server. This phase includes generating an asymmetric key pair which is
-then associated with the email address specified in the Issuer. Make sure to
-change this email address to a valid one that you own. It is commonly used to
-send expiry notices when your certificates are coming up for renewal. The
-generated private key is stored in a Secret named `letsencrypt-staging`.
+`dns01`节包含可用于解决 DNS 挑战的 DNS01 提供者列表。
+我们的发行者定义了两个提供者。
+这让我们可以在获取证书时选择使用哪一个。
 
-The `dns01` stanza contains a list of DNS01 providers that can be used to
-solve DNS challenges. Our Issuer defines two providers. This gives us a choice
-of which one to use when obtaining certificates.
+有关 DNS 提供者配置的更多信息，包括受支持的提供者列表，可以在[DNS01 参考文档](../../configuration/acme/dns01/README.md)中找到。
 
-More information about the DNS provider configuration, including a list of
-supported providers, can be found [in the DNS01 reference docs](../../configuration/acme/dns01/README.md).
-
-Once we have created the above Issuer we can use it to obtain a certificate.
+一旦我们创建了上面的颁发者，我们就可以使用它来获取证书。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -103,48 +91,37 @@ spec:
   issuerRef:
     name: letsencrypt-staging
   dnsNames:
-  - '*.example.com'
-  - example.com
-  - example.org
+    - "*.example.com"
+    - example.com
+    - example.org
 ```
 
-The Certificate resource describes our desired certificate and the possible
-methods that can be used to obtain it. You can obtain certificates for wildcard
-domains just like any other. Make sure to wrap wildcard domains with asterisks
-in your YAML resources, to avoid formatting issues.  If you specify both
-`example.com` and `*.example.com` on the same Certificate, it will take slightly
-longer to perform validation as each domain will have to be validated one after
-the other.  You can learn more about the Certificate resource in the
-[docs](../../usage/README.md).  If the certificate is obtained successfully, the
-resulting key pair will be stored in a secret called `example-com-tls` in the
-same namespace as the Certificate.
+Certificate 源描述了我们所需的证书以及可用于获取该证书的可能方法。
+您可以像其他域一样获取通配符域的证书。
+确保在 YAML 资源中用星号包装通配符域，以避免格式问题。
+如果在同一个证书上同时指定`example.com` 和 `*.example.com`，执行验证所需的时间会稍微长一些，因为每个域都必须一个接一个地进行验证。
+您可以在[docs](../../usage/README.md)中了解更多关于 Certificate 资源的信息。
+如果成功获得证书，生成的密钥对将存储在名为`example-com-tls`的秘密中，与证书位于相同的名称空间中。
 
-The certificate will have a common name of `*.example.com` and the [Subject
-Alternative Names
-(SANs)](https://en.wikipedia.org/wiki/Subject_Alternative_Name) will be
-`*.example.com`, `example.com` and `example.org`.
+证书将有一个通用名称`*.example.com`，[主题替代名称(san)](https://en.wikipedia.org/wiki/Subject_Alternative_Name)将是`*.example.com`, `example.com` 和 `example.org`。
 
-In our Certificate we have referenced the `letsencrypt-staging` Issuer above.
-The Issuer must be in the same namespace as the Certificate.  If you want to
-reference a `ClusterIssuer`, which is a cluster-scoped version of an Issuer, you
-must add `kind: ClusterIssuer` to the `issuerRef` stanza.
+在我们的证书中，我们引用了上面的`letsencrypt-staging`颁发者。
+颁发者必须与证书在相同的名称空间中。
+如果你想引用一个`ClusterIssuer`，它是一个集群范围的 Issuer 版本，你必须在`issuerRef`节中添加`kind: ClusterIssuer`。
 
-For more information on `ClusterIssuers`, read the
-[issuer concepts](../../concepts/issuer.md).
+有关`ClusterIssuers`的更多信息，请阅读[issuer 概念](../../concepts/issuer.md).
 
-The `acme` stanza defines the configuration for our ACME challenges. Here we
-have defined the configuration for our DNS challenges which will be used to
-verify domain ownership. For each domain mentioned in a `dns01` stanza,
-cert-manager will use the provider's credentials from the referenced Issuer to
-create a TXT record called `_acme-challenge`.  This record will then be verified
-by the ACME server in order to issue the certificate.  Once domain ownership has
-been verified, any cert-manager affected records will be cleaned up.
+`acme`节定义了 ACME 挑战的配置。
+在这里，我们定义了用于验证域所有权的 DNS 挑战的配置。
+对于`dns01`节中提到的每个域，cert-manager 将使用来自引用的颁发者的提供者凭据来创建一个名为`_acme-challenge`的 TXT 记录。
+然后，ACME 服务器将对该记录进行验证，以便颁发证书。
+一旦验证了域所有权，任何受证书管理器影响的记录都将被清除。
 
-> Note: It is your responsibility to ensure the selected provider is
-> authoritative for your domain.
+!!! Note
 
-After creating the above Certificate, we can check whether it has been obtained
-successfully using `kubectl describe`:
+    您有责任确保所选择的提供者对您的域具有权威性。
+
+在创建了上面的证书之后，我们可以使用`kubectl describe`检查它是否已经成功获得:
 
 ```bash
 $ kubectl describe certificate example-com
@@ -160,10 +137,8 @@ Events:
   Normal  CertIssued      55m      cert-manager  Certificate issued successfully
 ```
 
-You can also check whether issuance was successful with `kubectl get secret
-example-com-tls -o yaml`. You should see a base64 encoded signed TLS key pair.
+您还可以使用`kubectl get secret example-com-tls -o yaml`检查发布是否成功。
+您应该看到一个 base64 编码的签名 TLS 密钥对。
 
-Once our certificate has been obtained, cert-manager will periodically check its
-validity and attempt to renew it if it gets close to expiry. cert-manager
-considers certificates to be close to expiry when the 'Not After' field on the
-certificate is less than the current time plus 30 days.
+获得证书后，证书管理器将定期检查其有效性，并在接近到期时尝试更新它。
+当证书上的'Not After'字段小于当前时间加 30 天时，cert-manager 认为证书即将到期。

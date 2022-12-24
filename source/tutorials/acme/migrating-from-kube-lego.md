@@ -1,16 +1,16 @@
 ---
-title: Migrating from Kube-LEGO
-description: 'cert-manager tutorials: Migrating from kube-lego'
+title: 从Kube-LEGO迁移过来
+description: "cert-manager tutorials: Migrating from kube-lego"
 ---
 
-[kube-lego](https://github.com/jetstack/kube-lego) is an older Jetstack project
-for obtaining TLS certificates from Let's Encrypt (or another ACME server).
+# 从 Kube-LEGO 迁移过来
 
-Since cert-managers release, kube-lego has been gradually deprecated in favor
-of this project. There are a number of key differences between the two:
+[kube-lego](https://github.com/jetstack/kube-lego)是一个较旧的 Jetstack 项目，用于从 Let’s Encrypt(或另一个 ACME 服务器)获取 TLS 证书。
+
+自从 cert-managers 发布以来，kube-lego 逐渐被弃用，转而支持这个项目。这两者之间有一些关键的区别:
 
 | Feature                                   | kube-lego                        | cert-manager           |
-|-------------------------------------------|----------------------------------|------------------------|
+| ----------------------------------------- | -------------------------------- | ---------------------- |
 | Configuration                             | Annotations on Ingress resources | CRDs                   |
 | CAs                                       | ACME                             | ACME, signing key pair |
 | Kubernetes                                | `v1.2` - `v1.8`                  | `v1.7+`                |
@@ -19,8 +19,7 @@ of this project. There are a number of key differences between the two:
 | Distinct issuance sources per Certificate | Not supported                    | Supported              |
 | Ingress controller support (ACME)         | GCE, NGINX                       | All                    |
 
-This guide will walk through how you can safely migrate your kube-lego
-installation to cert-manager, without service interruption.
+本指南将介绍如何安全地将 kube-lego 安装迁移到 cert-manager，而不中断服务。
 
 By the end of the guide, we should have:
 
@@ -35,11 +34,10 @@ By the end of the guide, we should have:
 
 5. Configured cert-manager's [`ingress-shim`](../../usage/ingress.md) to
    automatically provision Certificate resources for all Ingress resources with
-  the `kubernetes.io/tls-acme: "true"` annotation, using the `ClusterIssuer` we
-  have created
+   the `kubernetes.io/tls-acme: "true"` annotation, using the `ClusterIssuer` we
+   have created
 
 6. Verified that the cert-manager installation is working
-
 
 ## 1. Scale down kube-lego
 
@@ -154,9 +152,9 @@ spec:
       name: letsencrypt-private-key
     # Enable the HTTP-01 challenge provider
     solvers:
-    - http01:
-        ingress:
-          class: nginx
+      - http01:
+          ingress:
+            class: nginx
 ```
 
 We then submit this file to our Kubernetes cluster:

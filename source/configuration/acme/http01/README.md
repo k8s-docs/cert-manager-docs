@@ -1,6 +1,8 @@
 # HTTP01
 
-📌 本页重点介绍如何解决 ACME HTTP-01 挑战。如果您正在寻找如何通过注释入口源或网关源来自动创建证书源，请参见[保护入口源](../../../usage/ingress.md)和[保护网关源](../../../usage/gateway.md)。
+!!! tip "📌 本页重点介绍如何解决 ACME HTTP-01 挑战。"
+
+    如果您正在寻找如何通过注释入口源或网关源来自动创建证书源，请参见[保护入口源](../../../usage/ingress.md)和[保护网关源](../../../usage/gateway.md)。
 
 cert-manager 使用您现有的入口或网关配置来解决 HTTP01 的挑战。
 
@@ -29,42 +31,28 @@ spec:
             class: nginx
 ```
 
-## Options
+## 选项
 
-The HTTP01 Issuer supports a number of additional options. For full details on
-the range of options available, read the [reference
-documentation](../../../reference/api-docs.md#acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01).
+HTTP01 发行者支持许多附加选项。有关可用选项范围的完整详细信息，请阅读[参考文档](../../../reference/api-docs.md#acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01).
 
 ### `class`
 
-If the `class` field is specified, cert-manager will create new `Ingress`
-resources in order to route traffic to the `acmesolver` pods, which are
-responsible for responding to ACME challenge validation requests.
+如果指定了`class`字段，cert-manager 将创建新的`Ingress`源，以便将流量路由到`acmesolver` pod，这些 pod 负责响应 ACME 挑战验证请求。
 
-If this field is not specified, and `name` is also not specified,
-cert-manager will default to create _new_ `Ingress` resources but will **not**
-set the ingress class on these resources, meaning _all_ ingress controllers
-installed in your cluster will serve traffic for the challenge solver,
-potentially incurring additional cost.
+如果没有指定该字段，并且`name`也没有指定，cert-manager 将默认创建 _新_ 的`Ingress`源，但 **不会** 在这些资源上设置入口类，这意味着集群中安装的 _所有_ 入口控制器将为挑战求解器提供流量，可能会产生额外的成本。
 
 ### `name`
 
-If the `name` field is specified, cert-manager will edit the named
-ingress resource in order to solve HTTP01 challenges.
+如果指定了`name`字段，cert-manager 将编辑命名的入口资源以解决 HTTP01 挑战。
 
-This is useful for compatibility with ingress controllers such as `ingress-gce`,
-which utilize a unique IP address for each `Ingress` resource created.
+这对于兼容入口控制器很有用，比如`ingress-gce`，它为每个创建的`Ingress`源使用唯一的 IP 地址。
 
-This mode should be avoided when using ingress controllers that expose a single
-IP for all ingress resources, as it can create compatibility problems with
-certain ingress-controller specific annotations.
+当使用为所有入口资源公开单个 IP 的入口控制器时，应该避免这种模式，因为它会与某些入口控制器特定的注释产生兼容性问题。
 
 <h3 id="ingress-service-type">`serviceType`</h3>
 
-In rare cases it might be not possible/desired to use `NodePort` as type for the
-HTTP01 challenge response service, e.g. because of Kubernetes limit
-restrictions. To define which Kubernetes service type to use during challenge
-response specify the following HTTP01 configuration:
+在极少数情况下，可能不可能/不希望使用`NodePort`作为 HTTP01 挑战响应服务的类型，例如，由于 Kubernetes 的 limit 限制。
+要定义在挑战响应期间使用哪种 Kubernetes 服务类型，请指定以下 HTTP01 配置:
 
 ```yaml
 http01:
@@ -73,19 +61,18 @@ http01:
     serviceType: ClusterIP
 ```
 
-By default, type `NodePort` will be used when you don't set HTTP01 or when you set
-`serviceType` to an empty string. Normally there's no need to change this.
+默认情况下，当您不设置 HTTP01 或将`serviceType`设置为空字符串时，将使用`NodePort`类型。
+通常不需要改变这个。
 
 ### `podTemplate`
 
-You may wish to change or add to the labels and annotations of solver pods.
-These can be configured under the `metadata` field under `podTemplate`.
+您可能希望更改或添加解算器荚的标签和注释。
+这些可以在`podTemplate`下的`metadata`字段下配置。
 
-Similarly, you can set the `nodeSelector`, tolerations and affinity of solver
-pods by configuring under the `spec` field of the `podTemplate`. No other
-spec fields can be edited.
+类似地，你可以通过在`podTemplate`的`spec`字段下配置来设置`nodeSelector`，公差和求解器 pods 的亲和性。
+不能编辑其他规格字段。
 
-An example of how you could configure the template is as so:
+如何配置模板的示例如下:
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -110,16 +97,15 @@ spec:
                   bar: baz
 ```
 
-The added labels and annotations will merge on top of the cert-manager defaults,
-overriding entries with the same key.
+添加的标签和注释将合并到 cert-manager 默认值之上，覆盖具有相同键的条目。
 
-No other fields of the `podTemplate` exist.
+`podTemplate` 中不存在其他字段。
 
 ### `ingressTemplate`
 
-It is possible to add labels and annotations to the solver ingress resources.
-It can be really useful when you are managing several Ingress Controllers across your cluster and you want to make sure that the right one will pick up and expose the solver (for the upcoming challenge to resolve).
-These can be configured under the `metadata` field under `ingressTemplate`:
+可以向求解器入口资源添加标签和注释。
+当你在整个集群中管理多个入口控制器，并且你想要确保正确的一个将拾取并暴露解算器(用于即将解决的挑战)时，它非常有用。
+这些可以在`ingressTemplate`下的`metadata`字段下配置:
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -144,72 +130,58 @@ spec:
                   "traefik.ingress.kubernetes.io/frontend-entry-points": "http"
 ```
 
-The added labels and annotations will merge on top of the cert-manager defaults,
-overriding entries with the same key.
+添加的标签和注释将合并到 cert-manager 默认值之上，覆盖具有相同键的条目。
 
-No other fields of the ingress can be edited.
+入口的其他字段都不能被编辑。
 
-## Configuring the HTTP-01 Gateway API solver
+## 配置 HTTP-01 网关 API 解析器
 
-**FEATURE STATE**: cert-manager 1.5 [alpha]
+**功能状态**: cert-manager 1.5 [alpha]
 
-The Gateway and HTTPRoute resources are part of the [Gateway API][gwapi], a set
-of CRDs that you install on your Kubernetes cluster that provide various
-improvements over the Ingress API.
+Gateway 和 HTTPRoute 资源是[Gateway API][gwapi]的一部分，这是一组可以安装在 Kubernetes 集群上的 CRDs，它提供了对 Ingress API 的各种改进。
 
 [gwapi]: https://gateway-api.sigs.k8s.io
 
-<div className="info">
+!!! tip "📌 该特性需要安装[Gateway API 包](https://gateway-api.sigs.k8s.io/guides/#installing-a-gateway-controller)，并将特性标志传递给 cert-manager 控制器。"
 
-📌 This feature requires the installation of the [Gateway API bundle](https://gateway-api.sigs.k8s.io/guides/#installing-a-gateway-controller) and passing a
-feature flag to the cert-manager controller.
+    安装v1.5.1网关API包(网关crd和webhook)，执行以下命令:
 
-To install v1.5.1 Gateway API bundle (Gateway CRDs and webhook), run the following command:
+    ```sh
+    kubectl apply -f "https://github.com/kubernetes-sigs/gateway-api/releases/download/v0.5.1/standard-install.yaml"
+    ```
 
-```sh
-kubectl apply -f "https://github.com/kubernetes-sigs/gateway-api/releases/download/v0.5.1/standard-install.yaml"
-```
+    要在cert-manager中启用该功能，请打开`GatewayAPI`功能门:
 
-To enable the feature in cert-manager, turn on the `GatewayAPI` feature gate:
+    - 如果你使用Helm:
 
-- If you are using Helm:
+      ```sh
+      helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager \
+        --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
+      ```
 
-  ```sh
-  helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager \
-    --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
-  ```
+    - 如果您正在使用原始的cert-manager清单，请在cert-manager控制器部署中添加以下标志:
 
-- If you are using the raw cert-manager manifests, add the following flag to the
-  cert-manager controller Deployment:
+      ```yaml
+      args:
+        - --feature-gates=ExperimentalGatewayAPISupport=true
+      ```
 
-  ```yaml
-  args:
-    - --feature-gates=ExperimentalGatewayAPISupport=true
-  ```
+    网关API CRDs应该在启动cert-manager之前安装，或者在安装网关API crd之后重新启动cert-manager部署。
+    这很重要，因为一些cert-manager组件只在启动时执行Gateway API检查。可以使用如下命令重启cert-manager。
 
-The Gateway API CRDs should either be installed before cert-manager starts or
-the cert-manager Deployment should be restarted after installing the Gateway API
-CRDs. This is important because some of the cert-manager components only perform
-the Gateway API check on startup. You can restart cert-manager with the
-following command:
+    ```sh
+    kubectl rollout restart deployment cert-manager -n cert-manager
+    ```
 
-```sh
-kubectl rollout restart deployment cert-manager -n cert-manager
-```
+!!! info
 
-</div>
+    🚧 cert-manager 1.8+使用v1alpha2 Kubernetes Gateway API进行测试。
+    由于资源转换，它也可以与v1beta1一起工作，但还没有使用它进行测试。
 
-<div className="info">
+HTTP-01 求解器使用给定的标签创建一个临时的 HTTPRoute。
+这些标签必须与在端口 80 上包含侦听器的 Gateway 匹配。
 
-🚧 cert-manager 1.8+ is tested with v1alpha2 Kubernetes Gateway API. It should also work
-with v1beta1 because of resource conversion, but has not been tested with it.
-
-</div>
-
-The Gateway API HTTPRoute HTTP-01 solver creates a temporary HTTPRoute using the
-given labels. These labels must match a Gateway that contains a listener on port 80.
-
-Here is an example of a HTTP-01 ACME Issuer using the Gateway API:
+下面是一个使用网关 API 的 HTTP-01 ACME 发布者的例子:
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -228,10 +200,9 @@ spec:
                 kind: Gateway
 ```
 
-The Issuer relies on an existing Gateway present on the cluster. cert-manager
-does not edit Gateway resources.
+颁发者依赖于集群上现有的网关。cert-manager 不编辑网关资源。
 
-For example, the following Gateway will allow the Issuer to solve the challenge:
+例如，以下网关将允许发行者解决挑战:
 
 ```yaml
 apiVersion: gateway.networking.k8s.io/v1alpha2
@@ -250,18 +221,12 @@ spec:
           from: All
 ```
 
-In the above example, the Gateway has been specifically created for the purpose
-of solving HTTP-01 challenges, but you can also choose to re-use your existing
-Gateway, as long as it has a listener on port 80.
+在上面的例子中，网关是专门为解决 HTTP-01 挑战而创建的，但是您也可以选择重用现有的网关，只要它在端口 80 上有一个侦听器。
 
-The `labels` on your Issuer may reference a Gateway that is on a separate
-namespace, as long as the Gateway's port 80 listener is configured with `from:
-All`. Note that the Certificate will still be created on the same namespace as
-the Issuer, which means that you won't be able to reference this Secret in the
-above-mentioned Gateway.
+只要网关的端口 80 监听器配置为`from: All`，颁发者上的“标签”可以引用位于单独名称空间上的网关。
+请注意，证书仍将在与颁发者相同的名称空间上创建，这意味着您将无法在上述网关中引用此 Secret。
 
-When the above Issuer is presented with a Certificate, cert-manager creates the
-temporary HTTPRoute. For example, with the following Certificate:
+当上面的颁发者获得证书时，证书管理器会创建临时的 HTTPRoute。例如，使用以下证书:
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -276,7 +241,7 @@ spec:
     - example.net
 ```
 
-You will see an HTTPRoute appear:
+你会看到一个 HTTPRoute 出现:
 
 ```yaml
 apiVersion: gateway.networking.k8s.io/v1alpha2
@@ -302,43 +267,38 @@ spec:
             value: /.well-known/acme-challenge/YadC4gaAzqEPU1Yea0D2MrzvNRWiBCtUizCtpiRQZqI
 ```
 
-After the Certificate is issued, the HTTPRoute is deleted.
+证书颁发后，HTTPRoute 将被删除。
 
-<h3 id="gatewayhttproute-labels">`labels`</h3>
+<h3 id="gatewayhttproute-labels"></h3>
 
-These labels are copied into the temporary HTTPRoute created by cert-manager for
-solving the HTTP-01 challenge. These labels must match one of the Gateway
-resources on your cluster. The matched Gateway have a listener on port 80.
+### `labels`
 
-Note that when the labels do not match any Gateway on your cluster, cert-manager
-will create the temporary HTTPRoute challenge and nothing will happen.
+这些标签被复制到证书管理器为解决 HTTP-01 挑战而创建的临时 HTTPRoute 中。这些标签必须与集群上的一个 Gateway 资源相匹配。匹配的 Gateway 在端口 80 上有一个监听器。
 
-<h3 id="gatewayhttproute-service-type">`serviceType`</h3>
+请注意，当标签与集群上的任何 Gateway 不匹配时，cert-manager 将创建临时 HTTPRoute 挑战，并且不会发生任何事情。
 
-This field has the same meaning as the
-[`http01.ingress.serviceType`](#ingress-service-type).
+<h3 id="gatewayhttproute-service-type"></h3>
 
-## Setting Nameservers for HTTP-01 solver propagation checks
+### `serviceType`
 
-cert-manager will perform reachability tests before attempting a HTT01
-challenge. By default cert-manager will use the recursive nameservers taken
-from `/etc/resolv.conf` to query the challenge URL.
+此字段与 [`http01.ingress.serviceType`](#ingress-service-type)含义相同。.
 
-If this is not desired (for example with split-horizon DNS), the cert-manager
-controller exposes a flag that allows you alter this behavior:
+## 为 HTTP-01 求解器传播检查设置名称服务器
 
-`--acme-http01-solver-nameservers` Comma separated string with host and port of the
-recursive nameservers cert-manager should query.
+在尝试 HTT01 挑战之前，cert-manager 将执行可达性测试。
+默认情况下，cert-manager 将使用从`/etc/resolv.conf`中获得的递归名称服务器来查询挑战 URL。
 
-Example usage:
+如果这不是所希望的(例如，对于分割地平线的 DNS)， cert-manager 控制器将暴露一个标志，允许您更改此行为:
+
+`--acme-http01-solver-nameservers` cert-manager 应该查询的递归名称服务器的主机和端口的逗号分隔字符串。
+
+使用示例:
 
 ```bash
 --acme-http01-solver-nameservers="8.8.8.8:53,1.1.1.1:53"
 ```
 
-If you're using the `cert-manager` helm chart, you can set recursive nameservers
-through `.Values.extraArgs` or at the command at helm install/upgrade time
-with `--set`:
+如果你正在使用`cert-manager` helm chart，你可以通过`ValuesextraArgs`或在 helm 安装/升级时使用`--set`命令设置递归名称服务器:
 
 ```bash
 --set 'extraArgs={--acme-http01-solver-nameservers=8.8.8.8:53\,1.1.1.1:53}'

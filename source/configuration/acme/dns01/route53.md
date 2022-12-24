@@ -1,20 +1,18 @@
 # Route53
 
-description: 'cert-manager configuration: ACME DNS-01 challenges using Amazon AWS Route53 DNS'
+使用 Amazon AWS Route53 DNS 的 ACME DNS-01 挑战
 
-This guide explains how to set up an `Issuer`, or `ClusterIssuer`, to use Amazon
-Route53 to solve DNS01 ACME challenges. It's advised you read the [DNS01
-Challenge Provider](./README.md) page first for a more general understanding of
-how cert-manager handles DNS01 challenges.
+本指南解释了如何设置`Issuer` 或 `ClusterIssuer`，以使用 Amazon Route53 解决 DNS01 ACME 挑战。
+建议您先阅读[DNS01 挑战提供程序](./README.md)页面，以更全面地了解 cert-manager 如何处理 DNS01 挑战。
 
-> Note: This guide assumes that your cluster is hosted on Amazon Web Services
-> (AWS) and that you already have a hosted zone in Route53.
+!!! Note
 
-## Set up an IAM Role
+    本指南假设您的集群托管在Amazon Web Services (AWS)上，并且您已经在Route53中有一个托管区域。
 
-cert-manager needs to be able to add records to Route53 in order to solve the
-DNS01 challenge. To enable this, create a IAM policy with the following
-permissions:
+## 配置 IAM 角色
+
+cert-manager 需要能够向 Route53 添加记录，以解决 DNS01 挑战。
+为此，需要创建具有以下权限的 IAM 策略:
 
 ```json
 {
@@ -39,16 +37,14 @@ permissions:
 }
 ```
 
-> Note: The `route53:ListHostedZonesByName` statement can be removed if you
-> specify the (optional) `hostedZoneID`. You can further tighten the policy by
-> limiting the hosted zone that cert-manager has access to (e.g.
-> `arn:aws:route53:::hostedzone/DIKER8JEXAMPLE`).
+!!! Note
 
-## Credentials
+    The `route53:ListHostedZonesByName` statement can be removed if you  specify the (optional) `hostedZoneID`. You can further tighten the policy by limiting the hosted zone that cert-manager has access to (e.g. `arn:aws:route53:::hostedzone/DIKER8JEXAMPLE`).
 
-You have two options for the set up - either create a user or a role and attach
-that policy from above. Using a role is considered best practice because you do
-not have to store permanent credentials in a secret.
+## 凭证
+
+您有两个设置选项—创建用户或角色并从上面附加该策略。
+使用角色被认为是最佳实践，因为您不必在秘密中存储永久凭据。
 
 cert-manager supports two ways of specifying credentials:
 
@@ -63,9 +59,11 @@ and/or limit the access of cert-manager. Integration with
 [`kiam`](https://github.com/uswitch/kiam) and
 [`kube2iam`](https://github.com/jtblin/kube2iam) should work out of the box.
 
-## Cross Account Access
+## 跨帐户访问
 
-Example: Account Y manages Route53 DNS Zones. Now you want cert-manager running in Account X (or many other accounts) to be able to manage records in Route53 zones hosted in Account Y.
+!!! Example "Account Y manages Route53 DNS Zones. "
+
+    现在，您希望在帐户X(或许多其他帐户)中运行的cert-manager能够管理帐户Y中托管的Route53区域中的记录。
 
 First, create a role with the permissions policy above (let's call the role `dns-manager`)
 in Account Y, and attach a trust relationship like the one below.
@@ -130,7 +128,7 @@ And the following trust relationship (Add AWS `Service`s as needed):
 }
 ```
 
-## Creating an Issuer (or `ClusterIssuer`)
+## 创建颁发者 (or `ClusterIssuer`)
 
 Here is an example configuration for a `ClusterIssuer`:
 
@@ -172,17 +170,19 @@ spec:
           role: arn:aws:iam::YYYYYYYYYYYY:role/dns-manager
 ```
 
-Note that, as mentioned above, the pod is using `arn:aws:iam::XXXXXXXXXXX:role/cert-manager` as a credentials source in Account X, but the `ClusterIssuer` ultimately assumes the `arn:aws:iam::YYYYYYYYYYYY:role/dns-manager` role to actually make changes in Route53 zones located in Account Y.
+!!! Note
 
-## EKS IAM Role for Service Accounts (IRSA)
+    as mentioned above, the pod is using `arn:aws:iam::XXXXXXXXXXX:role/cert-manager` as a credentials source in Account X, but the `ClusterIssuer` ultimately assumes the `arn:aws:iam::YYYYYYYYYYYY:role/dns-manager` role to actually make changes in Route53 zones located in Account Y.
+
+## 服务帐户的 EKS IAM 角色(IRSA)
 
 While [`kiam`](https://github.com/uswitch/kiam) / [`kube2iam`](https://github.com/jtblin/kube2iam) work directly with cert-manager, some special attention is needed for using the [IAM Roles for Service Accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) feature available on EKS.
 
-### OIDC provider
+### OIDC 提供者
 
 First follow the AWS documentation [Enabling IAM roles for service accounts on your cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) to ensure that the OIDC provider for the EKS cluster is enabled. The OIDC information is needed to create the trust relationship for the cert-manager role below.
 
-### IAM role trust policy
+### IAM 角色信任策略
 
 The cert-manager role needs the following trust relationship attached to the role in order to use the IRSA method. Replace the following:
 
@@ -212,9 +212,11 @@ The cert-manager role needs the following trust relationship attached to the rol
 }
 ```
 
-**Note:** If you're following the Cross Account example above, this trust policy is attached to the cert-manager role in Account X with ARN `arn:aws:iam::XXXXXXXXXXX:role/cert-manager`. The permissions policy is the same as above.
+!!! Note
 
-### Service annotation
+    If you're following the Cross Account example above, this trust policy is attached to the cert-manager role in Account X with ARN `arn:aws:iam::XXXXXXXXXXX:role/cert-manager`. The permissions policy is the same as above.
+
+### 服务注释
 
 Annotate the `ServiceAccount` created by cert-manager:
 
@@ -246,4 +248,6 @@ securityContext:
   fsGroup: 1001
 ```
 
-**Note:** If you're following the Cross Account example above, modify the `ClusterIssuer` in the same way as above with the role from Account Y.
+!!! Note
+
+    If you're following the Cross Account example above, modify the `ClusterIssuer` in the same way as above with the role from Account Y.
