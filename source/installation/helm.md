@@ -1,23 +1,21 @@
----
-title: Helm
-description: 'cert-manager installation: Using Helm'
----
+# Helm
 
-## Installing with Helm
+'cert-manager installation: Using Helm'
+
+## 使用 Helm 安装
 
 cert-manager provides Helm charts as a first-class method of installation on both Kubernetes and OpenShift.
 
 Be sure never to embed cert-manager as a sub-chart of other Helm charts; cert-manager manages
 non-namespaced resources in your cluster and care must be taken to ensure that it is installed exactly once.
 
-### Prerequisites
+### 先决条件
 
 - [Install Helm version 3 or later](https://helm.sh/docs/intro/install/).
 - Install a [supported version of Kubernetes or OpenShift](./supported-releases.md).
 - Read [Compatibility with Kubernetes Platform Providers](./compatibility.md) if you are using Kubernetes on a cloud platform.
 
-### Steps
-
+### 步骤
 
 #### 1. Add the Helm repository
 
@@ -37,11 +35,10 @@ helm repo update
 
 #### 3. Install `CustomResourceDefinitions`
 
-cert-manager requires a number of CRD resources, which can  be installed manually using `kubectl`,
+cert-manager requires a number of CRD resources, which can be installed manually using `kubectl`,
 or using the `installCRDs` option when installing the Helm chart.
 
 ##### Option 1: installing CRDs with `kubectl`
-
 
 ```bash
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.1/cert-manager.crds.yaml
@@ -113,13 +110,18 @@ dependencies:
     alias: cert-manager
     condition: cert-manager.enabled
 ```
+
 You can then override the namespace in 2 ways
+
 1. In `Values.yaml` file
+
 ```yaml
 cert-manager: #defined by either the name or alias of your dependency in Chart.yaml
   namespace: security
 ```
+
 2. In the helm command using `--set`
+
 ```bash
 helm install example example_chart \
   --namespace example \
@@ -145,7 +147,7 @@ helm template \
   > cert-manager.custom.yaml
 ```
 
-## Uninstalling
+## 卸载
 
 > **Warning**: To uninstall cert-manager you should always use the same process for
 > installing but in reverse. Deviating from the following process whether
@@ -167,9 +169,8 @@ cert-manager using the procedure determined by how you installed.
 ### Uninstalling with Helm
 
 Uninstalling cert-manager from a `helm` installation is a case of running the
-installation process, *in reverse*, using the delete command on both `kubectl`
+installation process, _in reverse_, using the delete command on both `kubectl`
 and `helm`.
-
 
 ```bash
 helm --namespace cert-manager delete cert-manager
@@ -184,6 +185,7 @@ kubectl delete namespace cert-manager
 Finally, delete the cert-manager
 [`CustomResourceDefinitions`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
 using the link to the version `vX.Y.Z` you installed:
+
 > **Warning**: This command will also remove installed cert-manager CRDs. All
 > cert-manager resources (e.g. `certificates.cert-manager.io` resources) will
 > be removed by Kubernetes' garbage collector.

@@ -1,21 +1,19 @@
 ---
 title: Securing Ingress Resources
-description: 'cert-manager usage: Kubernetes Ingress'
+description: "cert-manager usage: Kubernetes Ingress"
 ---
 
-A common use-case for cert-manager is requesting TLS signed certificates to
-secure your ingress resources. This can be done by simply adding annotations to
-your `Ingress` resources and cert-manager will facilitate creating the
-`Certificate` resource for you. A small sub-component of cert-manager,
-ingress-shim, is responsible for this.
+# 保护入口源
 
-## How It Works
+证书管理器的一个常见用例是请求 TLS 签名证书来保护您的入口源。
+这可以通过简单地添加注释到您的`Ingress`源和证书管理器将促进为您创建`Certificate`源来完成。
+cert-manager 的一个小子组件 ingress-shim 负责这一点。
 
-The sub-component ingress-shim watches `Ingress` resources across your cluster.
-If it observes an `Ingress` with annotations described in the [Supported
-Annotations](#supported-annotations) section, it will ensure a `Certificate`
-resource with the name provided in the `tls.secretName` field and configured as
-described on the `Ingress` exists in the `Ingress`'s namespace. For example:
+## 工作原理
+
+子组件 ingress-shim 监视整个集群中的`Ingress`源。
+如果它观察到一个带有[受支持的注释](#supported-annotations)部分中描述的注释的`Ingress`，它将确保在`Ingress`的命名空间中存在一个`Certificate`源，其名称在`tls.secretName`字段中提供，并按照`Ingress`中描述的配置。
+例如:
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -28,37 +26,31 @@ metadata:
   namespace: myIngress
 spec:
   rules:
-  - host: example.com
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: myservice
-            port:
-              number: 80
+    - host: example.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: myservice
+                port:
+                  number: 80
   tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
-  - hosts:
-    - example.com
-    secretName: myingress-cert # < cert-manager will store the created certificate in this secret.
+    - hosts:
+        - example.com
+      secretName: myingress-cert # < cert-manager will store the created certificate in this secret.
 ```
 
-## Supported Annotations
+## 支持注释
 
-You can specify the following annotations on Ingress resources in order to
-trigger Certificate resources to be automatically created:
+您可以在 Ingress 源上指定以下注释，以触发自动创建 Certificate 源:
 
-- `cert-manager.io/issuer`:  the name of an Issuer to acquire the certificate
-  required for this Ingress. The Issuer *must* be in the same namespace as the
-  Ingress resource.
+- `cert-manager.io/issuer`: Issuer 的名称，以获得此进入所需的证书。Issuer _必须_ 与 Ingress 源在相同的命名空间中。
 
-- `cert-manager.io/cluster-issuer`: the name of a ClusterIssuer to acquire the
-  certificate required for this Ingress. It does not matter which namespace your
-  Ingress resides, as ClusterIssuers are non-namespaced resources.
+- `cert-manager.io/cluster-issuer`: ClusterIssuer 的名称，以获取此 Ingress 所需的证书。您的 Ingress 驻留在哪个名称空间并不重要，因为 ClusterIssuers 是非名称空间源。
 
-- `cert-manager.io/issuer-kind`: the kind of the external issuer resource, for
-  example `AWSPCAIssuer`. This is only necessary for out-of-tree issuers.
+- `cert-manager.io/issuer-kind`: 外部发行者源的类型，例如`AWSPCAIssuer`。这只对树外发行者有必要。
 
 - `cert-manager.io/issuer-group`: the API group of the external issuer
   controller, for example `awspca.cert-manager.io`. This is only necessary for
@@ -122,11 +114,9 @@ trigger Certificate resources to be automatically created:
   configure `spec.privateKey.rotationPolicy` field to set the rotation policy of the private key for a Certificate.
   Valid values are `Never` and `Always`. If unset a rotation policy `Never` will be used.
 
+## 可选配置
 
-## Optional Configuration
-
-The ingress-shim sub-component is deployed automatically as part of
-installation.
+ingress-shim 子组件作为安装的一部分自动部署。
 
 If you would like to use the old
 [kube-lego](https://github.com/jetstack/kube-lego) `kubernetes.io/tls-acme:
@@ -158,6 +148,6 @@ Issuers configured via annotations have a preference over the default issuer. If
 For more information on deploying cert-manager, read the [installation
 guide](../installation/README.md).
 
-## Troubleshooting
+## 故障排除
 
 If you do not see a `Certificate` resource being created after applying the ingress-shim annotations check that at least `cert-manager.io/issuer` or `cert-manager.io/cluster-issuer` is set. If you want to use `kubernetes.io/tls-acme: "true"` make sure to have checked all steps above and you might want to look for errors in the cert-manager pod logs if not resolved.

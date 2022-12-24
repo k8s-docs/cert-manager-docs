@@ -1,17 +1,15 @@
 ---
 title: istio-csr
-description: ''
+description: ""
 ---
 
-istio-csr is an agent that allows for [Istio](https://istio.io) workload and
-control plane components to be secured using
-[cert-manager](https://cert-manager.io).
+# istio-csr
 
-Certificates facilitating mTLS — both inter
-and intra-cluster — will be signed, delivered and renewed using [cert-manager
-issuers](https://cert-manager.io/docs/concepts/issuer).
+istio-csr 是一个代理，允许使用[cert-manager](https://cert-manager.io)保护[Istio](https://istio.io)工作负载和控制平面组件。
 
-## Getting Started Guide For istio-csr
+促进 mTLS 的证书(集群间和集群内)将通过[证书管理器颁发者](https://cert-manager.io/docs/concepts/issuer)签署、交付和更新。
+
+## istio-csr 入门指南
 
 We have [a guide](../tutorials/istio-csr/istio-csr.md) for setting up istio-csr in a fresh
 [kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation) cluster.
@@ -21,9 +19,9 @@ Following the guide is the best way to see istio-csr in action.
 If you've already seen istio-csr in action or if you're experienced with running
 Istio and just want quick installation instructions, read on for more details.
 
-## Lower-Level Details (For Experienced Istio Users)
+## 底层细节(适用于有经验的 Istio 用户)
 
-⚠️  The [getting started](../tutorials/istio-csr/istio-csr.md) guide is a better place if you just want to try istio-csr out!
+⚠️ The [getting started](../tutorials/istio-csr/istio-csr.md) guide is a better place if you just want to try istio-csr out!
 
 Running istio-csr requires a few steps and preconditions in order:
 
@@ -34,7 +32,7 @@ Running istio-csr requires a few steps and preconditions in order:
 5. Istio [installed](https://istio.io/latest/docs/setup/install/istioctl/) with
    some custom config required, e.g. using the example config from the [repository](https://github.com/cert-manager/istio-csr/tree/main/hack).
 
-### Why Custom Istio Install Manifests?
+### 为什么自定义 Istio 安装清单?
 
 If you take a look at the contents of [the example Istio install
 manifests](https://github.com/cert-manager/istio-csr/tree/main/hack)
@@ -48,7 +46,7 @@ root CA istio-csr defaults to trying to discover root CAs automatically, which c
 [signer hijacking attack](https://github.com/cert-manager/istio-csr/issues/103#issuecomment-923882792) if for example
 a signer's token was stolen (such as the cert-manager controller's token).
 
-### Issuer or ClusterIssuer?
+### Issuer 还是 ClusterIssuer?
 
 Unless you know you need a `ClusterIssuer` we'd recommend starting with an `Issuer`, since it should be easier to reason about
 the access controls for an Issuer; they're namespaced and so naturally a little more limited in scope.
@@ -58,7 +56,7 @@ fit. The best choice will depend on your specific situation.
 
 Our [getting started guide](../tutorials/istio-csr/istio-csr.md) uses an `Issuer`.
 
-### Which Issuer Type?
+### 哪种发行者类型?
 
 Whether you choose to use an `Issuer` or a `ClusterIssuer`, you'll also need to choose the type of issuer you want such as:
 
@@ -75,13 +73,13 @@ don't allow arbitrary entries in the SAN, for very good reasons.
 If you're already using [HashiCorp Vault](https://www.vaultproject.io/) then the Vault issuer is an obvious choice. If
 you want to control your own PKI entirely, we'd recommend the CA issuer. The choice is ultimately yours.
 
-### Installing istio-csr After Istio
+### 在 Istio 之后安装 istio-csr
 
 This is unsupported because it's exceptionally difficult to do safely. It's likely that installing istio-csr _after_ Istio isn't
 possible to do without downtime, since installing istio-csr second would require a time period where all Istio sidecars trust
 both the old Istio-managed CA and the new cert-manager controlled CA.
 
-## How Does istio-csr Work?
+## istio-csr 如何工作?
 
 istio-csr implements the gRPC Istio certificate service which authenticates,
 authorizes, and signs incoming certificate signing requests from Istio

@@ -1,7 +1,6 @@
----
-title: DNS01
+# DNS01
+
 description: 'cert-manager configuration: ACME DNS-01 challenges overview'
----
 
 ## Configuring DNS01 Challenge Provider
 
@@ -30,12 +29,12 @@ spec:
     privateKeySecretRef:
       name: example-issuer-account-key
     solvers:
-    - dns01:
-        cloudDNS:
-          project: my-project
-          serviceAccountSecretRef:
-            name: prod-clouddns-svc-acct-secret
-            key: service-account.json
+      - dns01:
+          cloudDNS:
+            project: my-project
+            serviceAccountSecretRef:
+              name: prod-clouddns-svc-acct-secret
+              key: service-account.json
 ```
 
 Each issuer can specify multiple different DNS01 challenge providers, and
@@ -49,7 +48,7 @@ read the multiple-solver-types section.
 ## Setting Nameservers for DNS01 Self Check
 
 cert-manager will check the correct DNS records exist before attempting a DNS01
-challenge.  By default cert-manager will use the recursive nameservers taken
+challenge. By default cert-manager will use the recursive nameservers taken
 from `/etc/resolv.conf` to query for the authoritative nameservers, which it will
 then query directly to verify the DNS records exist.
 
@@ -64,8 +63,8 @@ recursive nameservers cert-manager should query.
 recursive nameservers for verification. Enabling this option could cause the DNS01
 self check to take longer due to caching performed by the recursive nameservers.
 
-
 Example usage:
+
 ```bash
 --dns01-recursive-nameservers-only --dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53
 ```
@@ -86,10 +85,11 @@ If granting cert-manager access to the root DNS zone is not desired, then the
 `_acme-challenge.example.com` subdomain can instead be delegated to some other,
 less privileged domain (`less-privileged.example.org`). This could be achieved in the following way. Say, one has two zones:
 
-* `example.com`
-* `less-privileged.example.org`
+- `example.com`
+- `less-privileged.example.org`
 
 1. Create a CNAME record pointing to this less privileged domain:
+
 ```
 _acme-challenge.example.com	IN	CNAME	_acme-challenge.less-privileged.example.org.
 ```
@@ -97,9 +97,9 @@ _acme-challenge.example.com	IN	CNAME	_acme-challenge.less-privileged.example.org
 2. Grant cert-manager rights to update less privileged `less-privileged.example.org` zone
 
 3. Provide configuration/credentials for updating this less privileged zone
-and add an additional field into the relevant `dns01` solver. Note that `selector`
-field is still working for the original `example.com`, while credentials are provided for
-`less-privileged.example.org`
+   and add an additional field into the relevant `dns01` solver. Note that `selector`
+   field is still working for the original `example.com`, while credentials are provided for
+   `less-privileged.example.org`
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -137,7 +137,6 @@ _acme-challenge.bar.example.com	IN	CNAME	_acme-challenge.less-privileged.example
 
 With this configuration cert-manager will follow CNAME records recursively in order to determine
 which DNS zone to update during DNS01 challenges.
-
 
 ## Supported DNS01 providers
 

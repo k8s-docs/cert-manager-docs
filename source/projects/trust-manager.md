@@ -1,27 +1,24 @@
 ---
 title: trust-manager
-description: 'Distributing Trust Bundles in Kubernetes'
+description: "Distributing Trust Bundles in Kubernetes"
 ---
 
-## Distributing Trust Bundles in Kubernetes
+# trust-manager
 
-trust-manager is an operator for distributing trust bundles across a Kubernetes cluster.
-trust-manager is designed to complement
-[cert-manager](https://github.com/cert-manager/cert-manager) by enabling services to
-trust X.509 certificates signed by Issuers, as well as external CAs which may
-not be known to cert-manager at all.
+## 在 Kubernetes 中分发信任包
 
-## Usage
+trust-manager 是用于在 Kubernetes 集群中分发信任包的操作符。
+trust-manager 旨在补充[cert-manager](https://github.com/cert-manager/cert-manager)，使服务能够信任由发行者签署的 X.509 证书，以及证书管理器可能根本不知道的外部 CAs。
 
-trust ships with a single cluster scoped `Bundle` resource. A Bundle represents
-a set of data that should be distributed and made available across the cluster.
-There are no constraints on what data can be distributed.
+## 使用
 
-The Bundle gathers and appends trust data from a number of `sources` located in
-the trust namespace (where the trust controller is deployed), and syncs them to
-a `target` in every namespace.
+trust 附带了一个单一集群范围的`Bundle`源。
+一个`Bundle`表示一组应该在整个集群中分布和可用的数据。
+对于可以分发的数据没有任何限制。
 
-A typical Bundle looks like the following:
+Bundle 从位于信任名称空间(信任控制器部署在其中)的许多“源”收集并追加信任数据，并将它们同步到每个名称空间中的`target`。
+
+典型的 Bundle 如下所示:
 
 ```yaml
 apiVersion: trust.cert-manager.io/v1alpha1
@@ -30,22 +27,22 @@ metadata:
   name: my-org.com
 spec:
   sources:
-  # A Secret in the trust namespace created via a cert-manager Certificate
-  - secret:
-      name: "my-db-tls"
-      key: "ca.crt"
-  # A ConfigMap in the trust namespace
-  - configMap:
-      name: "my-org.net"
-      key: "root-certs.pem"
-  # An In Line
-  - inLine: |
-      # my-org.com CA
-      -----BEGIN CERTIFICATE-----
-      MIIC5zCCAc+gAwIBAgIBADANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwprdWJl
-      ....
-      0V3NCaQrXoh+3xrXgX/vMdijYLUSo/YPEWmo
-      -----END CERTIFICATE-----
+    # A Secret in the trust namespace created via a cert-manager Certificate
+    - secret:
+        name: "my-db-tls"
+        key: "ca.crt"
+    # A ConfigMap in the trust namespace
+    - configMap:
+        name: "my-org.net"
+        key: "root-certs.pem"
+    # An In Line
+    - inLine: |
+        # my-org.com CA
+        -----BEGIN CERTIFICATE-----
+        MIIC5zCCAc+gAwIBAgIBADANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwprdWJl
+        ....
+        0V3NCaQrXoh+3xrXgX/vMdijYLUSo/YPEWmo
+        -----END CERTIFICATE-----
   target:
     # Data synced to the ConfigMap `my-org.com` at the key `root-certs.pem` in
     # every namespace that has the label "linkerd.io/inject=enabled".
@@ -56,26 +53,21 @@ spec:
         linkerd.io/inject: "enabled"
 ```
 
-Bundle currently supports the source types `configMap`, `secret` and `inLine`,
-and target type `configMap`.
+Bundle 目前支持源类型`configMap`, `secret` 和 `inLine`,目标类型`configMap`。
 
-#### Namespace Selector
+#### 名称空间选择器
 
-The target `namespaceSelector` can be used for scoping which Namespaces targets
-are synced to, supporting the field `matchLabels`. Please see
-[here](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors)
-for more information and how label selectors are configured.
+目标`namespaceSelector`可用于确定同步到哪个 Namespaces 目标，支持字段`matchLabels`。
+请参阅[这里](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors)了解更多信息以及如何配置标签选择器。
 
-If `namespaceSelector` is empty, a bundle target will be synced to all
-Namespaces.
+如果`namespaceSelector`为空，捆绑目标将同步到所有命名空间。
 
 ---
 
-## Installation
+## 安装
 
-First, install [cert-manager](https://cert-manager.io/docs/installation/) to the
-cluster, and then the trust operator. It is advised to run the trust operator in
-the `cert-manager` namespace.
+首先，将[cert-manager](https://cert-manager.io/docs/installation/)安装到集群，然后安装信任操作符。
+建议在`cert-manager`命名空间中运行信任操作符。
 
 ```bash
 helm repo add jetstack https://charts.jetstack.io --force-update
@@ -83,7 +75,7 @@ helm upgrade -i -n cert-manager cert-manager jetstack/cert-manager --set install
 helm upgrade -i -n cert-manager trust-manager jetstack/trust-manager --wait
 ```
 
-#### Quick Start Example
+#### 快速入门示例
 
 ```bash
 kubectl create -n cert-manager configmap source-1 --from-literal=cm-key=123

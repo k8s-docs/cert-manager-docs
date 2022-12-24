@@ -1,11 +1,10 @@
----
-title: Akamai
-description: 'cert-manager configuration: ACME DNS-01 challenges using Akamai DNS'
----
+# Akamai
+
+'cert-manager configuration: ACME DNS-01 challenges using Akamai DNS'
 
 ## Edge DNS
 
-Use Edge DNS to solve DNS01 ACME challenges by creating a `Secret` using [Akamai API credentials](https://developer.akamai.com/getting-started/edgegrid) and an `Issuer` that references the `Secret` and sets the  solver type.
+Use Edge DNS to solve DNS01 ACME challenges by creating a `Secret` using [Akamai API credentials](https://developer.akamai.com/getting-started/edgegrid) and an `Issuer` that references the `Secret` and sets the solver type.
 
 ### Create a Secret
 
@@ -39,18 +38,18 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-akamai-issuer-account-key
     solvers:
-    - dns01:
-        akamai:
-          serviceConsumerDomain: use_akamai_host
-          clientTokenSecretRef:
-            name: akamai-secret
-            key: clientToken
-          clientSecretSecretRef:
-            name: akamai-secret
-            key: clientSecret
-          accessTokenSecretRef:
-            name: akamai-secret
-            key: accessToken
+      - dns01:
+          akamai:
+            serviceConsumerDomain: use_akamai_host
+            clientTokenSecretRef:
+              name: akamai-secret
+              key: clientToken
+            clientSecretSecretRef:
+              name: akamai-secret
+              key: clientSecret
+            accessTokenSecretRef:
+              name: akamai-secret
+              key: accessToken
 ```
 
 ### Create a Certificate
@@ -65,7 +64,7 @@ metadata:
 spec:
   secretName: akamai-crt-secret
   dnsNames:
-  - '*.example.zone'
+    - "*.example.zone"
   issuerRef:
     name: letsencrypt-akamai-dns
     kind: Issuer

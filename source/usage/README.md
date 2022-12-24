@@ -1,31 +1,20 @@
 ---
 title: Issuing Certificates
-description: 'cert-manager usage: Overview'
+description: "cert-manager usage: Overview"
 ---
 
-Once an [`Issuer`](../configuration/README.md) has been configured, you're ready to issue your first certificate!
+# 签发证书
 
-There are several use cases and methods for requesting certificates through cert-manager:
+一旦配置了[`Issuer`](../configuration/README.md)，就可以颁发第一个证书了!
 
-- [Certificate Resources](./certificate.md): The simplest and most common method for
-  requesting signed certificates.
-- [Securing Ingress Resources](./ingress.md): A method to secure ingress resources
-  in your cluster.
-- [Securing OpenFaaS functions](https://docs.openfaas.com/reference/ssl/kubernetes-with-cert-manager/):
-  Secure your OpenFaaS services using cert-manager.
-- [Integration with Garden](https://docs.garden.io/guides/cert-manager-integration): Garden is a
-  developer tool for developing Kubernetes applications which has first class
-  support for integrating cert-manager.
-- [Securing Knative](https://knative.dev/docs/serving/using-auto-tls/): Secure
-  your Knative services with trusted HTTPS certificates.
-- [Enable mTLS on Pods with CSI](./csi.md): Using the cert-manager CSI
-  driver to provide unique keys and certificates that share the lifecycle of
-  pods.
-- [Securing Istio Gateway](https://istio.io/docs/tasks/traffic-management/ingress/ingress-certmgr/):
-  Secure your Istio Gateway in Kubernetes using cert-manager.
-- [Securing Istio Service Mesh](./istio.md): Using the cert-manager
-  [Istio](https://istio.io) integration, secure the mTLS PKI for each pod
-  through cert-manager managed certificates.
-- [Policy for cert-manager certificates](./approver-policy.md): Manage
-  what cert-manager certificates are able to be signed or rejected through
-  custom resource defined policy.
+通过证书管理器请求证书有几种用例和方法:
+
+- [证书的源](./certificate.md): 请求已签名证书的最简单和最常见的方法。
+- [保护入口源](./ingress.md): 用于保护集群中的入口源的方法。
+- [保护 OpenFaaS 功能](https://docs.openfaas.com/reference/ssl/kubernetes-with-cert-manager/): 使用 cert-manager 保护您的 OpenFaaS 服务。
+- [与花园的融合](https://docs.garden.io/guides/cert-manager-integration): Garden 是一个开发 Kubernetes 应用程序的开发工具，它对集成证书管理器提供一流的支持。
+- [确保 Knative](https://knative.dev/docs/serving/using-auto-tls/): 使用受信任的 HTTPS 证书保护您的 Knative 服务。
+- [在有 CSI 的 Pods 上启用 mTLS](./csi.md): 使用证书管理器 CSI 驱动程序提供共享 pod 生命周期的唯一密钥和证书。
+- [保护 Istio 网关](https://istio.io/docs/tasks/traffic-management/ingress/ingress-certmgr/): 使用 cert-manager 在 Kubernetes 中保护您的 Istio 网关。
+- [保护 Istio 服务网格](./istio.md): 使用 cert-manager [Istio](https://istio.io)集成，通过 cert-manager 管理的证书保护每个 pod 的 mTLS PKI。
+- [证书管理器证书的策略](./approver-policy.md): 通过自定义源定义策略管理哪些证书管理器证书可以签名或拒绝。

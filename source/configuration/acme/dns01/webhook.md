@@ -1,7 +1,6 @@
----
-title: Webhook
+# Webhook
+
 description: 'cert-manager configuration: ACME DNS-01 challenges using External Webhook Solvers'
----
 
 The webhook `Issuer` is a generic ACME solver. The actual work is done by an
 external service. Look at the respective documentation of

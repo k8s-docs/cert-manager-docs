@@ -1,7 +1,6 @@
----
-title: Google CloudDNS
+# Google CloudDNS
+
 description: 'cert-manager configuration: ACME DNS-01 challenges using Google CloudDNS'
----
 
 This guide explains how to set up an `Issuer`, or `ClusterIssuer`, to use Google
 CloudDNS to solve DNS01 ACME challenges. It's advised you read the [DNS01
@@ -42,9 +41,9 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 > If you want to ensure cert-manager runs under a least privilege service account,
 > you will need to create a custom role with the following permissions:
 >
->  * `dns.resourceRecordSets.*`
->  * `dns.changes.*`
->  * `dns.managedZones.list`
+> - `dns.resourceRecordSets.*`
+> - `dns.changes.*`
+> - `dns.managedZones.list`
 
 ## Use Static Credentials
 
@@ -70,6 +69,7 @@ gcloud iam service-accounts create dns01-solver
 ```
 
 Replace instances of `$PROJECT_ID` with the ID of your project.
+
 ```bash
 gcloud iam service-accounts keys create key.json \
    --iam-account dns01-solver@$PROJECT_ID.iam.gserviceaccount.com
@@ -78,10 +78,10 @@ kubectl create secret generic clouddns-dns01-solver-svc-acct \
 ```
 
 > Note: If you have already added the `Secret` but get an error: `...due to
-> error processing: error getting clouddns service account: secret "XXX" not
-> found`, the `Secret` may be in the wrong namespace. If you're configuring a
+error processing: error getting clouddns service account: secret "XXX" not
+found`, the `Secret` may be in the wrong namespace. If you're configuring a
 > `ClusterIssuer`, move the `Secret` to the `Cluster Resource Namespace` which
-> is `cert-manager` by default.  If you're configuring an `Issuer`, the `Secret`
+> is `cert-manager` by default. If you're configuring an `Issuer`, the `Secret`
 > should be stored in the same namespace as the `Issuer` resource.
 
 ### Create an Issuer That Uses CloudDNS
@@ -126,8 +126,8 @@ spec:
     # The issuer created previously
     name: example-issuer
   dnsNames:
-  - example.com
-  - www.example.com
+    - example.com
+    - www.example.com
 ```
 
 For more details about `Certificates`, see [Usage](../../../usage/README.md).
@@ -231,8 +231,8 @@ spec:
     # The issuer created previously
     name: example-issuer
   dnsNames:
-  - example.com
-  - www.example.com
+    - example.com
+    - www.example.com
 ```
 
 For more details about `Certificates`, see [Usage](../../../usage/README.md).

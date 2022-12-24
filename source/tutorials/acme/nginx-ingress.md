@@ -1,6 +1,6 @@
 ---
 title: Securing NGINX-ingress
-description: 'cert-manager tutorials: Using ingress-nginx to solve an ACME HTTP-01 challenge'
+description: "cert-manager tutorials: Using ingress-nginx to solve an ACME HTTP-01 challenge"
 ---
 
 This tutorial will detail how to install and secure ingress to your cluster
@@ -8,7 +8,7 @@ using NGINX.
 
 ## Step 1 - Install Helm
 
-> *Skip this section if you have helm installed.*
+> _Skip this section if you have helm installed._
 
 The easiest way to install `cert-manager` is to use [`Helm`](https://helm.sh), a
 templating and deployment tool for Kubernetes resources.
@@ -102,9 +102,11 @@ The quick-start example uses three manifests for the sample. The first two are a
 sample deployment and an associated service:
 
 ```yaml file=./example/deployment.yaml
+
 ```
 
 ```yaml file=./example/service.yaml
+
 ```
 
 You can create download and reference these files locally, or you can
@@ -121,13 +123,14 @@ kubectl apply -f https://raw.githubusercontent.com/cert-manager/website/master/c
 ```
 
 An [Ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/) is
-what Kubernetes uses to expose this example service outside the cluster.  You
+what Kubernetes uses to expose this example service outside the cluster. You
 will need to download and modify the example manifest to reflect the domain that
-you own or  control to complete this example.
+you own or control to complete this example.
 
 A sample ingress you can start with is:
 
 ```yaml file=./example/ingress.yaml
+
 ```
 
 You can download the sample manifest from GitHub , edit it, and submit the
@@ -141,12 +144,12 @@ kubectl create --edit -f https://raw.githubusercontent.com/cert-manager/website/
 
 > Note: The ingress example we show above has a `host` definition within it. The
 > `ingress-nginx-controller` will route traffic when the hostname requested
-> matches the definition in the ingress. You *can* deploy an ingress without a
+> matches the definition in the ingress. You _can_ deploy an ingress without a
 > `host` definition in the rule, but that pattern isn't usable with a TLS
 > certificate, which expects a fully qualified domain name.
 
 Once it is deployed, you can use the command `kubectl get ingress` to see the status
- of the ingress:
+of the ingress:
 
 ```text
 NAME      HOSTS     ADDRESS   PORTS     AGE
@@ -162,12 +165,12 @@ NAME      HOSTS     ADDRESS         PORTS     AGE
 kuard     *         203.0.113.2   80        9m
 ```
 
-> Note: The IP address on the ingress *may not* match the IP address that the
+> Note: The IP address on the ingress _may not_ match the IP address that the
 > `ingress-nginx-controller` has. This is fine, and is a quirk/implementation detail
 > of the service provider hosting your Kubernetes cluster. Since we are using
 > the `ingress-nginx-controller` instead of any cloud-provider specific ingress
 > backend, use the IP address that was defined and allocated for the
-> `quickstart-ingress-nginx-controller ` `LoadBalancer` resource as the primary  access point for
+> `quickstart-ingress-nginx-controller ` `LoadBalancer` resource as the primary access point for
 > your service.
 
 Make sure the service is reachable at the domain name you added above, for
@@ -182,7 +185,7 @@ $ curl -kivL -H 'Host: www.example.com' 'http://203.0.113.2'
 ```
 
 The options on this curl command will provide verbose output, following any
-redirects, show the TLS headers in the output,  and not error on insecure
+redirects, show the TLS headers in the output, and not error on insecure
 certificates. With `ingress-nginx-controller`, the service will be available
 with a TLS certificate, but it will be using a self-signed certificate
 provided as a default from the `ingress-nginx-controller`. Browsers will show
@@ -190,7 +193,7 @@ a warning that this is an invalid certificate. This is expected and normal,
 as we have not yet used cert-manager to get a fully trusted certificate
 for our site.
 
-> *Warning*: It is critical to make sure that your ingress is available and
+> _Warning_: It is critical to make sure that your ingress is available and
 > responding correctly on the internet. This quick-start example uses Let's
 > Encrypt to provide the certificates, which expects and validates both that the
 > service is available and that during the process of issuing a certificate uses
@@ -227,7 +230,7 @@ Your other option is to replace your `Issuers` with `ClusterIssuers`;
 If using a `ClusterIssuer`, remember to update the Ingress annotation `cert-manager.io/issuer` to
 `cert-manager.io/cluster-issuer`.
 
-If you see issues with issuers, follow the [Troubleshooting Issuing ACME Certificates](../../faq/acme.md) guide.
+If you see issues with issuers, follow the [Troubleshooting Issuing ACME Certificates](../../troubleshooting/acme.md) guide.
 
 More information on the differences between `Issuers` and `ClusterIssuers` - including
 when you might choose to use each can be found on [Issuer concepts](../../concepts/issuer.md#namespaces).
@@ -255,6 +258,7 @@ email is required by Let's Encrypt and used to notify you of certificate
 expiration and updates.
 
 ```yaml file=./example/staging-issuer.yaml
+
 ```
 
 Once edited, apply the custom resource:
@@ -268,6 +272,7 @@ Also create a production issuer and deploy it. As with the staging issuer, you
 will need to update this example and add in your own email address.
 
 ```yaml file=./example/production-issuer.yaml
+
 ```
 
 ```bash
@@ -333,7 +338,7 @@ resource and use that to validate the domain. Once verified and issued,
 cert-manager will create or update the secret defined in the certificate.
 
 > Note: The secret that is used in the ingress should match the secret defined
-> in the certificate.  There isn't any explicit checking, so a typo will result
+> in the certificate. There isn't any explicit checking, so a typo will result
 > in the `ingress-nginx-controller` falling back to its self-signed certificate.
 > In our example, we are using annotations on the ingress (and ingress-shim)
 > which will create the correct secrets on your behalf.
@@ -342,6 +347,7 @@ Edit the ingress add the annotations that were commented out in our earlier
 example:
 
 ```yaml file=./example/ingress-tls.yaml
+
 ```
 
 and apply it:
@@ -443,6 +449,7 @@ Now that we have confidence that everything is configured correctly, you
 can update the annotations in the ingress to specify the production issuer:
 
 ```yaml file=./example/ingress-tls-final.yaml
+
 ```
 
 ```bash
@@ -566,7 +573,7 @@ Events:
 > information on debugging failing challenges.
 
 Once the challenge(s) have been completed, their corresponding challenge
-resources will be *deleted*, and the 'Order' will be updated to reflect the
+resources will be _deleted_, and the 'Order' will be updated to reflect the
 new state of the Order:
 
 ```bash

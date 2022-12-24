@@ -1,79 +1,93 @@
 ---
 title: TLS Terminology
-description: |
-    Learn about the TLS terminology used in the cert-manager documentation such as publicly trusted, self-signed, root, intermediate and leaf certificate
+description: 了解证书管理器文档中使用的TLS术语，例如公共可信证书、自签名证书、根证书、中间证书和叶证书
 ---
 
-Learn about the TLS terminology used in the cert-manager documentation such as `publicly trusted`, `self-signed`, `root`, `intermediate` and `leaf` _certificate_.
+# TLS 术语
 
-## Overview
+了解证书管理器文档中使用的 TLS 术语，如“公共信任”、“自签名”、“根”、“中间”和“叶” _证书_。
 
-With TLS being so widely deployed, terminology can sometimes get confused or be used to mean different things, and that reality
-combined with the complexity of TLS can lead to serious misunderstandings and confusion.
+## 概述
 
-For further reference, you might want to check out some relevant RFCs:
+由于 TLS 被如此广泛地部署，术语有时会被混淆，或者被用来表示不同的东西，而现实情况加上 TLS 的复杂性可能会导致严重的误解和混乱。
+
+为了进一步参考，你可能想要查看一些相关的 RFCs:
 
 - [RFC 5246: TLS 1.2](https://datatracker.ietf.org/doc/html/rfc5246)
 - [RFC 8446: TLS 1.3](https://datatracker.ietf.org/doc/html/rfc8446)
 - [RFC 5280: X.509](https://datatracker.ietf.org/doc/html/rfc5280)
 
-## Definitions
+## 定义
 
-### `publicly trusted`
+??? Question "“publicly trusted(公开可信的)”是什么意思?"
 
-What does "publicly trusted" mean?
+    从广义上讲，"publicly trusted"证书是可以在Internet上使用的证书，并期望大多数最新的计算机能够使用其系统信任存储库对其进行验证。
 
-Broadly speaking, a "publicly trusted" certificate is one that you can use on the Internet and expect
-that most reasonably up-to-date computers will be able to verify it using their system trust store.
+    目前还没有一个包含“公共信任”证书的标准信任存储库，但通常大多数常见的信任存储库都是类似的。
+    一个例子是[Mozilla的CA证书程序](https://wiki.mozilla.org/CA)。
 
-There isn't a single standard trust store containing certs which are "publicly trusted", but generally most
-of the commonly seen trust stores are similar. An example would be [Mozilla's CA Certificate Program](https://wiki.mozilla.org/CA).
+??? Question "“self-signed(自签名)”是什么意思?我的核证机关是否自行签署?"
 
-### What does "self-signed" mean? Is my CA self-signed?
+    自签名的意思就是它所说的;如果证书是由自己的私钥签署的，则证书是自签名的。
 
-Self-signed means exactly what it says; a certificate is self-signed if it is signed by its own private key.
+    然而，自签名是一个经常被混淆的术语，经常被误用为“不受公众信任”的意思。
+    我们倾向于使用像“私有PKI”这样的术语来表示组织可能拥有自己的内部CA证书的情况，这些证书在组织外部不受信任。
 
-Self-signed is a commonly confused term, however, and is very frequently misused to mean "not publicly trusted". We tend to use terms
-like "private PKI" to denote the situation where an organization might have their own internal CA certificates which wouldn't
-be trusted outside of the organization.
+    例如，在[Mozilla的CA证书计划](https://wiki.mozilla.org/CA)中有 _多_ 个自签名证书，但所有这些证书通常都被描述为“公共信任”。
 
-As an example, there are _many_ self-signed certificates in [Mozilla's CA Certificate Program](https://wiki.mozilla.org/CA), but
-all of those certificates would usually be described as "publicly trusted".
+    只有使用自己的密钥签名的证书才是自签名的。
 
-Your certificate is self-signed only if it's signed with its own key.
+??? Question "“根证书”、“中间证书”和“叶证书”之间的区别是什么?"
 
-### What's the difference between "root", "intermediate", and "leaf" certificates?
+    证书管理器使用以下定义:
 
-cert-manager uses the following definitions:
+    1. Root Certificates(根证书)
 
-#### Root Certificates
+        根是自签名证书，几乎总是标记为CA证书。
+        在TLS握手期间，它们通常不会通过网络发送，因为需要显式地信任它们才能进行验证。
 
-Roots are self-signed certificates and almost always marked as CA certificates. They're usually not sent over the wire
-during a TLS handshake because they need to be explicitly trusted in order to be validated.
+        根有时被定义为“显式受信任的CA证书” - 它可以包括非自签名的证书。
+        证书管理器不使用此定义。
 
-Roots are sometimes defined as "CA certificates which are explicitly trusted"---which can include certificates which
-aren't self-signed. cert-manager doesn't use this definition.
+        更改信任存储以包含新的根或删除旧的根是一项艰巨的任务，对于公共信任的根可能需要几个月或几年的时间。
+        因此，根通常具有很长的寿命，通常在几十年左右。
 
-Changing trust stores to include new roots or remove old ones is a non-trivial task which can take months or years for publicly
-trusted roots. For this reason roots are usually issued with very long lifetimes, often on the order of decades.
+    2. Intermediate Certificates(中间证书)
 
-#### Intermediate Certificates
+        中间证书是由另一个CA签署的CA证书。
+        大多数中间体将由根证书签名，但是可以构造更长的链，其中一个中间体可以由另一个中间体签名。
 
-Intermediates are CA certificates signed by another CA. Most intermediates will be signed by a root certificate, but it's
-possible to construct longer chains where an intermediate can be signed by another intermediate.
+        颁发中间证书的生命周期通常比签署它们的CA短得多。
+        在Internet上，中间证书用于网络连接的机器上进行日常颁发，因此高价值的根证书可以完全离线。
 
-Intermediate certificates are usually issued with a much shorter lifetime than the CA which signed them. On the
-Internet, intermediate certificates are used on network-connected machines for day-to-day issuance so that the
-highly-valuable root certificates can remain entirely offline.
+        虽然中间证书也可以通过添加到信任存储区来显式地受信任，但它们通常是通过“遍历”链并验证签名来验证的，直到找到显式地受信任的自签名根证书。
 
-While intermediate certificates can also be explicitly trusted via addition to a trust store, they're usually validated
-by "walking up" the chain and validating signatures until an explicitly trusted self-signed root certificate is found.
+    3. Leaf Certificates(叶证书)
 
-#### Leaf Certificates
+        叶证书通常用于表示特定的身份，而不是用于签署其他证书。
+        在Internet上，叶证书通常标识一个特定的域，例如“example.com”。
 
-Leaf certificates are usually used to represent a particular identity, rather than being used to sign other certificates.
-On the Internet leaf certificates usually identify a particular domain, such as `example.com`.
+        叶证书在证书链中首先发送，并表示该证书链的末端。
+        它们必须与创建链所需的任何中间产物一起发送，该链可以通过验证可信根证书的签名进行验证。
 
-Leaf certificates are sent first in a chain of certificates and represent the end of that chain. They must be sent
-along with any intermediates required to create a chain which can be validated by verifying signatures up to a trusted
-root certificate.
+??? Question "ACME(自动证书管理环境)"
+
+    [Automatic Certificate Management Environment](https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment)
+
+    自动证书管理环境(ACME)协议是一种用于自动化证书颁发机构与其用户服务器之间交互的通信协议，允许以非常低的成本自动化部署公钥基础设施。
+    它是由互联网安全研究小组(ISRG)为他们的Let's Encrypt服务设计的。
+
+    该协议基于通过HTTPS传递json格式的消息，已由其自己的特许IETF工作组在RFC 8555中作为互联网标准发布。
+
+??? Question "CA(证书颁发机构)"
+
+    [Certificate authority](https://en.wikipedia.org/wiki/Certificate_authority)
+
+    在密码学中，证书颁发机构或证书颁发机构(CA)是存储、签署和颁发数字证书的实体。
+    数字证书通过证书的指定主题证明公钥的所有权。
+    这允许其他人(依赖方)依赖签名或对与认证公钥对应的私钥所做的断言。
+    CA充当受信任的第三方，既受证书的主体(所有者)的信任，也受依赖证书的一方的信任。
+    这些证书的格式由X.509或EMV标准指定。
+
+    证书颁发机构的一个特别常见的用途是对HTTPS(万维网的安全浏览协议)中使用的证书进行签名。
+    另一个常见的用途是由国家政府发放身份证，用于电子签署文件。

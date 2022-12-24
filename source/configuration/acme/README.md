@@ -1,50 +1,33 @@
----
-title: ACME
-description: 'cert-manager configuration: ACME Issuers'
----
+# ACME
 
-The ACME Issuer type represents a single account registered with the Automated
-Certificate Management Environment (ACME) Certificate Authority server. When you
-create a new ACME `Issuer`, cert-manager will generate a private key which is
-used to identify you with the ACME server.
+ACME 颁发者类型表示在自动证书管理环境(ACME)证书颁发机构服务器上注册的单个帐户。
+当您创建一个新的 ACME `Issuer`时，证书管理器将生成一个用于在 ACME 服务器上识别您的私钥。
 
-Certificates issued by public ACME servers are typically trusted by client's
-computers by default. This means that, for example, visiting a website that is
-backed by an ACME certificate issued for that URL, will be trusted by default by
-most client's web browsers. ACME certificates are typically free.
+默认情况下，客户端计算机通常信任公共 ACME 服务器颁发的证书。
+这意味着，例如，访问一个由为该 URL 颁发的 ACME 证书支持的网站，将在默认情况下被大多数客户端的 web 浏览器信任。
+ACME 证书通常是免费的。
 
-## Solving Challenges
+## 解决挑战
 
-In order for the ACME CA server to verify that a client owns the domain, or
-domains, a certificate is being requested for, the client must complete
-"challenges". This is to ensure clients are unable to request certificates for
-domains they do not own and as a result, fraudulently impersonate another's
-site. As detailed in the [RFC8555](https://tools.ietf.org/html/rfc8555),
-cert-manager offers two challenge validations - HTTP01 and DNS01 challenges.
+为了让 ACME CA 服务器验证客户机是否拥有一个或多个域，正在请求证书，客户机必须完成“质询”。
+这是为了确保客户端无法为他们不拥有的域名请求证书，从而欺诈性地模仿其他人的网站。
+详见[RFC8555](https://tools.ietf.org/html/rfc8555)，cert-manager 提供了两个挑战验证- HTTP01 和 DNS01 挑战。
 
-[HTTP01](./http01/README.md) challenges are completed by presenting a computed
-key, that should be present at a HTTP URL endpoint and is routable over the
-internet. This URL will use the domain name requested for the certificate. Once
-the ACME server is able to get this key from this URL over the internet, the
-ACME server can validate you are the owner of this domain. When a HTTP01
-challenge is created, cert-manager will automatically configure your cluster
-ingress to route traffic for this URL to a small web server that presents this
-key.
+[HTTP01](./http01/README.md)挑战是通过给出一个计算密钥来完成的，该密钥应该出现在 HTTP URL 端点上，并且可以在互联网上路由。
+该 URL 将使用证书请求的域名。
+一旦 ACME 服务器能够通过 internet 从这个 URL 获得这个密钥，ACME 服务器就可以验证您是这个域的所有者。
+当创建 HTTP01 挑战时，cert-manager 将自动配置您的集群入口，将此 URL 的流量路由到提供此密钥的小型 web 服务器。
 
-[DNS01](./dns01/README.md) challenges are completed by providing a computed key
-that is present at a DNS TXT record. Once this TXT record has been propagated
-across the internet, the ACME server can successfully retrieve this key via a
-DNS lookup and can validate that the client owns the domain for the requested
-certificate. With the correct permissions, cert-manager will automatically
-present this TXT record for your given DNS provider.
+[DNS01](./dns01/README.md)挑战通过提供一个存在于 DNS TXT 记录中的计算密钥来完成。
+一旦这个 TXT 记录在互联网上传播，ACME 服务器就可以通过 DNS 查找成功地检索这个密钥，并验证客户端拥有所请求证书的域。
+有了正确的权限，证书管理器将自动为给定的 DNS 提供程序显示此 TXT 记录。
 
-## Configuration
+## 配置
 
-### Creating a Basic ACME Issuer
+### 创建基本 ACME 颁发者
 
-All ACME `Issuers` follow a similar configuration structure - a clients `email`,
-a `server` URL, a `privateKeySecretRef`, and one or more `solvers`. Below is an
-example of a simple ACME issuer:
+所有 ACME `Issuers`都遵循类似的配置结构 - 一个客户`email`，一个`server`URL，一个`privateKeySecretRef`，以及一个或多个`solvers`。
+下面是一个简单的 ACME 颁发者示例:
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -63,46 +46,42 @@ spec:
       name: example-issuer-account-key
     # Add a single challenge solver, HTTP01 using nginx
     solvers:
-    - http01:
-        ingress:
-          class: nginx
+      - http01:
+          ingress:
+            class: nginx
 ```
 
-Solvers come in the form of [`dns01`](./dns01/README.md) and
-[`http01`](./http01/README.md) stanzas. For more information on how to configure
-these solver types, visit their respective documentation -
-[DNS01](./dns01/README.md), [HTTP01](./http01/README.md).
+求解器以[`dns01`](./dns01/README.md) 和 [`http01`](./http01/README.md)节的形式出现。
+有关如何配置这些求解器类型的更多信息，请访问它们各自的文档- [DNS01](./dns01/README.md), [HTTP01](./http01/README.md)。
 
-### External Account Bindings
+### 外部帐户绑定
 
-cert-manager supports using External Account Bindings with your ACME account.
-External Account Bindings are used to associate your ACME account with an
-external account such as a CA custom database. This is typically not needed for
-most cert-manager users unless you know it is explicitly needed.
+cert-manager 支持对您的 ACME 帐户使用外部帐户绑定。
+外部帐户绑定用于将您的 ACME 帐户与外部帐户(如 CA 自定义数据库)相关联。
+大多数 cert-manager 用户通常不需要这样做，除非您知道明确需要这样做。
 
-External Account Bindings require two fields on an ACME `Issuer` which
-represents your ACME account. These fields are:
+外部帐户绑定需要在代表您的 ACME 帐户的 ACME“发行者”上设置两个字段。这些字段是:
 
-- `keyID` - the key ID or account ID of which your external account binding is indexed by the
-external account manager
-- `keySecretRef` - the name and key of a secret containing a base 64 encoded
-URL string of your external account symmetric MAC key
+- `keyID` - 外部帐户管理员索引您的外部帐户绑定的密钥 ID 或帐户 ID
+- `keySecretRef` - 一个秘密的名称和密钥，包含一个 base 64 编码的 URL 字符串的外部帐户对称 MAC 密钥
 
-> Note: In _most_ cases, the MAC key must be encoded in `base64URL`. The
-> following command will base64-encode a key and convert it to `base64URL`:
->
-> ```console
-> $ echo 'my-secret-key' | base64 -w0 | sed -e 's/+/-/g' -e 's/\//_/g' -e 's/=//g'
-> ```
->
-> You can then create the Secret resource with:
->
-> ```console
-> $ kubectl create secret generic eab-secret --from-literal \
->   secret={base64 encoded secret key}
-> ```
+!!! Note:
 
-An example of an ACME issuer with an External Account Binding is as follows.
+    在大多数情况下，MAC密钥必须编码为`base64URL`。
+    下面的命令将对一个键进行base64-encode，并将其转换为`base64URL`:
+
+    ```console
+    $ echo 'my-secret-key' | base64 -w0 | sed -e 's/+/-/g' -e 's/\//_/g' -e 's/=//g'
+    ```
+
+    然后，您可以创建Secret资源:
+
+    ```console
+    $ kubectl create secret generic eab-secret --from-literal \
+      secret={base64 encoded secret key}
+    ```
+
+具有外部帐户绑定的 ACME 颁发者示例如下。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -121,24 +100,23 @@ spec:
     privateKeySecretRef:
       name: example-issuer-account-key
     solvers:
-    - http01:
-        ingress:
-          class: nginx
+      - http01:
+          ingress:
+            class: nginx
 ```
-> Note: cert-manager versions pre-`v1.3.0` also required users to specify the
-> MAC algorithm for EAB by setting
-> `Issuer.spec.acme.externalAccountBinding.keyAlgorithm` field. This field is
-> now deprecated because the upstream Go `x/crypto` library hardcodes the algorithm
-> to `HS256`. (See related discussion upstream
-> [`CL#41430`](https://github.com/golang/go/issues/41430)).
-### Reusing an ACME Account
 
-You may want to reuse a single ACME account across multiple clusters. This
-might especially be useful when using EAB. If the `disableAccountKeyGeneration`
-field is set, cert-manager will not create a new ACME account and use the
-existing key specified in `privateKeySecretRef`. Note that the
-`Issuer`/`ClusterIssuer` will not be ready and will continue to retry until the
-`Secret` is provided.
+!!! Note
+
+    `v1.3.0`之前的cert-manager版本也要求用户通过设置`Issuer.spec.acme.externalAccountBinding.keyAlgorithm`字段指定EAB的MAC算法。
+    该字段现在已弃用，因为上游Go `x/crypto`库将算法硬编码为`HS256`。
+    (参见上游相关讨论[`CL#41430`](https://github.com/golang/go/issues/41430))。
+
+### 重用 ACME 帐户
+
+您可能希望跨多个集群重用单个 ACME 帐户。
+这在使用 EAB 时尤其有用。
+如果设置了`disableAccountKeyGeneration`字段，证书管理器将不会创建一个新的 ACME 帐户，并使用`privateKeySecretRef`中指定的现有密钥。
+请注意，`Issuer`/`ClusterIssuer`将不会准备好，并将继续重试，直到`Secret`被提供。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -153,30 +131,19 @@ spec:
       name: example-issuer-account-key
 ```
 
+### 添加多个求解器类型
 
-### Adding Multiple Solver Types
+您可能希望为不同的入口控制器使用不同类型的挑战解决器配置，例如，如果您想使用`DNS01`颁发通配符证书，同时使用`HTTP01`验证其他证书。
 
-You may want to use different types of challenge solver configurations for
-different ingress controllers, for example if you want to issue wildcard
-certificates using `DNS01` alongside other certificates that are validated using
-`HTTP01`.
+`solvers`节有一个可选的`selector`字段，可以用来指定哪些`Certificates`，以及这些`Certificates`上的哪些 DNS 名称应该用于解决挑战。
 
-The `solvers` stanza has an optional `selector` field, that can be used to
-specify which `Certificates`, and further, what DNS names *on those*
-`Certificates` should be used to solve challenges.
+有三种选择器类型可以用来形成`Certificates`必须满足的要求，以便被选择为求解器-`matchLabels`,`dnsNames` and `dnsZones`。
+你可以在一个求解器中使用任意数量的这三个选择器。
 
-There are three selector types that can be used to form the requirements that a
-`Certificate` must meet in order to be selected for a solver - `matchLabels`,
-`dnsNames` and `dnsZones`. You can have any number of these three selectors on a
-single solver.
+#### 匹配标签
 
-
-#### Match Labels
-
-The `matchLabel` selector requires that all `Certificates` match all of
-the labels that are defined in the string map list of that stanza. For example,
-the following `Issuer` will only match on `Certificates` that have the labels
-`"user-cloudflare-solver": "true"` and `"email": "user@example.com"`.
+`matchLabel`选择器要求所有`Certificates`匹配该节字符串映射列表中定义的所有标签。
+例如，下面的`Issuer`只会匹配标签为`"user-cloudflare-solver": "true"` 和 `"email": "user@example.com"`。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -199,23 +166,20 @@ spec:
           "email": "user@example.com"
 ```
 
-#### DNS Names
+#### DNS 的名字
 
-The `dnsNames` selector is a list of exact DNS names that should be mapped to a
-solver.  This means that `Certificates` containing any of these DNS names will
-be selected.  If a match is found, a `dnsNames` selector will take precedence
-over a [`dnsZones`](#dns-zones) selector. If multiple solvers match with the
-same `dnsNames` value, the solver with the most matching labels in
-[`matchLabels`](#match-labels) will be selected. If neither has more matches,
-the solver defined earlier in the list will be selected.
+`dnsNames`选择器是一个精确的 DNS 名称列表，应该映射到一个求解器。
+这意味着包含任何这些 DNS 名称的“证书”将被选中。
+如果找到匹配，`dnsNames`选择器将优先于 [`dnsZones`](#dns-zones) 选择器。
+如果多个解算器匹配相同的`dnsNames`值，则在 [`matchLabels`](#match-labels)中匹配标签最多的解算器将被选中。
+如果两者都没有更多匹配项，则将选择列表中前面定义的求解器。
 
-The following example will solve challenges of `Certificates` with DNS names
-`example.com` and `*.example.com` for these domains.
+下面的示例将解决这些域的 DNS 名称为`example.com` and `*.example.com`的`Certificates`挑战。
 
-> Note: `dnsNames` take an exact match and do not resolve wildcards, meaning the
-> following `Issuer` *will not* solve for DNS names such as `foo.example.com`.
-> Use the [`dnsZones`](#dns-zones) selector type to match all subdomains within
-> a zone.
+!!! Note
+
+    `dnsNames`采用精确匹配，不解析通配符，这意味着下面的`Issuer`将无法解决诸如`foo.example.com`之类的DNS名称。
+    使用[`dnsZones`](#dns-zones) 选择器类型来匹配区域内的所有子域。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -238,20 +202,15 @@ spec:
         - '*.example.com'
 ```
 
-#### DNS Zones
+#### DNS 区
 
-The `dnsZones` stanza defines a list of DNS zones that can be solved by this
-solver. If a DNS name is an exact match, or a subdomain of any of the specified
-`dnsZones`, this solver will be used, unless a more specific
-[`dnsNames`](#dns-names) match is configured. This means that `sys.example.com`
-will be selected over one specifying `example.com` for the domain
-`www.sys.example.com`. If multiple solvers match with the same `dnsZones` value,
-the solver with the most matching labels in [`matchLabels`](#match-labels) will
-be selected. If neither has more matches, the solver defined earlier in the list
-will be selected.
+`dnsZones`节定义了此求解器可以解决的 DNS 区域列表。
+如果一个 DNS 名称是精确匹配的，或者是任何指定的`dnsZones`的子域，这个求解器将被使用，除非配置了更具体的 [`dnsNames`](#dns-names) 匹配。
+这意味着`sys.example.com`将被选中，而不是为域名`www.sys.example.com`指定`example.com`。
+如果多个解算器匹配相同的`dnsZones`值，将选择[`matchLabels`](#match-labels)中匹配标签最多的解算器。
+如果两者都没有更多匹配项，则将选择列表中前面定义的求解器。
 
-In the following example, this solver will resolve challenges for the domain
-`example.com`, as well as all of its subdomains `*.example.com`.
+在下面的例子中，这个求解器将解决域`example.com`及其所有子域`*.example.com`的挑战。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -273,17 +232,13 @@ spec:
         - 'example.com'
 ```
 
-#### All Together
+#### 在一起
 
-Each solver is able to have any number of the three selector types defined. In
-the following example, the `DNS01` solver for CloudFlare will be used to solve
-challenges for domains for `Certificates` that contain the DNS names
-`a.example.com` and `b.example.com`. The `DNS01` solver for Google CloudDNS will
-be used to solve challenges for `Certificates` whose DNS names match
-zone `test.example.com` and all of its subdomains (e.g. `foo.test.example.com`).
+每个求解器都可以定义这三种选择器类型中的任意数量。
+在以下示例中，CloudFlare 的`DNS01`求解器将用于解决包含 DNS 名称`a.example.com` 和 `b.example.com`的`Certificates` 域的挑战。
+谷歌 CloudDNS 的`DNS01`求解器将用于解决`Certificates` 的挑战，其 DNS 名称匹配区域`test.example.com` 及其所有子域(例如`foo.test.example.com`)。
 
-For all other challenges, the `HTTP01` solver will be used *only* if the
-`Certificate` also contains the label `"use-http01-solver": "true"`.
+对于所有其他挑战，只有当`Certificate`还包含`"use-http01-solver": "true"`标签时，才会使用`HTTP01`求解器。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -322,43 +277,40 @@ spec:
         - 'test.example.com' # This should be the DNS name of the zone
 ```
 
-Each individual selector block can contain more than one selector type  for
-example:
+每个单独的选择器块可以包含多个选择器类型，例如:
 
 ```yaml
 solvers:
-- dns01:
-  cloudflare:
-    email: user@example.com
-    apiKeySecretRef:
-      name: cloudflare-apikey-secret
-      key: apikey
-  selector:
-    matchLabels:
-     'email': 'user@example.com'
-     'solver': 'cloudflare'
-    dnsZones:
-      - 'test.example.com'
-      - 'example.dev'
+  - dns01:
+    cloudflare:
+      email: user@example.com
+      apiKeySecretRef:
+        name: cloudflare-apikey-secret
+        key: apikey
+    selector:
+      matchLabels:
+        "email": "user@example.com"
+        "solver": "cloudflare"
+      dnsZones:
+        - "test.example.com"
+        - "example.dev"
 ```
 
-In this case the `DNS01` solver for Cloudflare will only be used to solve a
-challenge for a DNS name if the `Certificate` has a label from
-`matchLabels` _and_ the DNS name matches a zone from `dnsZones`.
+在这种情况下，Cloudflare 的`DNS01`求解器仅用于解决`Certificate`具有来自`matchLabels`的标签且 DNS 名称与来自`dnsZones`的区域匹配的 DNS 名称的挑战。
 
-## Alternative Certificate Chains
-
-{/* This empty link preserves old links to #alternative-certificate-chain", which matched the old title of this section */}
+## 替代证书链
 
 <a id="alternative-certificate-chain" className="hidden-link"></a>
 
-It's possible to choose alternative certificate chains when fetching a certificate from an ACME server. This allows issuers to gracefully roll people over to a new root certificate during a transition period; the most famous example was the Let's Encrypt ["ISRG Root" changeover](https://community.letsencrypt.org/t/transition-to-isrgs-root-delayed-until-jan-11-2021/125516).
+从 ACME 服务器获取证书时，可以选择替代证书链。
+这允许发行者在过渡期间优雅地将用户转到新的根证书上;最著名的例子是 Let's Encrypt[“ISRG 根”转换](https://community.letsencrypt.org/t/transition-to-isrgs-root-delayed-until-jan-11-2021/125516).
 
-This functionality is not exclusive to Let's Encrypt; if your ACME server supports signing by multiple CAs you can use `preferredChain` with the value of the Common Name of the chain you want in the Issuer part of the certificate. If the common name matches a difference chain, the server can choose to use and return that new chain.
+这个功能不是 Let’s Encrypt 独有的;如果您的 ACME 服务器支持多个 ca 的签名，您可以在证书的颁发者部分中使用`preferredChain`和您想要的链的 Common Name 的值。如果通用名与差值链匹配，服务器可以选择使用并返回该新链。
 
-If the `preferredChain` does not match a certificate the server will return whatever it considers to be its default certificate.
+如果`preferredChain`与证书不匹配，服务器将返回它认为是默认证书的任何证书。
 
-By way of an example, below is how a user would have requested an alternative chain before the (now completed) "ISRG Root" changeover, but note that since this change has already happened there's no need for this with Let's Encrypt any more:
+作为一个例子，下面是一个用户如何在(现在已经完成)之前请求一个替代链。
+"ISRG Root"的转换，但请注意，因为这个改变已经发生了，所以没有必要再让我们加密了:
 
 ```yaml
 apiVersion: cert-manager.io/v1

@@ -1,7 +1,7 @@
 ---
 title: Troubleshooting Problems with ACME / Let's Encrypt Certificates
 description: |
-    Learn how to diagnose problems if cert-manager fails to renew ACME / Let's Encrypt Certificates.
+  Learn how to diagnose problems if cert-manager fails to renew ACME / Let's Encrypt Certificates.
 ---
 
 Learn how to diagnose problems if cert-manager fails to renew ACME / Let's Encrypt Certificates.
@@ -14,11 +14,12 @@ investigate and debug if there is a problem during the process. You can read
 more about these resources in the [concepts
 pages](../concepts/acme-orders-challenges.md).
 
-Before you start here you should probably take a look at our [general troubleshooting guide](./troubleshooting.md)
+Before you start here you should probably take a look at our [general troubleshooting guide](./README.md)
 
 ## 1. Troubleshooting (Cluster)Issuers
 
 First of all check if the (Cluster)Issuer you're using is in a ready state:
+
 ```bash
 $ kubectl get issuer
 $ kubectl get clusterissuer
@@ -28,6 +29,7 @@ letsencrypt-http   False    32m
 ```
 
 If you see `False` check the status using `kubectl describe`. For example:
+
 ```bash
 $ kubectl describe issuer letsencrypt-http
 $ kubectl describe clusterissuer letsencrypt-http
@@ -55,9 +57,9 @@ Events:
 
 ### Common errors
 
-* `Failed to update ACME account:400 urn:ietf:params:acme:error:invalidEmail`: the email you specified in the Issuer configuration isn't valid.
-* `Error initializing issuer: Failed to register ACME account: secrets "acme-key" already exists`: there might be a leftover account from a previous issuer that is no longer valid, you should remove the secret so it can be recreated.
-* `Error accepting challenge: 400 urn:ietf:params:acme:error:malformed: Unable to update challenge :: authorization must be pending`: this suggests that the authorization was not in 'pending' state at a time when cert-manager sent a request to the ACME server to accept the challenge. This may be because the domain validation has already failed and the authorization has been marked as 'invalid'. Check the authorization URL on the status of the `Order` or `Challenge` to see the status of the authorization and any additional information.
+- `Failed to update ACME account:400 urn:ietf:params:acme:error:invalidEmail`: the email you specified in the Issuer configuration isn't valid.
+- `Error initializing issuer: Failed to register ACME account: secrets "acme-key" already exists`: there might be a leftover account from a previous issuer that is no longer valid, you should remove the secret so it can be recreated.
+- `Error accepting challenge: 400 urn:ietf:params:acme:error:malformed: Unable to update challenge :: authorization must be pending`: this suggests that the authorization was not in 'pending' state at a time when cert-manager sent a request to the ACME server to accept the challenge. This may be because the domain validation has already failed and the authorization has been marked as 'invalid'. Check the authorization URL on the status of the `Order` or `Challenge` to see the status of the authorization and any additional information.
 
 ## 2. Troubleshooting Orders
 
@@ -130,7 +132,6 @@ using the `Challenge` resources that cert-manager has created.
 In order to determine which `Challenge` is failing, you can run
 `kubectl get challenges`:
 
-
 ```console
 $ kubectl get challenges
 ...
@@ -166,6 +167,7 @@ In case of DNS01 you will find any errors from your DNS provider here.
 Both HTTP01 and DNS01 go through a "self-check" first before cert-manager presents the challenge to the ACME provider.
 This is done not to overload the ACME provider with failed challenges due to DNS or loadbalancer propagations.
 The status of this can be found in the Status block of the describe:
+
 ```console
 $ kubectl describe challenge
 [...]
@@ -187,31 +189,37 @@ $ kubectl get challenge <challenge-name> -ojsonpath='{.spec.authorizationURL}'
 ```
 
 ### HTTP01 troubleshooting
+
 First of all check if you can see the challenge URL from the public internet, if this does not work check your Ingress and firewall configuration as well as the service and pod cert-manager created to solve the ACME challenge.
 If this does work check if your cluster can see it too. It is important to test this from inside a Pod. If you get a connection error it is suggested to check the cluster's network configuration.
 If you receive a `tls: handshake failure`, try setting the annotation `cert-manager.io/issue-temporary-certificate: "true"` on the Ingress or Certificate resource. This will issue a temporary self signed certificate for the ingress controller to use before the actual certificate is issued.
 If you still are having issues, there may be an issue with your ingress controller handling multiple resources for the same hostname, in this case, the annotation `acme.cert-manager.io/http01-edit-in-place: "true"` is likely required.
 
 For example when using GKE with the Google Cloud Loadbalancer it is recommended to set:
+
 ```
 cert-manager.io/issue-temporary-certificate: "true"
 acme.cert-manager.io/http01-edit-in-place: "true"
 ```
+
 This will allow the Google Cloud Loadbalancer to propagate a HTTPS endpoint correctly with a temporary certificate, the `http01-edit-in-place` part will prevent GKE from assigning a 2nd IP address for the challenge endpoint.
 
 #### Got 404 status code
+
 If your challenge self-check fails with a 404 not found error. Make sure to check the following:
 
-* you can access the URL from the public internet
-* the ACME solver pod is up and running
-* use `kubectl describe ingress` to check the status of the HTTP01 solver ingress. (unless you use `acme.cert-manager.io/http01-edit-in-place`, then check the same ingress as your domain)
+- you can access the URL from the public internet
+- the ACME solver pod is up and running
+- use `kubectl describe ingress` to check the status of the HTTP01 solver ingress. (unless you use `acme.cert-manager.io/http01-edit-in-place`, then check the same ingress as your domain)
 
 ### DNS01 troubleshooting
+
 If you see no error events about your DNS provider you can check the following
 Check if you can see the `_acme_challenge.domain` TXT DNS record from the public internet, or in your DNS provider's interface.
 cert-manager will check if a DNS record has been propagated by querying the cluster's DNS solver. If you are able to see it from the public internet but not from inside the cluster you might want to change [the DNS server for self-check](../configuration/acme/dns01/README.md#setting-nameservers-for-dns01-self-check) as some cloud providers overwrite DNS internally.
 
 #### cert-manager identifies the wrong zone for your domain name
+
 cert-manager by default uses SOA (Start of Authority) records to determine which zone name to use at your DNS provider.
 Some DNS resolvers will filter this information, if this is the case cert-manager cannot determine the zone and it is advised to [change the DNS server for DNS01 self-checks](../configuration/acme/dns01/README.md#setting-nameservers-for-dns01-self-check).
 
@@ -221,6 +229,7 @@ And in [LuCI there is a "Filter useless" option](https://github.com/openwrt/luci
 By enabling this flag, `dnsmasq` drops all `SOA` records.
 
 ## March 2020 Let's Encrypt CAA Rechecking Bug
+
 Following the [announcement on March 4](https://community.letsencrypt.org/t/revoking-certain-certificates-on-march-4/114864) Let's Encrypt will be revoking a number of certificates due to a bug in the way they validate CAA records, we have created a tool to analyse your existing cert-manager managed certificates and compare their serial numbers to the publicised list of revoked certificates.
 It's advised that all users of Let's Encrypt & cert-manager run a check using this tool to ensure they do not experience any invalid certificate errors in clusters.
 You can find a copy of the checker tool here: https://github.com/jetstack/letsencrypt-caa-bug-checker.

@@ -1,33 +1,25 @@
 ---
 title: Securing gateway.networking.k8s.io Gateway Resources
-description: 'cert-manager usage: Kubernetes Gateways'
+description: "cert-manager usage: Kubernetes Gateways"
 ---
 
-**FEATURE STATE**: cert-manager 1.5 [alpha]
+# 保护 gateway.networking.k8s.io 网关源
 
-<div className="info">
+**功能状态**: cert-manager 1.5 [alpha]
 
-📌  This page focuses on automatically creating Certificate resources by
-annotating Kubernetes Gateway resource. If you are looking for using an ACME Issuer along
-with HTTP-01 challenges using the Kubernetes Gateway API, see [ACME
-HTTP-01](../configuration/acme/http01/README.md).
+!!! info
 
-</div>
+    📌 本页面主要介绍通过标注Kubernetes网关源来自动创建证书源。
+    如果您正在寻找使用Kubernetes网关API使用ACME发布者和HTTP-01挑战，请参阅[ACME HTTP-01](../configuration/acme/http01/README.md).
 
-<div className="info">
+!!! info
 
-🚧   cert-manager 1.8+ is tested with v1alpha2 Kubernetes Gateway API. It should also work
-with v1beta1 because of resource conversion, but has not been tested with it.
+    🚧 cert-manager 1.8+使用v1alpha2 Kubernetes网关API进行测试。
+    由于源转换，它也可以与v1beta1一起工作，但还没有使用它进行测试。
 
-</div>
+cert-manager 可以为 Gateway 源生成 TLS 证书。这是通过向网关添加注释来配置的，类似于[保护入口源](../usage/ingress.md)的过程。
 
-cert-manager can generate TLS certificates for Gateway resources. This is
-configured by adding annotations to a Gateway and is similar to the process for
-[Securing Ingress Resources](../usage/ingress.md).
-
-The Gateway resource is part of the [Gateway API][gwapi], a set of CRDs that you
-install on your Kubernetes cluster and which provide various improvements over
-the Ingress API.
+Gateway 源是[Gateway API][gwapi]的一部分，Gateway API 是一组可以安装在 Kubernetes 集群上的 CRDs，它提供了对 Ingress API 的各种改进。
 
 [gwapi]: https://gateway-api.sigs.k8s.io
 
@@ -36,48 +28,46 @@ following diagram (source: https://gateway-api.sigs.k8s.io):
 
 ![Gateway vs. HTTPRoute](/images/gateway-roles.png)
 
-<div className="info">
+!!! info
 
-📌  This feature requires the installation of the [Gateway API bundle](https://gateway-api.sigs.k8s.io/guides/#installing-a-gateway-controller) and passing a
-feature flag to the cert-manager controller.
+    📌 This feature requires the installation of the [Gateway API bundle](https://gateway-api.sigs.k8s.io/guides/#installing-a-gateway-controller) and passing a
+    feature flag to the cert-manager controller.
 
-To install v1.5.1 Gateway API bundle (Gateway CRDs and webhook), run the following command:
+    To install v1.5.1 Gateway API bundle (Gateway CRDs and webhook), run the following command:
 
-```sh
-kubectl apply -f "https://github.com/kubernetes-sigs/gateway-api/releases/download/v0.5.1/standard-install.yaml"
-```
+    ```sh
+    kubectl apply -f "https://github.com/kubernetes-sigs/gateway-api/releases/download/v0.5.1/standard-install.yaml"
+    ```
 
-To enable the feature in cert-manager, turn on the `GatewayAPI` feature gate:
+    To enable the feature in cert-manager, turn on the `GatewayAPI` feature gate:
 
-- If you are using Helm:
+    - If you are using Helm:
 
-  ```sh
-  helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager \
-    --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
-  ```
+      ```sh
+      helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager \
+        --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
+      ```
 
-- If you are using the raw cert-manager manifests, add the following flag to the
-  cert-manager controller Deployment:
+    - If you are using the raw cert-manager manifests, add the following flag to the
+      cert-manager controller Deployment:
 
-  ```yaml
-  args:
-    - --feature-gates=ExperimentalGatewayAPISupport=true
-  ```
+      ```yaml
+      args:
+        - --feature-gates=ExperimentalGatewayAPISupport=true
+      ```
 
-The Gateway API CRDs should either be installed before cert-manager starts or
-the cert-manager Deployment should be restarted after installing the Gateway API
-CRDs. This is important because some of the cert-manager components only perform
-the Gateway API check on startup. You can restart cert-manager with the
-following command:
+    The Gateway API CRDs should either be installed before cert-manager starts or
+    the cert-manager Deployment should be restarted after installing the Gateway API
+    CRDs. This is important because some of the cert-manager components only perform
+    the Gateway API check on startup. You can restart cert-manager with the
+    following command:
 
-```sh
-kubectl rollout restart deployment cert-manager -n cert-manager
-```
-
-</div>
+    ```sh
+    kubectl rollout restart deployment cert-manager -n cert-manager
+    ```
 
 The annotations `cert-manager.io/issuer` or `cert-manager.io/cluster-issuer`
-tell cert-manager  to create a Certificate for a Gateway. For example, the
+tell cert-manager to create a Certificate for a Gateway. For example, the
 following Gateway will trigger the creation of a Certificate with the name
 `example-com-tls`:
 
@@ -123,11 +113,9 @@ spec:
   secretName: example-com-tls
 ```
 
-<div className="info">
+!!! info
 
-🚧   this mechanism can only be used to create Secrets in the same namespace as the `Gateway`, see [`cert-manager#5610`](https://github.com/cert-manager/cert-manager/issues/5610)
-
-</div>
+    🚧 this mechanism can only be used to create Secrets in the same namespace as the `Gateway`, see [`cert-manager#5610`](https://github.com/cert-manager/cert-manager/issues/5610)
 
 ## Use cases
 
@@ -137,8 +125,8 @@ cert-manager skips any listener block that cannot be used for generating a
 Certificate. For a listener block to be used for creating a Certificate, it must
 meet the following requirements:
 
-|           Field                |                         Requirement                         |
-|--------------------------------|-------------------------------------------------------------|
+| Field                          | Requirement                                                 |
+| ------------------------------ | ----------------------------------------------------------- |
 | `tls.hostname`                 | Must not be empty.                                          |
 | `tls.mode`                     | Must be set to `Terminate`. `Passthrough` is not supported. |
 | `tls.certificateRef.name`      | Cannot be left empty.                                       |
@@ -204,7 +192,7 @@ spec:
         mode: Terminate # ✅ Required. "Terminate" is the only supported mode.
         certificateRefs:
           - name: example-com-tls # ✅ Required.
-            kind: Secret  # ✅ Required. "Secret" is the only valid value.
+            kind: Secret # ✅ Required. "Secret" is the only valid value.
             group: core # ✅ Required. "core" is the only valid value.
 ```
 

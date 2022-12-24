@@ -1,23 +1,16 @@
----
-title: Venafi
-description: 'cert-manager configuration: Venafi Issuers'
----
+# Venafi
 
-## Introduction
+## 简介
 
-The Venafi `Issuer` types allows you to obtain certificates from [Venafi
-as a Service (VaaS)](https://vaas.venafi.com/jetstack) and [Venafi Trust Protection
-Platform (TPP)](https://www.venafi.com/platform/tls-protect) instances.
+Venafi `Issuer`类型允许您从[Venafi as a Service (VaaS)](https://vaas.venafi.com/jetstack)和[Venafi Trust Protection Platform (TPP)](https://www.venafi.com/platform/tls-protect)实例中获取证书。
 
-You can have multiple different Venafi `Issuer` types installed within the same
-cluster, including mixtures of Venafi as a Service and TPP issuer types. This allows
-you to be flexible with the types of Venafi account you use.
+你可以在同一个集群中安装多个不同的 Venafi `Issuer` 类型，包括 Venafi 即服务和 TPP 发行者类型的混合。
+这使您可以灵活地使用 Venafi 帐户的类型。
 
-Automated certificate renewal and management are provided for `Certificates`
-using the Venafi `Issuer`.
+使用 Venafi `Issuer`为“证书”提供自动证书更新和管理。
 
 A single Venafi `Issuer` represents a single Venafi 'zone' so you must create one
-`Issuer` resource for each zone you want to use.  A zone is a single entity that
+`Issuer` resource for each zone you want to use. A zone is a single entity that
 combines the policy that governs certificate issuance with information about how
 certificates are organized in Venafi to identify the business application and
 establish ownership.
@@ -27,13 +20,13 @@ within a single namespace, or cluster-wide (using a `ClusterIssuer` resource).
 For more information on the distinction between `Issuer` and `ClusterIssuer`
 resources, read the [Namespaces](../concepts/issuer.md#namespaces) section.
 
-## Creating a Venafi as a Service Issuer
+## 创建 Venafi 作为服务颁发者
 
 If you haven't already done so, create your Venafi as a Service account on this
 [page](https://vaas.venafi.com/jetstack) and copy the API key from your user
-preferences.  Then you may want to create a custom CA Account and Issuing Template
+preferences. Then you may want to create a custom CA Account and Issuing Template
 or choose instead to use defaults that are automatically created for testing
-("Built-in CA" and "Default", respectively).  Lastly you'll need to create an
+("Built-in CA" and "Default", respectively). Lastly you'll need to create an
 Application for establishing ownership of all the certificates requested by your
 cert-manager Issuer, and assign to it the Issuing Template.
 
@@ -53,7 +46,7 @@ $ kubectl create secret generic \
 > **Note**: If you are configuring your issuer as a `ClusterIssuer` resource in
 > order to serve `Certificates` across your whole cluster, you must set the
 > `--namespace` parameter to `cert-manager`, which is the default `Cluster
-> Resource Namespace`. The `Cluster Resource Namespace` can be configured
+Resource Namespace`. The `Cluster Resource Namespace` can be configured
 > through the `--cluster-resource-namespace` flag on the cert-manager controller
 > component.
 
@@ -103,8 +96,7 @@ You are now ready to issue certificates using the newly provisioned Venafi
 Read the [Issuing Certificates](../usage/certificate.md) document for
 more information on how to create Certificate resources.
 
-
-## Creating a Venafi Trust Protection Platform Issuer
+## 创建 Venafi 信任保护平台发行人
 
 The Venafi Trust Protection Platform integration allows you to obtain certificates
 from a properly configured Venafi TPP instance.
@@ -112,7 +104,7 @@ from a properly configured Venafi TPP instance.
 The setup is similar to the Venafi as a Service configuration above, however some
 of the connection parameters are slightly different.
 
-> **Note**: You *must* allow "User Provided CSRs" as part of your TPP policy, as
+> **Note**: You _must_ allow "User Provided CSRs" as part of your TPP policy, as
 > this is the only type supported by cert-manager at this time.
 >
 > More specifically, the valid configurations of the "CSR handling" are:
@@ -137,11 +129,11 @@ In order to set up a Venafi Trust Protection Platform `Issuer`, you must first
 create a Kubernetes `Secret` resource containing your Venafi TPP API
 credentials.
 
-### Access Token Authentication
+### 接入令牌认证
 
 1. [Set up token authentication](https://docs.venafi.com/Docs/21.1/TopNav/Content/SDK/AuthSDK/t-SDKa-Setup-OAuth.php).
 
-   NOTE: Do not select "Refresh Token Enabled" and set a *long* "Token Validity (days)".
+   NOTE: Do not select "Refresh Token Enabled" and set a _long_ "Token Validity (days)".
 
 2. Create a new user with sufficient privileges to manage and revoke certificates in a particular policy folder (zone).
 
@@ -182,7 +174,7 @@ $ kubectl create secret generic \
        --from-literal=access-token='YOUR_TPP_ACCESS_TOKEN'
 ```
 
-### Username / Password Authentication
+### 用户名密码认证
 
 > ⚠️ When you supply a Venafi TPP username and password,
 > cert-manager uses an older authentication method which is called "API Keys",
@@ -209,13 +201,13 @@ $ kubectl create secret generic \
 > Note: If you are configuring your issuer as a `ClusterIssuer` resource in
 > order to issue `Certificates` across your whole cluster, you must set the
 > `--namespace` parameter to `cert-manager`, which is the default `Cluster
-> Resource Namespace`. The `Cluster Resource Namespace` can be configured
+Resource Namespace`. The `Cluster Resource Namespace` can be configured
 > through the `--cluster-resource-namespace` flag on the cert-manager controller
 > component.
 
 These credentials will be used by cert-manager to interact with your Venafi TPP
 instance. Username attribute must be adhere to the `<identity
-provider>:<username>` format.  For example: `local:admin`.
+provider>:<username>` format. For example: `local:admin`.
 
 Once the Secret containing credentials has been created, you can create your
 `Issuer` or `ClusterIssuer` resource. If you are creating a `ClusterIssuer`
@@ -259,9 +251,9 @@ You are now ready to issue certificates using the newly provisioned Venafi
 Read the [Issuing Certificates](../usage/certificate.md) document for
 more information on how to create Certificate resources.
 
-## Issuer specific annotations
+## 特定于发行者的注释
 
-### Custom Fields
+### 自定义字段
 
 Starting `v0.14` you can pass custom fields to Venafi (TPP version `v19.2` and higher) using the `venafi.cert-manager.io/custom-fields` annotation on Certificate resources.
 The value is a JSON encoded array of custom field objects having a `name` and `value` key.
@@ -278,5 +270,4 @@ metadata:
         {"name": "field-name", "value": "vield value"},
         {"name": "field-name-2", "value": "vield value 2"}
       ]
-...
 ```

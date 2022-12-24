@@ -1,6 +1,6 @@
 ---
 title: Kubernetes CertificateSigningRequests
-description: 'cert-manager usage: Kubernetes CertificateSigningRequest resources'
+description: "cert-manager usage: Kubernetes CertificateSigningRequest resources"
 ---
 
 Kubernetes has an in-built
@@ -51,9 +51,7 @@ $ helm install \
 > the [Kubernetes documentation](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#request-signing-process)
 > for the request process of CertificateSigningRequests.
 
-
 </div>
-
 
 ## Signer Name
 
@@ -70,13 +68,13 @@ For example, a namespaced Issuer in the namespace `sandbox` with the name
 `my-issuer` would be referenced via:
 
 ```yaml
-    signerName: issuers.cert-manager.io/sandbox.my-issuer
+signerName: issuers.cert-manager.io/sandbox.my-issuer
 ```
 
 A ClusterIssuer with the name `my-cluster-issuer` would be referenced via:
 
 ```yaml
-    signerName: clusterissuers.cert-manager.io/my-cluster-issuer
+signerName: clusterissuers.cert-manager.io/my-cluster-issuer
 ```
 
 ### Referencing Namespaced Issuers
@@ -100,12 +98,12 @@ metadata:
   name: cert-manager-referencer:my-issuer
   namespace: sandbox
 rules:
-- apiGroups: ["cert-manager.io"]
-  resources: ["signers"]
-  verbs:     ["reference"]
-  resourceNames:
-  - "my-issuer" # To give permission to _only_ reference Issuers with the name 'my-issuer'
-  - "*" # To give permission to reference Issuers with any name in this namespace
+  - apiGroups: ["cert-manager.io"]
+    resources: ["signers"]
+    verbs: ["reference"]
+    resourceNames:
+      - "my-issuer" # To give permission to _only_ reference Issuers with the name 'my-issuer'
+      - "*" # To give permission to reference Issuers with any name in this namespace
 ```
 
 ## Annotations
@@ -118,44 +116,44 @@ _requester_ or by the _signer_ as labelled below.
 Requester annotations:
 
 - `experimental.cert-manager.io/request-duration`: **Set by the requester**. Accepts
-    a [Go time duration](https://golang.org/pkg/time/#ParseDuration) string
-    specifying the requested certificate duration. Defaults to 90 days. Some
-    signers such as Venafi or ACME typically _do not_ allow requesting a
-    duration.
+  a [Go time duration](https://golang.org/pkg/time/#ParseDuration) string
+  specifying the requested certificate duration. Defaults to 90 days. Some
+  signers such as Venafi or ACME typically _do not_ allow requesting a
+  duration.
 
 - `experimental.cert-manager.io/request-is-ca`: **Set by the requester**. If set to
-    `"true"`, will request for a CA certificate.
+  `"true"`, will request for a CA certificate.
 
 - `experimental.cert-manager.io/private-key-secret-name`: **Set by the
-    requester**. Required only for the SelfSigned signer. Used to reference a
-    Secret which contains the PEM encoded private key of the requester's X.509
-    certificate signing request at key `tls.key`. Used to sign the requester's
-    request.
+  requester**. Required only for the SelfSigned signer. Used to reference a
+  Secret which contains the PEM encoded private key of the requester's X.509
+  certificate signing request at key `tls.key`. Used to sign the requester's
+  request.
 
 - `venafi.experimental.cert-manager.io/custom-fields`: **Set by the
-    requester**. Optional for only the Venafi signer. Used for adding custom
-    fields to the Venafi request. This will only work with Venafi TPP `v19.3`
-    and higher. The value is a JSON array with objects containing the name and
-    value keys, for example:
-    ```
-    venafi.experimental.cert-manager.io/custom-fields: |-
-      [
-        {"name": "field-name", "value": "field value"},
-        {"name": "field-name-2", "value": "field value 2"}
-      ]
-    ```
+  requester**. Optional for only the Venafi signer. Used for adding custom
+  fields to the Venafi request. This will only work with Venafi TPP `v19.3`
+  and higher. The value is a JSON array with objects containing the name and
+  value keys, for example:
+  ```
+  venafi.experimental.cert-manager.io/custom-fields: |-
+    [
+      {"name": "field-name", "value": "field value"},
+      {"name": "field-name-2", "value": "field value 2"}
+    ]
+  ```
 
 Signer annotations:
 
 - `venafi.experimental.cert-manager.io/pickup-id`: **Set by the signer**. Only
-    used for the Venafi signer. Used to record the Venafi Pickup ID of a
-    certificate signing request that has been submitted to the Venafi API for
-    collection during issuance.
+  used for the Venafi signer. Used to record the Venafi Pickup ID of a
+  certificate signing request that has been submitted to the Venafi API for
+  collection during issuance.
 
 ## Usage
 
 CertificateSigningRequests can be manually created using
-[cmctl](./cmctl.md#experimental).
+[cmctl](../reference/cmctl.md#experimental).
 This command takes a manifest file containing a
 [Certificate](../usage/certificate.md) resource as input. This generates a
 private key and creates a CertificateSigningRequest. CertificateSigningRequests

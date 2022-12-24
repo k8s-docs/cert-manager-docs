@@ -1,22 +1,19 @@
----
-title: Verifying the Installation
-description: 'cert-manager installation: Verifying an upgrade was successful'
----
+# 安装验证
 
-## Check cert-manager API
+## 检查 cert-manager API
 
-First, make sure that [cmctl is installed](../reference/cmctl.md#installation).
+首先，确保[cmctl 已安装](../reference/cmctl.md#installation).
 
-cmctl performs a dry-run certificate creation check against the Kubernetes cluster.
-If successful, the message `The cert-manager API is ready` is displayed.
+cmctl 对 Kubernetes 集群执行一个干运行证书创建检查。
+如果成功，系统提示`The cert-manager API is ready`。
 
 ```bash
 $ cmctl check api
 The cert-manager API is ready
 ```
 
-The command can also be used to wait for the check to be successful.
-Here is an output example of running the command at the same time that cert-manager is being installed:
+该命令也可以用于等待检查成功。
+下面是在安装 cert-manager 的同时运行该命令的输出示例:
 
 ```bash
 $ cmctl check api --wait=2m
@@ -29,10 +26,10 @@ Not ready: the cert-manager webhook deployment is not ready yet
 The cert-manager API is ready
 ```
 
-## Manual verification
+## 手动验证
 
-Once you've installed cert-manager, you can verify it is deployed correctly by
-checking the `cert-manager` namespace for running pods:
+安装了 cert-manager 之后，可以通过以下命令验证它是否正确部署
+检查`cert-manager`命名空间是否正在运行 pod:
 
 ```bash
 $ kubectl get pods --namespace cert-manager
@@ -43,13 +40,13 @@ cert-manager-cainjector-577f6d9fd7-tr77l   1/1     Running   0          2m
 cert-manager-webhook-787858fcdb-nlzsq      1/1     Running   0          2m
 ```
 
-You should see the `cert-manager`, `cert-manager-cainjector`, and
-`cert-manager-webhook` pods in a `Running` state. The webhook might take a
-little longer to successfully provision than the others.
+你应该看到`cert-manager`, `cert-manager-cainjector`, 和 `cert-manager-webhook` Pod 处于`Running`状态。
+webhook 可能比其他 webhook 需要更长的时间才能成功提供。
 
-If you experience problems, first check the [FAQ](../faq/README.md).
+如果遇到问题，请先查看[FAQ](../faq/README.md).
 
-Create an `Issuer` to test the webhook works okay.
+创建一个`Issuer`来测试 webhook 的工作情况。
+
 ```bash
 $ cat <<EOF > test-resources.yaml
 apiVersion: v1
@@ -79,13 +76,15 @@ spec:
 EOF
 ```
 
-Create the test resources.
+创建测试源。
+
 ```bash
 $ kubectl apply -f test-resources.yaml
 ```
 
-Check the status of the newly created certificate. You may need to wait a few
-seconds before cert-manager processes the certificate request.
+检查新创建的证书的状态。
+在证书管理器处理证书请求之前，您可能需要等待几秒钟。
+
 ```bash
 $ kubectl describe certificate -n cert-manager-test
 
@@ -109,14 +108,14 @@ Events:
   Normal  CertIssued  4s    cert-manager  Certificate issued successfully
 ```
 
-Clean up the test resources.
+清理测试源。
+
 ```bash
 $ kubectl delete -f test-resources.yaml
 ```
 
-If all the above steps have completed without error, you're good to go!
+如果以上所有步骤都正确地完成了，那么就可以开始了!
 
-## Community-maintained tool
+## 社区维护工具
 
-Alternatively, to automatically check if cert-manager is correctly configured,
-you can run the community-maintained [cert-manager-verifier](https://github.com/alenkacz/cert-manager-verifier) tool.
+您也可以通过社区维护[cert-manager-verifier](https://github.com/alenkacz/cert-manager-verifier)工具自动检查 cert-manager 配置是否正确。

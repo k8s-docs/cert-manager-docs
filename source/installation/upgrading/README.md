@@ -1,16 +1,14 @@
----
-title: Upgrading
-description: 'cert-manager installation: Upgrading cert-manager overview'
----
+# 更新
 
-This section contains information on upgrading cert-manager.
-It also contains documents detailing breaking changes between cert-manager
-versions, and information on things to look out for when upgrading.
+'cert-manager installation: 升级 cert-manager 概述'
 
-> Note: Before performing upgrades of cert-manager, it is advised to take a
-> backup of all your cert-manager resources just in case an issue occurs whilst
-> upgrading. You can read how to backup and restore cert-manager in the [backup
-> and restore](../../tutorials/backup.md) guide.
+本节包含有关升级 cert-manager 的信息。
+它还包含详细描述 cert-manager 版本之间的重大变化的文档，以及升级时需要注意的信息。
+
+!!! Note
+
+    在升级cert-manager之前，建议备份所有cert-manager源，以防在升级过程中出现问题。
+    备份和恢复cert-manager的操作请参见[备份和恢复指南](../../tutorials/backup.md)。
 
 We recommend that you upgrade cert-manager one minor version at a time, always
 choosing the latest patch version for the minor version. You should always read
@@ -20,7 +18,7 @@ be possible to do a full uninstall and re-install of cert-manager without applic
 downtime and/or unnecessary re-issuances, however we do not guarantee that this will
 work for your particular setup see [Reinstalling cert-manager](#reinstalling-cert-manager).
 
-## Upgrading with Helm
+## 用 Helm 升级
 
 If you installed cert-manager using Helm, you can easily upgrade using the Helm
 CLI.
@@ -46,7 +44,7 @@ The helm upgrade command will upgrade cert-manager to the specified or latest ve
 
 > Note: You can find out your release name using `helm list | grep cert-manager`.
 
-### CRDs managed separately
+### 独立管理的 CRDs
 
 If you have installed the CRDs separately (instead of with the `--set installCRDs=true`
 option added to your Helm install command), you should upgrade your CRD resources first:
@@ -61,7 +59,7 @@ And then upgrade the Helm chart:
 helm upgrade --version <version> <release_name> jetstack/cert-manager
 ```
 
-### CRDs managed using helm
+### 使用 helm 管理 CRDs
 
 If you have installed the CRDs together with the helm install command, you should
 include CRD resources when upgrading the Helm chart:
@@ -70,7 +68,7 @@ include CRD resources when upgrading the Helm chart:
 helm upgrade --set installCRDs=true --version <version> <release_name> jetstack/cert-manager
 ```
 
-## Upgrading using static manifests
+## 使用静态清单升级
 
 If you installed cert-manager using the static deployment manifests published
 on each release, you can upgrade them in a similar way to how you first
@@ -89,7 +87,7 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 
 Once you have deployed the new version of cert-manager, you can [verify](../verify.md) the installation.
 
-## Reinstalling cert-manager
+## 重新安装 cert-manager
 
 In some cases there may be a need to do a full uninstall and re-install of
 cert-manager. An example could be when a very old cert-manager version needs to

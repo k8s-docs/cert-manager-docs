@@ -1,7 +1,6 @@
----
-title: Route53
+# Route53
+
 description: 'cert-manager configuration: ACME DNS-01 challenges using Amazon AWS Route53 DNS'
----
 
 This guide explains how to set up an `Issuer`, or `ClusterIssuer`, to use Amazon
 Route53 to solve DNS01 ACME challenges. It's advised you read the [DNS01
@@ -28,10 +27,7 @@ permissions:
     },
     {
       "Effect": "Allow",
-      "Action": [
-        "route53:ChangeResourceRecordSets",
-        "route53:ListResourceRecordSets"
-      ],
+      "Action": ["route53:ChangeResourceRecordSets", "route53:ListResourceRecordSets"],
       "Resource": "arn:aws:route53:::hostedzone/*"
     },
     {
@@ -51,7 +47,7 @@ permissions:
 ## Credentials
 
 You have two options for the set up - either create a user or a role and attach
-that policy from above.  Using a role is considered best practice because you do
+that policy from above. Using a role is considered best practice because you do
 not have to store permanent credentials in a secret.
 
 cert-manager supports two ways of specifying credentials:
@@ -66,7 +62,6 @@ cert-manager also supports specifying a `role` to enable cross-account access
 and/or limit the access of cert-manager. Integration with
 [`kiam`](https://github.com/uswitch/kiam) and
 [`kube2iam`](https://github.com/jtblin/kube2iam) should work out of the box.
-
 
 ## Cross Account Access
 
@@ -97,6 +92,7 @@ Bear in mind, that you won't be able to define this policy until `cert-manager` 
         "AWS": "XXXXXXXXXXX"
       }
 ```
+
 And restrict it, in a future step, after all the roles are created.
 
 This allows the role `cert-manager` in Account X to assume the `dns-manager` role in Account Y to manage the Route53 DNS zones in Account Y. For more information visit the [official

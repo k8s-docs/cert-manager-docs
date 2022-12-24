@@ -2,777 +2,777 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://cert-manager.io/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/cli/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/cli/acmesolver/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/cli/cainjector/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/cli/cmctl/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/cli/controller/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/cli/webhook/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/concepts/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/concepts/acme-orders-challenges/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/concepts/ca-injector/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/concepts/certificate/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/concepts/certificaterequest/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/concepts/issuer/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/concepts/webhook/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/ca/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/external/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/selfsigned/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/vault/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/venafi/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/dns01/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/dns01/acme-dns/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/dns01/akamai/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/dns01/azuredns/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/dns01/cloudflare/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/dns01/digitalocean/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/dns01/google/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/dns01/rfc2136/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/dns01/route53/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/dns01/webhook/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/http01/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/configuration/acme/http01/externalloadbalancer/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/building/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/coding-conventions/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/contributing-flow/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/crds/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/dns-providers/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/e2e/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/external-issuers/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/importing/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/kind/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/policy/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/release-process/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/security/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/sign-off/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/signing-keys/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/third-party-code-donation/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/google-season-of-docs/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/google-season-of-docs/2022/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/contributing/google-season-of-docs/2022/improve-navigation-and-structure/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/faq/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/getting-started/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/api-compatibility/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/code-signing/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/compatibility/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/helm/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/kubectl/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/operator-lifecycle-manager/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/other-tools/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/supported-releases/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/uninstall/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/verify/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/ingress-class-compatibility/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/remove-deprecated-apis/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.10-0.11/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.11-0.12/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.12-0.13/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.13-0.14/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.14-0.15/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.15-0.16/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.16-1.0/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.2-0.3/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.3-0.4/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.4-0.5/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.5-0.6/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.6-0.7/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.7-0.8/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.8-0.9/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-0.9-0.10/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-1.0-1.1/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-1.1-1.2/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-1.2-1.3/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-1.3-1.4/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-1.4-1.5/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-1.5-1.6/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-1.6-1.7/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-1.7-1.8/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-1.8-1.9/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/installation/upgrading/upgrading-1.9-1.10/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/projects/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/projects/approver-policy/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/projects/csi-driver-spiffe/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/projects/csi-driver/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/projects/istio-csr/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/projects/trust-manager/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/reference/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/reference/api-docs/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/reference/cmctl/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/reference/tls-terminology/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.1/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.10/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.11/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.12/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.13/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.14/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.15/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.16/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.2/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.3/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.4/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.5/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.6/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.7/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.8/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-0.9/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-1.0/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-1.1/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-1.10/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-1.2/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-1.3/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-1.4/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-1.5/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-1.6/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-1.7/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-1.8/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/release-notes/release-notes-1.9/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/troubleshooting/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/troubleshooting/acme/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/troubleshooting/webhook/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/backup/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/syncing-secrets-across-namespaces/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/acme/dns-validation/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/acme/http-validation/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/acme/migrating-from-kube-lego/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/acme/nginx-ingress/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/acme/pomerium-ingress/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/getting-started-with-cert-manager-on-google-kubernetes-engine-using-lets-encrypt-for-ingress-ssl/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/istio-csr/istio-csr/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/venafi/venafi/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/tutorials/zerossl/zerossl/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/usage/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/usage/approver-policy/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/usage/certificate/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/usage/csi/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/usage/gateway/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/usage/ingress/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/usage/istio/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/usage/kube-csr/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://cert-manager.io/usage/prometheus-metrics/</loc>
-         <lastmod>2022-12-21</lastmod>
+         <lastmod>2022-12-24</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

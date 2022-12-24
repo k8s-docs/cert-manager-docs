@@ -3,24 +3,18 @@ title: cert-manager
 description: cert-manager documentation homepage
 ---
 
-cert-manager adds certificates and certificate issuers as resource types in
-Kubernetes clusters, and simplifies the process of obtaining, renewing and
-using those certificates.
+# cert-manager
 
-It can issue certificates from a variety of supported sources, including
-[Let's Encrypt](https://letsencrypt.org), [HashiCorp Vault](https://www.vaultproject.io),
-and [Venafi](https://www.venafi.com/) as well as private PKI.
+**cert-manager 文档主页**
 
-It will ensure certificates are valid and up to date, and attempt to
-renew certificates at a configured time before expiry.
+cert-manager 在 Kubernetes 集群中增加了证书和证书颁发者作为源类型，简化了证书的获取、更新和使用过程。
 
-It is loosely based upon the work of
-[kube-lego](https://github.com/jetstack/kube-lego) and has borrowed some
-wisdom from other similar projects such as
-[kube-cert-manager](https://github.com/PalmStoneGames/kube-cert-manager).
+它可以从各种受支持的来源颁发证书，包括[Let's Encrypt](https://letsencrypt.org)， [HashiCorp Vault](https://www.vaultproject.io)和[Venafi](https://www.venafi.com/)以及私有 PKI。
 
-![High level overview diagram explaining cert-manager architecture](/images/high-level-overview.svg)
+它将确保证书是有效的和最新的，并尝试在过期前的配置时间更新证书。
 
-This website provides the full technical documentation for the project, and can be
-used as a reference; if you feel that there's anything missing, please let us know
-or [raise a PR](https://github.com/cert-manager/website/pulls) to add it.
+它松散地基于[kube-lego](https://github.com/jetstack/kube-lego)的工作，并借鉴了其他类似项目的一些智慧，如[kube-cert-manager](https://github.com/PalmStoneGames/kube-cert-manager)。
+
+![解释证书管理器体系结构的高级概述图](/images/high-level-overview.svg)
+
+本网站提供了项目的全部技术文件，可作为参考;如果您觉得有什么遗漏的，请告诉我们，或者[通过 PR](https://github.com/cert-manager/website/pulls)补充。

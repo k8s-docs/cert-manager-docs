@@ -1,40 +1,28 @@
----
-title: SelfSigned
-description: 'cert-manager configuration: SelfSigned Issuers'
----
+# SelfSigned
 
-⚠️ `SelfSigned` issuers are generally useful for bootstrapping a PKI locally, which
-is a complex topic for advanced users. To be used safely in production, running a PKI
-introduces complex planning requirements around rotation, trust store distribution and disaster recovery.
+⚠️ `SelfSigned`颁发者通常用于在本地引导 PKI，这对于高级用户来说是一个复杂的主题。
+为了在生产中安全使用，运行 PKI 会引入围绕轮换、信任存储库分发和灾难恢复的复杂规划需求。
 
-If you're not planning to run your own PKI, use a different issuer type.
+如果您不打算运行自己的 PKI，请使用不同的颁发者类型。
 
-The `SelfSigned` issuer doesn't represent a certificate authority as such, but
-instead denotes that certificates will "sign themselves" using a given private
-key. In other words, the private key of the certificate will be used to sign
-the certificate itself.
+`SelfSigned`颁发者并不代表证书颁发机构本身，而是表示证书将使用给定的私钥“对自己进行签名”。
+换句话说，证书的私钥将用于对证书本身进行签名。
 
-This `Issuer` type is useful for bootstrapping a root certificate for a
-custom PKI (Public Key Infrastructure), or for otherwise creating simple
-ad-hoc certificates for a quick test.
+这种`Issuer`类型对于为自定义 PKI(公共密钥基础设施)引导根证书或创建简单的临时证书以进行快速测试非常有用。
 
-There are important [caveats](#caveats) - including security issues - to
-consider with `SelfSigned` issuers; in general you'd likely  want to use a
-[`CA`](./ca.md) issuer rather than a `SelfSigned` issuer. That said,
-`SelfSigned` issuers are really useful for initially [bootstrapping](#bootstrapping-ca-issuers)
-a `CA` issuer.
+有一些重要的[注意事项](#caveats) - 包括安全问题 - 需要考虑`SelfSigned`发行方;
+一般来说，您可能希望使用[`CA`](./ca.md)颁发者而不是`SelfSigned`颁发者。
+也就是说，`SelfSigned`颁发者对于最初引导一个`CA`颁发者非常有用。
 
-> Note: a `CertificateRequest` that references a self-signed certificate _must_
-> also contain the `cert-manager.io/private-key-secret-name` annotation since
-> the private key corresponding to the `CertificateRequest` is required to
-> sign the certificate. This annotation is added automatically by the
-> `Certificate` controller.
+!!! Note
 
-## Deployment
+    引用自签名证书的`CertificateRequest`也必须包含`cert-manager.io/private-key-secret-name`注释，因为需要`CertificateRequest`对应的私钥来签署证书。
+    这个注释是由`Certificate`控制器自动添加的。
 
-Since the `SelfSigned` issuer has no dependency on any other resource, it is
-the simplest to configure. Only the `SelfSigned` stanza is required to be
-present in the issuer spec, with no other configuration required:
+## 部署
+
+由于`SelfSigned`颁发者不依赖于任何其他源，因此它是最简单的配置。
+只有`SelfSigned`节需要出现在 Issuer spec 中，不需要其他配置:
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -55,8 +43,7 @@ spec:
   selfSigned: {}
 ```
 
-Once deployed, you should be able to see immediately that the issuer is ready
-for signing:
+部署后，您应该能够立即看到颁发者已准备好进行签名:
 
 ```bash
 $ kubectl get issuers  -n sandbox -o wide selfsigned-issuer
@@ -68,14 +55,11 @@ NAME                        READY   STATUS   AGE
 selfsigned-cluster-issuer   True             3m
 ```
 
-### Bootstrapping `CA` Issuers
+### 引导`CA`颁发者
 
-One of the ideal use cases for `SelfSigned` issuers is to bootstrap a custom
-root certificate for a private PKI, including with the cert-manager [`CA`](./ca.md)
-issuer.
+`SelfSigned` 颁发者的理想用例之一是为私有 PKI 引导自定义根证书，包括使用证书管理器[`CA`](./ca.md)颁发者。
 
-The YAML below will create a `SelfSigned` issuer, issue a root certificate and
-use that root as a `CA` issuer:
+下面的 YAML 将创建一个`SelfSigned`颁发者，颁发一个根证书，并使用该根作为`CA`颁发者:
 
 ```yaml
 apiVersion: v1
@@ -117,53 +101,40 @@ spec:
     secretName: root-secret
 ```
 
-### CRL Distribution Points
+### CRL 分发点
 
-You may also optionally specify [CRL](https://en.wikipedia.org/wiki/Certificate_revocation_list)
-Distribution Points as an array of strings, each of which identifies the location of a CRL in
-which the revocation status of issued certificates can be checked:
+您还可以选择将[CRL](https://en.wikipedia.org/wiki/Certificate_revocation_list)分发点指定为字符串数组，每个字符串都标识 CRL 的位置，其中可以检查已颁发证书的撤销状态:
 
 ```yaml
-...
+---
 spec:
   selfSigned:
     crlDistributionPoints:
-    - "http://example.com"
+      - "http://example.com"
 ```
 
-## Caveats
+## 警告
 
-### Trust
+### 信任
 
-Clients consuming `SelfSigned` certificates have _no way_ to trust them
-without already having the certificates beforehand. This becomes hard to
-manage when the client of the server using the certificate exists in a
-different namespace. This limitation can be tackled by using [trust-manager](../projects/trust-manager.md)
-to distribute the `ca.crt` to other namespaces. The alternative is to use
-"TOFU" (trust on first use), which has security implications in the event
-of a man-in-the-middle attack.
+客户端使用`SelfSigned`证书时，如果事先没有证书，就无法信任它们。
+当使用证书的服务器的客户端存在于不同的名称空间中时，这就很难管理。
+这个限制可以通过使用[trust-manager](../projects/trust-manager.md)将`ca.crt`分发到其他命名空间来解决。
+另一种选择是使用"TOFU"(首次使用时信任)，这在发生中间人攻击时具有安全隐患。
 
-### Certificate Validity
+### 证书的有效性
 
-One side-effect of a certificate being self-signed is that its Subject DN and
-its Issuer DN are identical. The X.509 [RFC 5280, section 4.1.2.4](https://tools.ietf.org/html/rfc5280#section-4.1.2.4)
-requires that:
+自签名证书的一个副作用是它的 Subject DN 和 Issuer DN 是相同的。
+X.509 [RFC 5280，章节 4.1.2.4](https://tools.ietf.org/html/rfc5280#section-4.1.2.4)要求:
 
-> The issuer field MUST contain a non-empty distinguished name (DN).
+> 颁发者字段必须包含一个非空的区别名称(DN)。
 
-However, self-signed certs don't have a subject DN set by default. Unless you
-manually set a certificate's Subject DN, the Issuer DN will be empty
-and the certificate will technically be invalid.
+但是，自签名证书在默认情况下没有设置主题 DN。
+除非手动设置证书的主题 DN，否则颁发者 DN 将为空，从技术上讲，证书将是无效的。
 
-Validation of this specific area of the spec is patchy and varies between TLS
-libraries, but there's always the risk that a library will improve its
-validation - entirely within spec - in the future and break your app if you're
-using a certificate with an empty Issuer DN.
+规范中这一特定领域的验证是不完整的，并且在 TLS 库之间是不同的，但是如果您使用的证书带有空颁发者 DN，那么将来库将完全在规范中改进其验证并破坏您的应用程序，这始终存在风险。
 
-To avoid this, be sure to set a Subject for `SelfSigned` certs. This can be
-done by setting the `spec.subject` on a cert-manager `Certificate` object
-which will be issued by a `SelfSigned` issuer.
+为了避免这种情况，请确保为`SelfSigned` certs 设置一个主题。
+这可以通过在证书管理器`Certificate`对象上设置`spec.subject`来实现，该对象将由`SelfSigned`颁发者颁发。
 
-Starting in version 1.3, cert-manager will emit a Kubernetes [warning event](https://github.com/cert-manager/cert-manager/blob/45befd86966c563663d18848943a1066d9681bf8/pkg/controller/certificaterequests/selfsigned/selfsigned.go#L140)
-of type `BadConfig` if it detects that a certificate is being created
-by a `SelfSigned` issuer which has an empty Issuer DN.
+从 1.3 版开始，如果 cert-manager 检测到一个证书是由一个`SelfSigned`颁发者创建的，该颁发者 DN 为空，它将发出一个类型为`BadConfig`的 Kubernetes[警告事件](https://github.com/cert-manager/cert-manager/blob/45befd86966c563663d18848943a1066d9681bf8/pkg/controller/certificaterequests/selfsigned/selfsigned.go#L140)。

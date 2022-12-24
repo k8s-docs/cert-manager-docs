@@ -1,6 +1,6 @@
 ---
 title: Release Notes
-description: 'cert-manager release notes: cert-manager v1.0'
+description: "cert-manager release notes: cert-manager v1.0"
 ---
 
 With cert-manager `v1.0` we're putting a seal of trust on 3 years of development on the cert-manager project.
@@ -17,18 +17,15 @@ We will also be making a compatibility promise with our `v1` API.
 A big thank you to everyone who helped to build cert-manager in the past 3 years!
 Let `v1.0` be the first of many big achievements!
 
-
 The `v1.0` release is a stability release with a few focus areas:
 
-* `v1` API
-* `kubectl cert-manager status` command to help with investigating issues
-* Using new and stable Kubernetes APIs
-* Improved logging
-* ACME improvements
-
+- `v1` API
+- `kubectl cert-manager status` command to help with investigating issues
+- Using new and stable Kubernetes APIs
+- Improved logging
+- ACME improvements
 
 As usual, please read the [upgrade notes](../installation/upgrading/upgrading-0.16-1.0.md) before upgrading.
-
 
 ## `v1` API
 
@@ -39,17 +36,17 @@ These are the changes made (for reference, our conversion will take care of ever
 
 Certificate:
 
-* `emailSANs` is now named `emailAddresses`
-* `uriSANs` is now named `uris`
+- `emailSANs` is now named `emailAddresses`
+- `uriSANs` is now named `uris`
 
 This change makes these 2 SANs consistent with the other SANs as well as the Go API. Dropping the term SAN from our API.
 
 ### Upgrading
+
 If you're using Kubernetes 1.16 or higher, conversion webhooks will allow you seamlessly interact with `v1alpha2`, `v1alpha3`, `v1beta1` and `v1` API versions at the same time. This allows you to use the new API version without having to modify or redeploy your older resources.
 We highly recommend upgrading your manifests to the `v1` API as older versions will soon be deprecated.
 
 Users of the `legacy` version of cert-manager will still only have the `v1` API, migration steps can be found in the [upgrade notes](../installation/upgrading/upgrading-0.16-1.0.md).
-
 
 ## `kubectl cert-manager status` command
 
@@ -60,8 +57,8 @@ stage of issuance it currently is in.
 Once the plugin is installed, you can run `kubectl cert-manager status certificate <name-of-cert>`. That will then look for the Certificate with the name `<name-of-cert>` and any related resources like CertificateRequest, Secret, Issuer, as well as Order and Challenges if it is a ACME Certificate.
 The command outputs information about the resources, including Conditions, Events and resource specific fields like Key Usages and Extended Key Usages of the Secret or Authorizations of the Order.
 
-
 For example while debugging a not ready certificate:
+
 ```
 $ kubectl cert-manager status certificate acme-certificate
 
@@ -108,6 +105,7 @@ Challenges:
 ```
 
 The command also can help looking into what is inside an issued certificate. This example looks at an issuer Let's Encrypt certificate in detail:
+
 ```
 $ kubectl cert-manager status certificate example
 Name: example
@@ -139,7 +137,6 @@ These are now deprecated and to be removed in Kubernetes `v1.22`. In `v1.0` we n
 `admissionregistration.k8s.io/v1` for Kubernetes `v1.16` (where this got added) and above.
 For users of Kubernetes `v1.15` we keep offering support for the `v1beta1` Kubernetes APIs in our legacy version.
 
-
 ## Improved logging
 
 For this release we upgraded our logging library to `klog/v2` analog to Kubernetes `v1.19`.
@@ -150,7 +147,7 @@ With this change we reduced the number of logs when you don't need to have a deb
 
 Tip: My default cert-manager runs on level 2 (Info), you can set this using `global.logLevel` in the Helm chart.
 
-*Note*: Looking at the logs while troubleshooting cert-manager should be last resort behavior, for more info check out our [troubleshooting guide](../faq/troubleshooting.md)
+_Note_: Looking at the logs while troubleshooting cert-manager should be last resort behavior, for more info check out our [troubleshooting guide](../troubleshooting/README.md)
 
 ## ACME improvements
 
@@ -190,6 +187,7 @@ if none is found matching the request it will give you the default certificate a
 renewed once the alternative chain gets removed on the ACME issuer side.
 
 You can already today get certificates from the `ISRG Root` by using:
+
 ```yaml
 apiVersion: cert-manager.io/v1
 kind: Issuer
@@ -202,6 +200,7 @@ spec:
 ```
 
 If you prefer to keep the `IdenTrust` chain you can do that by setting the option to `DST Root CA X3`:
+
 ```yaml
 apiVersion: cert-manager.io/v1
 kind: Issuer

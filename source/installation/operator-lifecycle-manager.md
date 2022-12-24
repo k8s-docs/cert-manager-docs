@@ -1,16 +1,15 @@
----
-title: Operator Lifecycle Manager
-description: 'cert-manager installation: Using OLM'
----
+# 操作员生命周期管理器
 
-## Installation managed by OLM
+'cert-manager installation: Using OLM'
 
-### Prerequisites
+## 由 OLM 管理安装
+
+### 先决条件
 
 - Install a [supported version of Kubernetes or OpenShift](./supported-releases.md).
 - Read [Compatibility with Kubernetes Platform Providers](./compatibility.md) if you are using Kubernetes on a cloud platform.
 
-### Option 1: Installing from OperatorHub Web Console on OpenShift
+### 选项 1:从 OpenShift 上的 OperatorHub Web 控制台安装
 
 cert-manager is in the [Red Hat-provided Operator catalog][] called "community-operators".
 On OpenShift 4 you can install cert-manager from the [OperatorHub web console][] or from the command line.
@@ -23,10 +22,9 @@ These installation methods are described in Red Hat's [Adding Operators to a clu
 >
 > 📖 Read the [Breaking Changes section in the 1.10 release notes](../release-notes/release-notes-1.10.md) before installing or upgrading.
 
-[Red Hat-provided Operator catalog]: https://docs.openshift.com/container-platform/4.7/operators/understanding/olm-rh-catalogs.html#olm-rh-catalogs_olm-rh-catalogs
-[OperatorHub web console]: https://docs.openshift.com/container-platform/4.7/operators/understanding/olm-understanding-operatorhub.html
-[Adding Operators to a cluster]: https://docs.openshift.com/container-platform/4.7/operators/admin/olm-adding-operators-to-cluster.html
-
+[red hat-provided operator catalog]: https://docs.openshift.com/container-platform/4.7/operators/understanding/olm-rh-catalogs.html#olm-rh-catalogs_olm-rh-catalogs
+[operatorhub web console]: https://docs.openshift.com/container-platform/4.7/operators/understanding/olm-understanding-operatorhub.html
+[adding operators to a cluster]: https://docs.openshift.com/container-platform/4.7/operators/admin/olm-adding-operators-to-cluster.html
 
 ### Option 2: Installing from OperatorHub.io
 
@@ -56,9 +54,9 @@ And you can see the status of the installation with:
 kubectl operator list
 ```
 
-[install OLM]: https://sdk.operatorframework.io/docs/installation/
+[install olm]: https://sdk.operatorframework.io/docs/installation/
 [install the `kubectl operator` plugin]: https://github.com/operator-framework/kubectl-operator#install
-[Krew Kubectl plugins index]: https://krew.sigs.k8s.io/plugins/#:~:text=cert-manager
+[krew kubectl plugins index]: https://krew.sigs.k8s.io/plugins/#:~:text=cert-manager
 
 ## Release Channels
 
@@ -84,14 +82,14 @@ and, depending on the Subscription settings it will upgrade cert-manager automat
 when new releases become available.
 Read [Manually Approving Upgrades via Subscriptions][] for information about automatic and manual upgrades.
 
-[OLM Subscription resource]: https://olm.operatorframework.io/docs/concepts/crds/subscription/
-[Manually Approving Upgrades via Subscriptions]: https://olm.operatorframework.io/docs/concepts/crds/subscription/#manually-approving-upgrades-via-subscriptions
+[olm subscription resource]: https://olm.operatorframework.io/docs/concepts/crds/subscription/
+[manually approving upgrades via subscriptions]: https://olm.operatorframework.io/docs/concepts/crds/subscription/#manually-approving-upgrades-via-subscriptions
 
 **NOTE:** There is a single release channel called "stable" which will contain all cert-manager releases, shortly after they are released.
 In future we may introduce other release channels with alternative release schedules,
 in accordance with [OLM's Recommended Channel Naming][].
 
-[OLM's Recommended Channel Naming]: https://olm.operatorframework.io/docs/best-practices/channel-naming/#recommended-channel-naming
+[olm's recommended channel naming]: https://olm.operatorframework.io/docs/best-practices/channel-naming/#recommended-channel-naming
 
 ## Debugging installation issues
 
@@ -118,7 +116,7 @@ It will also be re-applied if OLM upgrades cert-manager.
 > 🔰 Refer to the [Subscription API documentation](https://pkg.go.dev/github.com/operator-framework/api@v0.14.0/pkg/operators/v1alpha1#Subscription).
 
 Here are some examples of configuration that can be achieved by modifying the Subscription resource.
-In each case we assume that you are starting with the following [default Subscription from OperatorHub.io]((https://operatorhub.io/install/cert-manager.yaml)):
+In each case we assume that you are starting with the following [default Subscription from OperatorHub.io](https://operatorhub.io/install/cert-manager.yaml):
 
 ```yaml
 # cert-manager.yaml
@@ -154,7 +152,6 @@ spec:
         memory: "128Mi"
         cpu: "500m"
 ```
-
 
 ```bash
 kubectl -n operators patch subscription my-cert-manager --type merge --patch-file resources-patch.yaml

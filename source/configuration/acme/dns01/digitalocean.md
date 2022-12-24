@@ -1,7 +1,6 @@
----
-title: DigitalOcean
+# DigitalOcean
+
 description: 'cert-manager configuration: ACME DNS-01 challenges using DigitalOcean DNS'
----
 
 This provider uses a Kubernetes `Secret` resource to work. In the following
 example, the `Secret` will have to be named `digitalocean-dns` and have a
@@ -15,7 +14,7 @@ metadata:
 data:
   # insert your DO access token here
   access-token: "base64 encoded access-token here"
-  ```
+```
 
 The access token must have write access.
 

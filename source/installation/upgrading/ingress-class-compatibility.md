@@ -1,12 +1,11 @@
----
-title: Notes on Ingress Class Compatibility
-description: 'cert-manager installation: Notes on ingress classes and safe upgrades'
----
+# 关于入类兼容性的说明
 
-In cert-manager v1.5.4 we made a change to the HTTP-01 code which was not backwards compatible.
-See [Regression: HTTP-01 challenges fail with Istio, Traefik, ingress-gce and Azure AGIC].
+'cert-manager installation: Notes on ingress classes and safe upgrades'
 
-[Regression: HTTP-01 challenges fail with Istio, Traefik, ingress-gce and Azure AGIC]: https://github.com/cert-manager/cert-manager/issues/4537
+在 cert-manager v1.5.4 中，我们对 HTTP-01 代码进行了更改，它不向后兼容。
+参见[回归:HTTP-01 挑战失败与 Istio, Traefik, ingress-gce 和 Azure AGIC]。
+
+[回归: 使用istio、traefik、ingress-gce和azure agic挑战http-01失败]: https://github.com/cert-manager/cert-manager/issues/4537
 
 In v1.5.5, v1.6.2 and 1.7.1 we fixed this problem.
 
@@ -43,7 +42,7 @@ Ingress v1 [Kubernetes enhancement proposal], the deprecated annotation, if pres
 precedence over the new field. From our perspective, the option that maintains the highest
 compatibility is to only use the annotation, even when creating `v1` Ingresses.
 
-[Kubernetes enhancement proposal]: https://github.com/kubernetes/enhancements/tree/44dd2975dc6cdad96ca73e7b0ba1794f1196f604/keps/sig-network/1453-ingress-api#interoperability-with-previous-annotation
+[kubernetes enhancement proposal]: https://github.com/kubernetes/enhancements/tree/44dd2975dc6cdad96ca73e7b0ba1794f1196f604/keps/sig-network/1453-ingress-api#interoperability-with-previous-annotation
 
 # Notes For Specific Ingress Controllers
 

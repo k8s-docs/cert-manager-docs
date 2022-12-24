@@ -2,8 +2,10 @@
 title: cmctl CLI reference
 description: "cert-manager cmctl CLI documentation"
 ---
-```
 
+# cmctl CLI 参考
+
+```zsh
 cmctl is a CLI tool manage and configure cert-manager resources for Kubernetes
 
 Usage: cmctl [command]

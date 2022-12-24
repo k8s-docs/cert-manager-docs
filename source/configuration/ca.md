@@ -1,39 +1,28 @@
----
-title: CA
-description: 'cert-manager configuration: CA Issuers'
----
+# CA
 
-⚠️ CA issuers are generally either for trying cert-manager out or else for advanced users with
-a good idea of how to run a PKI. To be used safely in production, CA issuers introduce complex
-planning requirements around rotation, trust store distribution and disaster recovery.
+⚠️ CA 颁发者通常要么用于尝试证书管理器，要么用于了解如何运行 PKI 的高级用户。
+为了在生产中安全使用，CA 颁发者围绕轮换、信任存储分发和灾难恢复引入了复杂的规划需求。
 
-If you're not planning to run your own PKI, use a different issuer type.
+如果您不打算运行自己的 PKI，请使用不同的颁发者类型。
 
-The CA issuer represents a Certificate Authority whose certificate and
-private key are stored inside the cluster as a Kubernetes `Secret`.
+CA 颁发者代表一个证书颁发机构，其证书和私钥作为 Kubernetes `Secret`存储在集群中。
 
-Certificates issued by a CA issuer will not be publicly trusted and so are unlikely to be trusted
-by your applications without further configuration work. Consider the [trust-manager](../projects/trust-manager.md)
-project for distributing trust stores.
+CA 颁发者颁发的证书不受公众信任，因此如果没有进一步的配置工作，应用程序不太可能信任它。
+考虑用于分发信任存储的[信任管理器](../projects/trust-manager.md)项目。
 
-## Deployment
+## 部署
 
-CA Issuers must be configured with a certificate and private key stored in a Kubernetes
-secret. You can create this externally if you wish, or you could bootstrap a root certificate
-using a [`SelfSigned` issuer](./selfsigned.md#bootstrapping-ca-issuers).
+CA 颁发者必须配置证书和存储在 Kubernetes 秘密中的私钥。
+如果您愿意，您可以在外部创建这个证书，或者您可以使用[`SelfSigned` 颁发者](./selfsigned.md#bootstrapping-ca-issuers)引导根证书。
 
-Your certificate's secret should reside in the same namespace as the `Issuer`, or otherwise
-in the `Cluster Resource Namespace` in the case of a `ClusterIssuer`.
+证书的秘密应该位于与`Issuer`相同的名称空间中，或者在`ClusterIssuer`的情况下位于“集群源名称空间”中。
 
-The `Cluster Resource Namespace` is defaulted as being the `cert-manager` namespace, but
-can be configured using the `--cluster-resource-namespace` flag on the cert-manager controller.
+“集群源命名空间”默认为`cert-manager`命名空间，但可以使用 cert-manager 控制器上的`--cluster-resource-namespace` 标志进行配置。
 
-Below is an example of a secret resource that will be used for signing. Take
-note of the index keys used for each field as these are required in order for
-cert-manager to find the certificate and key. Also note that, like all secrets,
-data must be base64 encoded. The command `$ cat crt.pem | base64 -w0` should help you
-on GNU-based systems (Debian, Ubuntu, etc.) and `$ cat crt.pem | base64 -b0` on BSD-based
-systems (most notably macOS).
+下面是一个用于签名的秘密源示例。
+注意每个字段使用的索引键，因为证书管理器需要这些键才能找到证书和密钥。
+还要注意，像所有秘密一样，数据必须采用 base64 编码。
+命令`$ cat crt.pem | base64 -w0`应该在基于 GNU 的系统(Debian, Ubuntu 等)上帮助你，`$ cat crt.pem | base64 -b0`在基于 BSD 的系统(最显著的是 macOS)上帮助你。
 
 ```yaml
 apiVersion: v1
@@ -46,15 +35,14 @@ data:
   tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBc0lVZ2Y2bHV2NUMyOXM2YnZoQ2J3L2NCeFdxdmtBUDlDUi95NVpjcU84d0JjZmh4CjZ2Z2pnRzVQZ3ZBZUxmeDFCTEo3T1VTOVBRbWZsK0krcVd5UlhTbmJqOFY3dVdWV0o1TVdLVkExTzhvT3praWsKbWMwNXlHZTl0N0RMTkVlbzJKL3c2NCtNVnpDUkh4MUE2bUhrbHBXYTk2b3RSQld0SE8zMVE4Ui91TWJXYlRUUgpUb3grM09nLzcxcENJRmtGTVlzTHJMSHVpakRsb3c1Ny8rRmE0M3Bka0lGR0ZHeHdzbm1SNW5MWXZpdEMxZ242ClAwWU9qN3BjSzJ3NUlZNWpvR0xkOUtYWVY5RG1aQUxwSlgxQXgzNmZHNDJ3cUNOcldtQUFRT2dDb3lyRHQrU3cKQkZPL1FpOVppMVI3bVFBaU9WSTRvMnQxVDFsUjBzSmlUeWNyc1FJREFRQUJBb0lCQUNFTkhET3JGdGg1a1RpUApJT3dxa2UvVVhSbUl5MHlNNHFFRndXWXBzcmUxa0FPMkFDWjl4YS96ZDZITnNlanNYMEM4NW9PbmtrTk9mUHBrClcxVS94Y3dLM1ZpRElwSnBIZ09VNzg1V2ZWRXZtU3dZdi9Fb1V3eHFHRVMvcnB5Z1drWU5WSC9XeGZGQlg3clMKc0dmeVltbXJvM09DQXEyLzNVVVFiUjcrT09md3kzSHdUdTBRdW5FSnBFbWU2RXdzdWIwZzhTTGp2cEpjSHZTbQpPQlNKSXJyL1RjcFRITjVPc1h1Vm5FTlVqV3BBUmRQT1NrRFZHbWtCbnkyaVZURElST3NGbmV1RUZ1NitXOWpqCmhlb1hNN2czbkE0NmlLenUzR0YwRWhLOFkzWjRmeE42NERkbWNBWnphaU1vMFJVaktWTFVqbVlQSEUxWWZVK3AKMkNYb3dNRUNnWUVBMTgyaU52UEkwVVlWaUh5blhKclNzd1YrcTlTRStvVi90U2ZSUUNGU2xsV0d3KzYyblRiVwpvNXpoL1RDQW9VTVNSbUFPZ0xKWU1LZUZ1SWdvTEoxN1pvWjN0U1czTlVtMmRpT0lPSHorcTQxQzM5MDRrUzM5CjkrYkFtVmtaSFA5VktLOEMraS9tek5mSkdHZEJadGIweWtTM2t3OUIxTHdnT3o3MDhFeXFSQ2tDZ1lFQTBXWlAKbzF2MThnV2tMK2FnUDFvOE13eDRPZlpTN3dKY3E0Z0xnUWhjYS9pSkttY0x0RFN4cUJHckJ4UVo0WTIyazlzdQpzTFVrNEJobGlVM29iUUJNaUdtMGtITHVBSEFRNmJvdWZBMUJwZjN2VFdHSkhSRjRMeFJsNzc2akw4UXI4VnpxClpURVBtY0R0T0hpYjdwb2I1Z2IzSDhiVGhYeUhmdGZxRW55alhFa0NnWUVBdk9DdDZZclZhTlQrWThjMmRFYk4Kd3dJOExBaUZtdjdkRjZFUjlCODJPWDRCeGR0WTJhRDFtNTNqN2NaVnpzNzFYOE1TN25FcDN1dkFqaElkbDI3KwpZbTJ1dUUyYVhIbDN5VTZ3RzBETFpUcnVIU0Z5TVI4ZithbHRTTXBDd0s1NXluSGpHVFp6dXpYaVBBbWpwRzdmCk1XbVRncE1IK3puc3UrNE9VNFBHUW9FQ2dZQWNqdUdKbS84YzlOd0JsR2lDZTJIK2JGTHhSTURteStHcm16QkcKZHNkMENqOWF3eGI3aXJ3MytjRGpoRUJMWExKcjA5YTRUdHdxbStrdElxenlRTG92V0l0QnNBcjVrRThlTVVBcAp0djBmRUZUVXJ0cXVWaldYNWlaSTNpMFBWS2ZSa1NSK2pJUmVLY3V3aWZKcVJpWkw1dU5KT0NxYzUvRHF3Yk93CnRjTHAwUUtCZ0VwdEw1SU10Sk5EQnBXbllmN0F5QVBhc0RWRE9aTEhNUGRpL2dvNitjSmdpUmtMYWt3eUpjV3IKU25QSG1TbFE0aEluNGMrNW1lbHBDWFdJaklLRCtjcTlxT2xmQmRtaWtYb2RVQ2pqWUJjNnVGQ1QrNWRkMWM4RwpiUkJQOUNtWk9GL0hOcHN0MEgxenhNd1crUHk5Q2VnR3hhZ0ZCekxzVW84N0xWR2h0VFFZCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
 ```
 
-> Note: If your issuer represents an intermediate, ensure that `tls.crt` contains
-> the issuer's full chain in the correct order: `issuer -> intermediate(s) -> root`.
-> The root (self-signed) CA certificate is optional, but adding it will ensure that
-> the correct CA certificate is stored in the secrets for issued `Certificate`s under
-> the `ca.crt` key. If you fail to provide a complete chain, it might not be possible
-> for consumers of issued `Certificate`s to verify whether they're trusted.
+!!! Note
 
-Next is to deploy the CA issuer which references this `Secret`. This is done by
-referencing the secret name under the `ca` stanza in the `Issuer` spec.
+    如果您的发行者代表一个中间体，请确保`tls.crt`以正确的顺序包含发行者的完整链:`issuer -> intermediate(s) -> root`。
+    根(自签名)CA证书是可选的，但是添加它将确保正确的CA证书存储在`ca.crt` 密钥下颁发的`Certificate`的秘密中。
+    如果您未能提供完整的链，则已颁发证书的消费者可能无法验证他们是否受信任。
+
+接下来是部署引用这个`Secret`的 CA 颁发者。
+这是通过引用`Issuer`规范中`ca`节下的秘密名称来实现的。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -67,20 +55,19 @@ spec:
     secretName: ca-key-pair
 ```
 
-Optionally, you can specify [CRL](https://en.wikipedia.org/wiki/Certificate_revocation_list) Distribution Points; an array of strings each of which identifies the location of the CRL from which the revocation of this certificate can be checked.
+指定[CRL](https://en.wikipedia.org/wiki/Certificate_revocation_list)分发点(Distribution Points);一个字符串数组，每个字符串都标识 CRL 的位置，从中可以检查该证书的撤销。
 
 ```yaml
-...
+---
 spec:
   ca:
     secretName: ca-key-pair
     crlDistributionPoints:
-    - "http://example.com"
+      - "http://example.com"
 ```
 
-Once deployed, you can then check that the issuer has been successfully
-configured by checking the ready status of the certificate. Replace `issuers`
-here with `clusterissuers` if that is what has been deployed.
+部署完成后，您可以通过检查证书的就绪状态来检查颁发者是否已成功配置。
+如果部署的是`clusterissuers`，则将`issuers`替换为`clusterissuers`。
 
 ```bash
 $ kubectl get issuers ca-issuer -n sandbox -o wide
@@ -88,5 +75,4 @@ NAME          READY   STATUS                AGE
 ca-issuer     True    Signing CA verified   2m
 ```
 
-Certificates are now ready to be requested by using the CA `Issuer` named
-`ca-issuer` within the `sandbox` namespace.
+现在可以通过在`sandbox`命名空间中使用名为`ca-issuer`的 CA`Issuer`来请求证书了。

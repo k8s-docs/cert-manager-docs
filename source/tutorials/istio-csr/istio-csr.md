@@ -1,6 +1,6 @@
 ---
 title: Securing the istio Service Mesh using cert-manager
-description: 'cert-manager tutorials: Securing the istio Service Mesh using cert-manager'
+description: "cert-manager tutorials: Securing the istio Service Mesh using cert-manager"
 ---
 
 This guide will run through installing and using istio-csr from scratch. We'll use [kind](https://kind.sigs.k8s.io/) to create a new cluster locally in Docker, but this guide should work on any cluster as long as the relevant Istio [Platform Setup](https://istio.io/latest/docs/setup/platform-setup/) has been performed.
@@ -78,7 +78,7 @@ kubectl create secret generic -n cert-manager istio-root-ca --from-file=ca.pem=c
 ## Installing istio-csr
 
 istio-csr is best installed via Helm, and it should be simple and quick to install. There
-are a bunch of other configuration options for the helm chart, which you can check out [here](../usage/istio-csr/istio-csr.md).
+are a bunch of other configuration options for the helm chart, which you can check out [here](../../usage/istio.md).
 
 ```console
 helm repo add jetstack https://charts.jetstack.io
@@ -274,3 +274,4 @@ Assuming your running inside kind, you can simply remove the cluster:
 
 ```shell
 kind delete cluster
+```

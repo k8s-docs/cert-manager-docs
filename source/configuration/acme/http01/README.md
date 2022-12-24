@@ -1,34 +1,17 @@
----
-title: HTTP01
-description: 'cert-manager configuration: ACME HTTP-01 challenges'
----
+# HTTP01
 
-<div className="info">
+📌 本页重点介绍如何解决 ACME HTTP-01 挑战。如果您正在寻找如何通过注释入口源或网关源来自动创建证书源，请参见[保护入口源](../../../usage/ingress.md)和[保护网关源](../../../usage/gateway.md)。
 
-📌  This page focuses on solving ACME HTTP-01 challenges. If you are looking for
-how to automatically create Certificate resources by annotating Ingress or
-Gateway resources, see [Securing Ingress Resources](../../../usage/ingress.md) and
-[Securing Gateway Resources](../../../usage/gateway.md).
+cert-manager 使用您现有的入口或网关配置来解决 HTTP01 的挑战。
 
-</div>
+## 配置 HTTP01 入口求解器
 
-cert-manager uses your existing Ingress or Gateway configuration in order to
-solve HTTP01 challenges.
+本页包含有关`Issuer`源的 HTTP01 挑战解决程序配置上可用的不同选项的详细信息。
+有关配置 ACME 发行者及其 API 格式的更多信息，请阅读[ACME 发行者](../README.md)文档。
 
+您可以在[Let's Encrypt challenge 类型页面](https://letsencrypt.org/docs/challenge-types/#http-01-challenge)上阅读有关 HTTP01 挑战类型如何工作的内容.
 
-## Configuring the HTTP01 Ingress solver
-
-This page contains details on the different options available on the `Issuer`
-resource's HTTP01 challenge solver configuration. For more information on
-configuring ACME issuers and their API format, read the [ACME Issuers](../README.md)
-documentation.
-
-You can read about how the HTTP01 challenge type works on the [Let's Encrypt
-challenge types
-page](https://letsencrypt.org/docs/challenge-types/#http-01-challenge).
-
-Here is an example of a simple `HTTP01` ACME issuer with more options for
-configuration below:
+下面是一个简单的`HTTP01` ACME 颁发器的例子，下面有更多的配置选项:
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -41,14 +24,14 @@ spec:
     privateKeySecretRef:
       name: example-issuer-account-key
     solvers:
-    - http01:
-        ingress:
-          class: nginx
+      - http01:
+          ingress:
+            class: nginx
 ```
 
 ## Options
 
-The HTTP01 Issuer supports a number of additional options.  For full details on
+The HTTP01 Issuer supports a number of additional options. For full details on
 the range of options available, read the [reference
 documentation](../../../reference/api-docs.md#acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01).
 
@@ -59,11 +42,10 @@ resources in order to route traffic to the `acmesolver` pods, which are
 responsible for responding to ACME challenge validation requests.
 
 If this field is not specified, and `name` is also not specified,
-cert-manager will default to create *new* `Ingress` resources but will **not**
-set the ingress class on these resources, meaning *all* ingress controllers
+cert-manager will default to create _new_ `Ingress` resources but will **not**
+set the ingress class on these resources, meaning _all_ ingress controllers
 installed in your cluster will serve traffic for the challenge solver,
 potentially incurring additional cost.
-
 
 ### `name`
 
@@ -85,15 +67,14 @@ restrictions. To define which Kubernetes service type to use during challenge
 response specify the following HTTP01 configuration:
 
 ```yaml
-    http01:
-      ingress:
-        # Valid values are ClusterIP and NodePort
-        serviceType: ClusterIP
+http01:
+  ingress:
+    # Valid values are ClusterIP and NodePort
+    serviceType: ClusterIP
 ```
 
 By default, type `NodePort` will be used when you don't set HTTP01 or when you set
 `serviceType` to an empty string. Normally there's no need to change this.
-
 
 ### `podTemplate`
 
@@ -117,16 +98,16 @@ spec:
     privateKeySecretRef:
       name: ...
     solvers:
-    - http01:
-        ingress:
-          podTemplate:
-            metadata:
-              labels:
-                foo: "bar"
-                env: "prod"
-            spec:
-              nodeSelector:
-                bar: baz
+      - http01:
+          ingress:
+            podTemplate:
+              metadata:
+                labels:
+                  foo: "bar"
+                  env: "prod"
+              spec:
+                nodeSelector:
+                  bar: baz
 ```
 
 The added labels and annotations will merge on top of the cert-manager defaults,
@@ -151,16 +132,16 @@ spec:
     privateKeySecretRef:
       name: ...
     solvers:
-    - http01:
-        ingress:
-          ingressTemplate:
-            metadata:
-              labels:
-                foo: "bar"
-              annotations:
-                "nginx.ingress.kubernetes.io/whitelist-source-range": "0.0.0.0/0,::/0"
-                "nginx.org/mergeable-ingress-type": "minion"
-                "traefik.ingress.kubernetes.io/frontend-entry-points": "http"
+      - http01:
+          ingress:
+            ingressTemplate:
+              metadata:
+                labels:
+                  foo: "bar"
+                annotations:
+                  "nginx.ingress.kubernetes.io/whitelist-source-range": "0.0.0.0/0,::/0"
+                  "nginx.org/mergeable-ingress-type": "minion"
+                  "traefik.ingress.kubernetes.io/frontend-entry-points": "http"
 ```
 
 The added labels and annotations will merge on top of the cert-manager defaults,
@@ -180,7 +161,7 @@ improvements over the Ingress API.
 
 <div className="info">
 
-📌  This feature requires the installation of the [Gateway API bundle](https://gateway-api.sigs.k8s.io/guides/#installing-a-gateway-controller) and passing a
+📌 This feature requires the installation of the [Gateway API bundle](https://gateway-api.sigs.k8s.io/guides/#installing-a-gateway-controller) and passing a
 feature flag to the cert-manager controller.
 
 To install v1.5.1 Gateway API bundle (Gateway CRDs and webhook), run the following command:
@@ -218,16 +199,15 @@ kubectl rollout restart deployment cert-manager -n cert-manager
 
 </div>
 
-
 <div className="info">
 
-🚧   cert-manager 1.8+ is tested with v1alpha2 Kubernetes Gateway API. It should also work
+🚧 cert-manager 1.8+ is tested with v1alpha2 Kubernetes Gateway API. It should also work
 with v1beta1 because of resource conversion, but has not been tested with it.
+
 </div>
 
 The Gateway API HTTPRoute HTTP-01 solver creates a temporary HTTPRoute using the
-given labels. These labels must match a Gateway that contains a listener on port
-80.
+given labels. These labels must match a Gateway that contains a listener on port 80.
 
 Here is an example of a HTTP-01 ACME Issuer using the Gateway API:
 
@@ -262,10 +242,10 @@ metadata:
 spec:
   gatewayClassName: traefik
   listeners:
-  - name: http
-    protocol: HTTP
-    port: 80
-    allowedRoutes:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
         namespaces:
           from: All
 ```
@@ -293,7 +273,7 @@ spec:
   issuerRef:
     name: letsencrypt
   dnsNames:
-  - example.net
+    - example.net
 ```
 
 You will see an HTTPRoute appear:
@@ -310,16 +290,16 @@ spec:
       namespace: traefik
       kind: Gateway
   hostnames:
-  - example.net
+    - example.net
   rules:
-  - forwardTo:
-    - port: 8089
-      serviceName: cm-acme-http-solver-gdhvg
-      weight: 1
-    matches:
-    - path:
-        type: Exact
-        value: /.well-known/acme-challenge/YadC4gaAzqEPU1Yea0D2MrzvNRWiBCtUizCtpiRQZqI
+    - forwardTo:
+        - port: 8089
+          serviceName: cm-acme-http-solver-gdhvg
+          weight: 1
+      matches:
+        - path:
+            type: Exact
+            value: /.well-known/acme-challenge/YadC4gaAzqEPU1Yea0D2MrzvNRWiBCtUizCtpiRQZqI
 ```
 
 After the Certificate is issued, the HTTPRoute is deleted.
@@ -338,11 +318,10 @@ will create the temporary HTTPRoute challenge and nothing will happen.
 This field has the same meaning as the
 [`http01.ingress.serviceType`](#ingress-service-type).
 
-
 ## Setting Nameservers for HTTP-01 solver propagation checks
 
 cert-manager will perform reachability tests before attempting a HTT01
-challenge.  By default cert-manager will use the recursive nameservers taken
+challenge. By default cert-manager will use the recursive nameservers taken
 from `/etc/resolv.conf` to query the challenge URL.
 
 If this is not desired (for example with split-horizon DNS), the cert-manager
@@ -351,8 +330,8 @@ controller exposes a flag that allows you alter this behavior:
 `--acme-http01-solver-nameservers` Comma separated string with host and port of the
 recursive nameservers cert-manager should query.
 
-
 Example usage:
+
 ```bash
 --acme-http01-solver-nameservers="8.8.8.8:53,1.1.1.1:53"
 ```

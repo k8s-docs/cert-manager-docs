@@ -1,19 +1,16 @@
 ---
 title: CSI Driver
-description: 'cert-manager usage: CSI driver'
+description: "cert-manager usage: CSI driver"
 ---
 
-## Enabling mTLS of Pods using the cert-manager CSI Driver
+# CSI 驱动
 
-A [Container Storage Interface (CSI)
-driver](../projects/csi-driver) has been created to
-facilitate mTLS of Pods running inside your cluster through use of cert-manager.
-Using this driver will ensure that the private key and corresponding signed
-certificate will be unique to each Pod and will be stored on disk to the node
-that the Pod is scheduled to. The life cycle of the certificate key pair matches
-that of the Pod meaning that they will be created at Pod creation, and destroyed
-during termination. This driver also handles renewal on live certificates on the
-fly.
+## 使用 cert-manager CSI 驱动程序启用 Pods 的 mTLS
+
+一个[容器存储接口(CSI)驱动程序](../projects/csi-driver)已经创建，以便通过使用 cert-manager 在集群中运行 Pods 的 mTLS。
+使用此驱动程序将确保私钥和相应的已签名证书对于每个 Pod 都是唯一的，并且将存储在 Pod 计划到的节点的磁盘上。
+证书密钥对的生命周期与 Pod 的生命周期相匹配，这意味着它们将在 Pod 创建时创建，并在终止时销毁。
+该驱动程序还动态地处理活动证书的更新。
 
 A [CSI
 driver](https://github.com/container-storage-interface/spec/blob/master/spec.md)
@@ -33,7 +30,7 @@ line with the deployment spec.
 > **Warning**: Use of the CSI driver is mostly intended for supporting a PKI of
 > your cluster and facilitating mTLS, and as such, a private Certificate
 > Authority issuer should be used - CA, Vault, and perhaps Venafi, or other
-> external issuers. It is *not* recommended to use public Certificate
+> external issuers. It is _not_ recommended to use public Certificate
 > Authorities, for example Let's Encrypt, which hold strict rate limits on the
 > number of certificates that can be issued for a single domain. Like Pods,
 > these certificate key pairs are designed to be non-immutable and can be

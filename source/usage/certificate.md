@@ -1,29 +1,22 @@
 ---
 title: Certificate Resources
-description: 'cert-manager usage: Certificates'
+description: "cert-manager usage: Certificates"
 ---
 
-In cert-manager, the [`Certificate`](../concepts/certificate.md) resource
-represents a human readable definition of a certificate request that is to be
-honored by an issuer which is to be kept up-to-date. This is the usual way that
-you will interact with cert-manager to request signed certificates.
+# 证书源
 
-In order to issue any certificates, you'll need to configure an
-[`Issuer`](../configuration/README.md) or [`ClusterIssuer`](../configuration/README.md)
-resource first.
+在证书管理器中，[`Certificate`](../concepts/certificate.md)源表示证书请求的可读定义，该证书请求将由颁发者执行，并保持最新。
+这是与证书管理器交互以请求已签名证书的常用方式。
 
-## Creating Certificate Resources
+为了颁发任何证书，您需要首先配置一个[`Issuer`](../configuration/README.md) 或 [`ClusterIssuer`](../configuration/README.md) 源。
 
-A `Certificate` resource specifies fields that are used to generate certificate
-signing requests which are then fulfilled by the issuer type you have
-referenced. `Certificates` specify which issuer they want to obtain the
-certificate from by specifying the `certificate.spec.issuerRef` field.
+## 创建证书源
 
-A `Certificate` resource, for the `example.com` and `www.example.com` DNS names,
-`spiffe://cluster.local/ns/sandbox/sa/example` URI Subject Alternative Name,
-that is valid for 90 days and renews 15 days before expiry is below. It contains
-an exhaustive list of all options a `Certificate` resource may have however only
-a subset of fields are required as labelled.
+`Certificate` 源指定用于生成证书签名请求的字段，然后由您引用的颁发者类型完成。
+`Certificate` 通过指定`certificatespecissuerRef`字段指定他们想从哪个颁发者获得证书。
+
+下面是一个`Certificate`源，用于`example.com` 和 `www.example.com`DNS 名称，`spiffe://cluster.local/ns/sandbox/sa/example` URI 主题替代名称，有效期为 90 天，并在到期前 15 天更新。
+它包含了一个`Certificate`源可能拥有的所有选项的详尽列表，但只有一个字段的子集是必需的。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -178,16 +171,14 @@ application, and you will want to either manually restart your pod with
 [wave](https://github.com/wave-k8s/wave). Wave is a Secret controller that
 makes sure deployments get restarted whenever a mounted Secret changes.
 
-<div className="alert">
+!!! alert
 
-Re-use of private keys
+    Re-use of private keys
 
-Some issuers, like the built-in [Venafi
-issuer](../configuration/venafi.md), may disallow re-using private keys.
-If this is the case, you must explicitly configure the `rotationPolicy:
-Always` setting for each of your Certificate objects accordingly.
-
-</div>
+    Some issuers, like the built-in [Venafi
+    issuer](../configuration/venafi.md), may disallow re-using private keys.
+    If this is the case, you must explicitly configure the `rotationPolicy:
+    Always` setting for each of your Certificate objects accordingly.
 
 In the following example, the certificate has been set with
 `rotationPolicy: Always`:
@@ -216,23 +207,21 @@ certificate object is reissued under the following circumstances:
   ```sh
   cmctl renew cert-1
   ```
-  Note that the above command requires [cmctl](./cmctl.md#renew).
+  Note that the above command requires [cmctl](../reference/cmctl.md#renew).
 
-<div className="warning">
+!!! "warning"
 
-**❌** Deleting the Secret resource associated with a Certificate resource is
-**not a recommended solution** for manually rotating the private key. The
-recommended way to manually rotate the private key is to trigger the reissuance
-of the Certificate resource with the following command (requires
-[`cmctl`](./cmctl.md#renew)):
+    **❌** Deleting the Secret resource associated with a Certificate resource is
+    **not a recommended solution** for manually rotating the private key. The
+    recommended way to manually rotate the private key is to trigger the reissuance
+    of the Certificate resource with the following command (requires
+    [`cmctl`](../reference/cmctl.md#renew)):
 
-```sh
-cmctl renew cert-1
-```
+    ```sh
+    cmctl renew cert-1
+    ```
 
-</div>
-
-### The `rotationPolicy` setting
+### `rotationPolicy` 设置
 
 The possible values for `rotationPolicy` are:
 
@@ -253,19 +242,17 @@ above). Note that if the private key secret already exists when creating the
 certificate object, the existing private key will not be used, since the
 rotation mechanism also includes the initial issuance.
 
-<div className="info">
+!!! info
 
-👉 We recommend that you configure `rotationPolicy: Always` on your Certificate
-resources. Rotating both the certificate and the private key simultaneously
-prevents the risk of issuing a certificate with an exposed private key. Another
-benefit to renewing the private key regularly is to let you be confident that
-the private key rotation can be done in case of emergency. More generally, it is
-a good practice to be rotating the keys as often as possible, reducing the risk
-associated with compromised keys.
+    👉 We recommend that you configure `rotationPolicy: Always` on your Certificate
+    resources. Rotating both the certificate and the private key simultaneously
+    prevents the risk of issuing a certificate with an exposed private key. Another
+    benefit to renewing the private key regularly is to let you be confident that
+    the private key rotation can be done in case of emergency. More generally, it is
+    a good practice to be rotating the keys as often as possible, reducing the risk
+    associated with compromised keys.
 
-</div>
-
-## Cleaning up Secrets when Certificates are deleted
+## 清除证书删除时的秘密
 
 By default, cert-manager does not delete the `Secret` resource containing the signed certificate when the corresponding `Certificate` resource is deleted.
 This means that deleting a `Certificate` won't take down any services that are currently relying on that certificate, but the certificate will no longer be renewed.
@@ -273,7 +260,7 @@ The `Secret` needs to be manually deleted if it is no longer needed.
 
 If you would prefer the `Secret` to be deleted automatically when the `Certificate` is deleted, you need to configure your installation to pass the `--enable-certificate-owner-ref` flag to the controller.
 
-## Renewal
+## 更新
 
 cert-manager will automatically renew `Certificate`s. It will calculate _when_ to renew a `Certificate` based on the issued X.509 certificate's duration and a 'renewBefore' value which specifies _how long_ before expiry a certificate should be renewed.
 
@@ -283,20 +270,18 @@ It is also required that `spec.duration` > `spec.renewBefore`.
 
 Once an X.509 certificate has been issued, cert-manager will calculate the renewal time for the `Certificate`. By default this will be 2/3 through the X.509 certificate's duration. If `spec.renewBefore` has been set, it will be `spec.renewBefore` amount of time before expiry. cert-manager will set `Certificate`'s `status.RenewalTime` to the time when the renewal will be attempted.
 
-## Additional Certificate Output Formats
+## 其他证书输出格式
 
-<div className="warning">
+!!! warning
 
-⛔️ The additional certificate output formats feature is currently in an
-_experimental_ alpha state, and is subject to breaking changes or complete
-removal in future releases. This feature is only enabled by adding it to the
-`--feature-gates` flag on the cert-manager controller and webhook components:
+    ⛔️ The additional certificate output formats feature is currently in an
+    _experimental_ alpha state, and is subject to breaking changes or complete
+    removal in future releases. This feature is only enabled by adding it to the
+    `--feature-gates` flag on the cert-manager controller and webhook components:
 
-```bash
---feature-gates=AdditionalCertificateOutputFormats=true
-```
-
-</div>
+    ```bash
+    --feature-gates=AdditionalCertificateOutputFormats=true
+    ```
 
 `additionalOutputFormats` is a field on the Certificate `spec` that allows
 specifying additional supplementary formats of issued certificates and their

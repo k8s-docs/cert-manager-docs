@@ -1,13 +1,17 @@
 ---
 title: Prometheus Metrics
-description: 'cert-manager usage: Prometheus metrics'
+description: "cert-manager usage: Prometheus metrics"
 ---
 
-To help with operations and insights into cert-manager activities, cert-manager exposes metrics in the [Prometheus](https://prometheus.io/) format from the controller component. These are available at the standard `/metrics` path of the controller component's configured HTTP port.
+# Prometheus 指标
 
-## Scraping Metrics
+为了帮助操作和洞察 cert-manager 活动，cert-manager 以[Prometheus](https://prometheus.io/)格式从控制器组件公开度量标准。
+这些可以在控制器组件配置的 HTTP 端口的标准`/metrics`路径下使用。
 
-How metrics are scraped will depend how you're operating your Prometheus server(s). These examples presume the [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) is being used to run Prometheus, and configure Pod or Service Monitor CRDs.
+## 刮指标
+
+如何获取度量标准取决于您如何操作 Prometheus 服务器。
+这些例子假设[Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator)被用来运行 Prometheus，并配置 Pod 或服务监视器 CRDs。
 
 ### Helm
 
@@ -20,7 +24,7 @@ prometheus:
     enabled: true
 ```
 
-### Regular Manifests
+### 常规 Manifests
 
 If you're not using helm to deploy cert-manager and instead using the provided regular YAML manifests, this example `PodMonitor` and deployment patch should be all you need to start ingesting cert-manager metrics.
 
@@ -64,6 +68,6 @@ spec:
       honorLabels: true
 ```
 
-## Monitoring Mixin
+## 监控 Mixin
 
 Monitoring mixins are a way to bundle common alerts, rules, and dashboards for an application in a configurable and extensible way, using the Jsonnet data templating language. A cert-manager monitoring mixin can be found here https://gitlab.com/uneeq-oss/cert-manager-mixin. Documentation on usage can be found with the `cert-manager-mixin` project.

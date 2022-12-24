@@ -1,46 +1,38 @@
 ---
 title: CA Injector
-description: 'cert-manager core concepts: CA Injector'
+description: "cert-manager core concepts: CA Injector"
 ---
 
-`cainjector` helps to configure the CA certificates for:
-[Mutating Webhooks],
-[Validating Webhooks]
-[Conversion Webhooks] and [API Services]
+# CA Injector
 
-In particular, `cainjector` populates the `caBundle` field of four API types:
-`ValidatingWebhookConfiguration`,
-`MutatingWebhookConfiguration`
-`CustomResourceDefinition` and `APIService`.
-The first three resource types are used to configure how the Kubernetes API server connects to webhooks.
-This `caBundle` data is loaded by the Kubernetes API server and used to verify the serving certificates of webhook API servers.
-`APIService` is used to represent an [Extension API Server]. `caBundle` of `APIService` can be populated with CA cert that can be used to validate the API server's serving certificate.
+`cainjector` 帮助配置 CA 证书: [Mutating Webhooks],[Validating Webhooks],[conversion webhooks] 和 [API Services]
 
-We will refer to these four API types as *injectable* resources.
+特别是，`cainjector`填充了四种 API 类型的`caBundle`字段:`ValidatingWebhookConfiguration`,`MutatingWebhookConfiguration`,`CustomResourceDefinition` 和 `APIService`.
 
+前三种源类型用于配置 Kubernetes API 服务器如何连接到 webhook。
+这个`caBundle`数据由 Kubernetes API 服务器加载，用于验证 webhook API 服务器的服务证书。
+`APIService`用于表示[扩展 API 服务器]。
+`APIService`的`caBundle`可以填充 CA 证书，可用于验证 API 服务器的服务证书。
 
-An *injectable* resource MUST have one of these annotations:
-`cert-manager.io/inject-ca-from`,
-`cert-manager.io/inject-ca-from-secret`, or
-`cert-manager.io/inject-apiserver-ca`, depending on the injection *source*.
-This is explained in more detail below.
+我们将这四种 API 类型称为 _injectable_ 源。
 
-`cainjector` copies CA data from one of three *sources*:
+_injectable_ 源必须有以下注解之一:`cert-manager.io/inject-ca-from`,`cert-manager.io/inject-ca-from-secret`, 或 `cert-manager.io/inject-apiserver-ca`, 取决于注入 _源_。下面将更详细地解释这一点。
+
+`cainjector` copies CA data from one of three _sources_:
 a Kubernetes `Secret`,
 a cert-manager `Certificate`, or from
 the Kubernetes API server CA certificate (which `cainjector` itself uses to verify its TLS connection to the Kubernetes API server).
 
-If the *source* is a Kubernetes `Secret`, that resource MUST also have an `cert-manager.io/allow-direct-injection: "true"` annotation.
-The three *source* types are explained in more detail below.
+If the _source_ is a Kubernetes `Secret`, that resource MUST also have an `cert-manager.io/allow-direct-injection: "true"` annotation.
+The three _source_ types are explained in more detail below.
 
+## 举例
 
-## Examples
-
-Here are examples demonstrating how to use the three `cainjector` *sources*.
-In each case we use `ValidatingWebhookConfiguration` as the *injectable*,
+Here are examples demonstrating how to use the three `cainjector` _sources_.
+In each case we use `ValidatingWebhookConfiguration` as the _injectable_,
 but you can substitute `MutatingWebhookConfiguration` or `CustomResourceDefinition` definition instead.
 
-### Injecting CA data from a Certificate resource
+### 从证书源中注入 CA 数据
 
 Here is an example of a `ValidatingWebhookConfiguration`
 configured with the annotation `cert-manager.io/inject-ca-from`,
@@ -57,7 +49,6 @@ metadata:
   name: example1
 
 ---
-
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
@@ -65,19 +56,18 @@ metadata:
   annotations:
     cert-manager.io/inject-ca-from: example1/webhook1-certificate
 webhooks:
-- name: webhook1.example.com
-  admissionReviewVersions:
-  - v1
-  clientConfig:
-    service:
-      name: webhook1
-      namespace: example1
-      path: /validate
-      port: 443
-  sideEffects: None
+  - name: webhook1.example.com
+    admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: webhook1
+        namespace: example1
+        path: /validate
+        port: 443
+    sideEffects: None
 
 ---
-
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -86,12 +76,11 @@ metadata:
 spec:
   secretName: webhook1-certificate
   dnsNames:
-  - webhook1.example1
+    - webhook1.example1
   issuerRef:
     name: selfsigned
 
 ---
-
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
@@ -110,14 +99,14 @@ kubectl -n example1 get secret webhook1-certificate -o yaml | grep ca.crt
 
 And after a short time, the Kubernetes API server will read that new `caBundle` value and use it to verify a TLS connection to the webhook server.
 
-### Injecting CA data from a Secret resource
+### 从 Secret 源注入 CA 数据
 
-Here is another example of a `ValidatingWebhookConfiguration` 
+Here is another example of a `ValidatingWebhookConfiguration`
 this time configured with the annotation `cert-manager.io/inject-ca-from-secret`,
 which will make `cainjector` populate the `caBundle` field using CA data from a Kubernetes `Secret`.
 
 NOTE: This example does not deploy a webhook server,
-it only deploys a partial webhook configuration, 
+it only deploys a partial webhook configuration,
 but it should be sufficient to help you understand what `cainjector` does:
 
 ```yaml
@@ -127,7 +116,6 @@ metadata:
   name: example2
 
 ---
-
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
@@ -135,19 +123,18 @@ metadata:
   annotations:
     cert-manager.io/inject-ca-from-secret: example2/example-ca
 webhooks:
-- name: webhook2.example.com
-  admissionReviewVersions:
-  - v1
-  clientConfig:
-    service:
-      name: webhook2
-      namespace: example2
-      path: /validate
-      port: 443
-  sideEffects: None
+  - name: webhook2.example.com
+    admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: webhook2
+        namespace: example2
+        path: /validate
+        port: 443
+    sideEffects: None
 
 ---
-
 apiVersion: v1
 kind: Secret
 metadata:
@@ -177,7 +164,7 @@ and it will work if the cert-manager CRDs and associated webhook servers are not
 NOTE: For this reason, cert-manager uses the `Secret` based injection mechanism to bootstrap its own webhook server.
 The cert-manager webhook server generates its own private key and self-signed certificate and places them in a `Secret` when it starts up.
 
-### Injecting the Kubernetes API Server CA
+### 注入 Kubernetes API 服务 CA
 
 Here is another example of a `ValidatingWebhookConfiguration`
 this time configured with the annotation `cert-manager.io/inject-apiserver-ca: "true"`,
@@ -194,7 +181,6 @@ metadata:
   name: example3
 
 ---
-
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
@@ -202,17 +188,16 @@ metadata:
   annotations:
     cert-manager.io/inject-apiserver-ca: "true"
 webhooks:
-- name: webhook3.example.com
-  admissionReviewVersions:
-  - v1
-  clientConfig:
-    service:
-      name: webhook3
-      namespace: example3
-      path: /validate
-      port: 443
-  sideEffects: None
-
+  - name: webhook3.example.com
+    admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: webhook3
+        namespace: example3
+        path: /validate
+        port: 443
+    sideEffects: None
 ```
 
 You should find that the `caBundle` value is now identical to the CA used in your `KubeConfig` file:
@@ -224,11 +209,11 @@ kubectl config  view --minify --raw | grep certificate-authority-data
 
 And after a short time, the Kubernetes API server will read that new `caBundle` value and use it to verify a TLS connection to the webhook server.
 
-NOTE: In this case you will have to ensure that your webhook is configured to serve a TLS certificate that has been signed by the Kubernetes cluster CA. 
+NOTE: In this case you will have to ensure that your webhook is configured to serve a TLS certificate that has been signed by the Kubernetes cluster CA.
 The disadvantages of this mechanism are that: you will require access to the private key of the Kubernetes cluster CA and you will need to manually rotate the webhook certificate.
 
-[Validating Webhooks]: https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook
-[Mutating Webhooks]: https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook
-[Conversion Webhooks]: https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definition-versioning/#webhook-conversion
-[API Services]: https://kubernetes.io/docs/reference/kubernetes-api/cluster-resources/api-service-v1/
-[Extension API Server]: https://kubernetes.io/docs/tasks/extend-kubernetes/setup-extension-api-server/
+[validating webhooks]: https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook
+[mutating webhooks]: https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook
+[conversion webhooks]: https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definition-versioning/#webhook-conversion
+[api services]: https://kubernetes.io/docs/reference/kubernetes-api/cluster-resources/api-service-v1/
+[extension api server]: https://kubernetes.io/docs/tasks/extend-kubernetes/setup-extension-api-server/

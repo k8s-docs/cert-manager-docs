@@ -1,17 +1,15 @@
 ---
 title: Securing Istio Service Mesh
-description: 'cert-manager usage: Istio and istio-csr'
+description: "cert-manager usage: Istio and istio-csr"
 ---
 
-cert-manager can be integrated with [Istio](https://istio.io) using the project
-[istio-csr](https://github.com/cert-manager/istio-csr). istio-csr will deploy an
-agent that is responsible for receiving certificate signing requests for all
-members of the Istio mesh, and signing them through cert-manager.
+# 保护 Istio 服务网格
 
-[istio-csr](https://github.com/cert-manager/istio-csr) will sign all control
-plane and workload certificates via your chosen cert-manager Issuer.
+cert-manager 可以使用项目[istio-csr](https://github.com/cert-manager/istio-csr)与[Istio](https://istio.io)集成。
+istio-csr 将部署一个代理，负责接收 Istio 网格所有成员的证书签名请求，并通过证书管理器对其进行签名。
+
+[istio-csr](https://github.com/cert-manager/istio-csr)将通过您选择的证书管理器颁发者签署所有控制平面和工作负载证书。
 
 ---
 
-Please follow the instructions for installing and using istio-csr on the
-[project page](../projects/istio-csr).
+请按照[项目页面](../projects/istio-csr)上的说明安装和使用 istio-csr.

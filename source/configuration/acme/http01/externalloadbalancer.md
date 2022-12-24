@@ -1,19 +1,20 @@
----
-title: External Load Balancer
-description: 'cert-manager configuration: ACME HTTP-01 challenges using External Load Balancers'
----
+# 外部负载均衡器
 
-When you are using an external load balancer provided by any host, you can face several configuration issues to get it work with cert-manager.
+ACME HTTP-01 挑战使用外部负载均衡器
 
-This documentation is intended to help configure the HTTP-01 challenge type for instances behind external load balancer.
+当您使用任何主机提供的外部负载均衡器时，您可能会面临几个配置问题，以使其与 cert-manager 一起工作。
+
+本文档旨在帮助为外部负载均衡器后面的实例配置 HTTP-01 挑战类型。
 
 ## NAT Loopback / Hairpin
 
-The first configuration point is NAT loopback. You can face check issues due to Load Balancer preventing instances behind it to access its external interface.
+第一个配置点是 NAT 环回。
+由于负载均衡器阻止其后面的实例访问其外部接口，您可能会面临检查问题。
 
-Some Network Load Balancer have this kind of limitation for several reasons. It can be configured through `iptables` rerouting configuration known as `NAT loopback`.
+一些网络负载均衡器由于几个原因有这种限制。
+它可以通过`iptables`重路由配置，即`NAT loopback`进行配置。
 
-To check if you are facing this problem :
+要检查你是否遇到了这个问题:
 
 1. Check that the endpoint of the challenge is accessible to the public : `curl <endpoint>`
 2. Check that the challenge endpoint is NOT accessible from inside behind the Load Balancer: use SSH to open a session on a node places behind the LB; then launch the same command than before : `curl <endpoint>`
@@ -22,8 +23,7 @@ The `HTTP-01` challenge's endpoint can be found in the logs when the `pre-check`
 
 `<endpoint>` is the URL used to test the HTTP-01 from the certificate `Issuer`. For Let's Encrypt for example, the URL is formed like `<domain>/.well-known/acme-challenge/<hash>`
 
-
-## Load Balancer HTTP endpoints
+## 负载均衡器 HTTP 端点
 
 If you are using a Load Balancer (outside a managed Kubernetes service), you should be able to configure the Load Balancer protocol as HTTP, HTTPS, TCP, UDP. Several Load Balancer now offer free TLS certificates with Let's Encrypt.
 

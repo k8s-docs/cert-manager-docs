@@ -1,33 +1,30 @@
 ---
-title: The cert-manager Command Line Tool (cmctl)
-description: |
-    cmctl is a command line tool that can help you manage cert-manager and its resources inside your cluster
+title: cert-manager 命令行工具 (cmctl)
+description: cmctl 是一个命令行工具，可以帮助您在集群中管理 cert-manager 及其源。
 ---
 
-`cmctl` is a command line tool that can help you manage cert-manager and its resources inside your cluster.
+# cert-manager 命令行工具 (cmctl)
 
-## Installation
+`cmctl`是一个命令行工具，可以帮助您在集群中管理 cert-manager 及其源。
+
+## 安装
 
 ### Homebrew
 
-On Mac or Linux if you have [Homebrew](https://brew.sh) installed, you can
-install `cmctl` with:
+在 Mac 或 Linux 上，如果你安装了[Homebrew](https://brew.sh)，你可以安装 `cmctl`:
 
 ```console
 brew install cmctl
 ```
 
-This will also install shell completion.
+这也将安装 shell 补全。
 
-### Manual Installation
+### 手动安装
 
-You need the `cmctl.tar.gz` file for the platform you're using, these can be
-found on our
-[GitHub releases page](https://github.com/cert-manager/cert-manager/releases).
-In order to use `cmctl` you need its binary to be accessible under
-the name `cmctl` in your `$PATH`.
-Run the following commands to set up the CLI. Replace OS and ARCH with your
-systems equivalents:
+你需要使用的平台的`cmctl.tar.gz`文件，这些可以在我们的[GitHub 发布 pag](https://github.com/cert-manager/cert-manager/releases)上找到。
+为了使用`cmctl`，你需要在你的`$PATH`中的`cmctl`名称下可以访问它的二进制文件。
+执行如下命令，进入命令行界面。
+替换 OS 和 ARCH 与你的系统等价:
 
 ```console
 OS=$(go env GOOS); ARCH=$(go env GOARCH); curl -fsSL -o cmctl.tar.gz https://github.com/cert-manager/cert-manager/releases/latest/download/cmctl-$OS-$ARCH.tar.gz
@@ -35,7 +32,7 @@ tar xzf cmctl.tar.gz
 sudo mv cmctl /usr/local/bin
 ```
 
-You can run `cmctl help` to test the CLI is set up properly:
+您可以运行`cmctl help`来测试 CLI 是否设置正确:
 
 ```console
 $ cmctl help
@@ -66,12 +63,12 @@ Flags:
 Use "cmctl [command] --help" for more information about a command.
 ```
 
->  There is also a [legacy kubectl plugin](#legacy-kubectl-plugin), but it is no longer recommended
-> because the standalone `cmctl` binary provides better [auto-completion](#completion).
+> 还有一个[legacy kubectl 插件](#legacy-kubectl-plugin)，
+> 但不再推荐使用，因为独立的`cmctl`二进制文件提供了更好的[自动完成](#completion)。
 
-## Commands
+## 命令
 
-### Approve and Deny CertificateRequests
+### 批准和拒绝证书请求
 
 CertificateRequests can be
 [approved or denied](../concepts/certificaterequest.md#approval) using their
@@ -94,7 +91,7 @@ Denied CertificateRequest 'my-app/my-app'
 ### Convert
 
 `cmctl convert` can be used to convert cert-manager manifest files between
-different API versions. Both YAML and JSON formats are accepted.  The command
+different API versions. Both YAML and JSON formats are accepted. The command
 either takes a file name, directory path, or a URL as input. The contents is
 converted into the format of the latest API version known to cert-manager, or
 the one specified by `--output-version` flag.
@@ -149,6 +146,7 @@ cmctl create certificaterequest my-cr --from-certificate-file my-certificate.yam
 This can be done either one certificate at a time, using label selectors (`-l app=example`), or with the `--all` flag:
 
 For example, you can renew the certificate `example-com-tls`:
+
 ```console
 $ kubectl get certificate
 NAME                       READY   SECRET               AGE
@@ -169,16 +167,17 @@ $ cmctl renew --namespace=app --all
 ```
 
 The renew command allows several options to be specified:
-* `--all` renew all Certificates in the given Namespace, or all namespaces when combined with `--all-namespaces`
-* `-A` or  `--all-namespaces` mark Certificates across namespaces for renewal
-* `-l` `--selector` allows set a label query to filter on
-as well as `kubectl` like global flags like `--context` and `--namespace`.
 
-### Status Certificate
+- `--all` renew all Certificates in the given Namespace, or all namespaces when combined with `--all-namespaces`
+- `-A` or `--all-namespaces` mark Certificates across namespaces for renewal
+- `-l` `--selector` allows set a label query to filter on
+  as well as `kubectl` like global flags like `--context` and `--namespace`.
+
+### 身份证书
 
 `cmctl status certificate` outputs the details of the current status of a
 Certificate resource and related resources like CertificateRequest, Secret,
-Issuer, as well as Order and Challenges if it is a ACME Certificate.  The
+Issuer, as well as Order and Challenges if it is a ACME Certificate. The
 command outputs information about the resources, including Conditions, Events
 and resource specific fields like Key Usages and Extended Key Usages of the
 Secret or Authorizations of the Order. This will be helpful for troubleshooting
@@ -216,20 +215,24 @@ $ cmctl completion help
 ---
 
 ### Experimental
+
 `cmctl x` has experimental sub-commands for operations which are currently under
 evaluation to be included into cert-manager proper. The behavior and interface
 of these commands are subject to change or removal in future releases.
 
-
 #### Create
+
 `cmctl x create` can be used to create cert-manager resources manually.
 Sub-commands are available to create different resources:
 
 ##### CertificateSigningRequest
-To create a [CertificateSigningRequest](./kube-csr.md), use
+
+To create a [CertificateSigningRequest](../usage/kube-csr.md), use
+
 ```console
 cmctl x create csr`
 ```
+
 This command takes the name of the CertificateSigningRequest to be created, as
 well as a file containing a Certificate manifest (`-f,
 --from-certificate-file`). This command will generate a private key, based on
@@ -239,7 +242,6 @@ specified by `-k, --output-key-file`.
 ```bash
 $ cmctl x create csr -f my-cert.yaml my-req
 ```
-
 
 <div className="warning">
 
@@ -269,7 +271,7 @@ cmctl x install
 ```
 
 This command makes sure that the required `CustomResourceDefinitions` are installed together with the cert-manager, cainjector and webhook components.
-Under the hood, a procedure similar to the [Helm install procedure](../install/helm.md#steps) is used.
+Under the hood, a procedure similar to the [Helm install procedure](../installation/helm.md#steps) is used.
 
 You can also use `cmctl x install` to customize the installation of cert-manager.
 
@@ -282,7 +284,7 @@ cmctl x install \
 ```
 
 You can find [a full list of the install parameters on cert-manager's ArtifactHub page](https://artifacthub.io/packages/helm/cert-manager/cert-manager#configuration). These are the same parameters that are available when using the Helm chart.
-Once you have deployed cert-manager, you can [verify](../install/verify.md) the installation.
+Once you have deployed cert-manager, you can [verify](../installation/verify.md) the installation.
 
 The CLI also allows the user to output the templated manifest to `stdout`, instead of installing the manifest on the cluster.
 
@@ -321,6 +323,7 @@ Tools that assist in upgrading cert-manager
 ```bash
 $ cmctl upgrade --help
 ```
+
 ##### Migrate API version
 
 This command can be used to prepare a cert-manager installation that was created

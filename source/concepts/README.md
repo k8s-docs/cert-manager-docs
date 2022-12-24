@@ -3,9 +3,9 @@ title: Concepts
 description: cert-manager core concepts
 ---
 
-There are several components and ideas that make up cert-manager. This section
-describes them on a conceptual level, to aid with understanding how cert-manager
-does its job.
+# 概念
 
-You probably don't want this section if you're just getting started; check out
-a [tutorial](../tutorials/README.md) instead.
+cert-manager 由几个组件和思想组成。
+本节在概念层面上描述它们，以帮助理解 cert-manager 是如何工作的。
+
+如果你刚刚开始，你可能不需要这个部分;可以查看[手册](../tutorials/README.md)。

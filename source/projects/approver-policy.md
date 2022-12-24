@@ -1,17 +1,15 @@
 ---
 title: approver-policy
-description: ''
+description: ""
 ---
 
-approver-policy is a cert-manager
-[approver](https://cert-manager.io/docs/concepts/certificaterequest/#approval)
-that will approve or deny CertificateRequests based on CRD defined policies.
+approver-policy 是一个证书管理器[approver](https://cert-manager.io/docs/concepts/certificaterequest/#approval)，它将根据 CRD 定义的策略批准或拒绝 CertificateRequests。
 
 ---
 
-## Installation
+## 安装
 
-[cert-manager](https://cert-manager.io) is required to be installed with approver-policy.
+[cert-manager](https://cert-manager.io)需要与 approver-policy 一起安装。
 
 > ⚠️
 >
@@ -54,7 +52,7 @@ awspcaclusterissuers.awspca.cert-manager.io/*,awspcaissuers.awspca.cert-manager.
 
 ---
 
-## Configuration
+## 配置
 
 > Example policy resources can be found
 > [here](https://github.com/cert-manager/approver-policy/tree/main/docs/examples).
@@ -109,19 +107,19 @@ kind: ClusterRoleBinding
 metadata:
   name: cert-manager-policy:hello-world
 roleRef:
-# ClusterRole or Role _must_ be bound to a user for the policy to be considered.
+  # ClusterRole or Role _must_ be bound to a user for the policy to be considered.
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: cert-manager-policy:hello-world
 subjects:
-# The users who should be bound to the policies defined.
-# Note that in the case of users creating Certificate resources, cert-manager
-# is the entity that is creating the actual CertificateRequests, and so the
-# cert-manager controller's
-# Service Account should be bound instead.
-- kind: Group
-  name: system:authenticated
-  apiGroup: rbac.authorization.k8s.io
+  # The users who should be bound to the policies defined.
+  # Note that in the case of users creating Certificate resources, cert-manager
+  # is the entity that is creating the actual CertificateRequests, and so the
+  # cert-manager controller's
+  # Service Account should be bound instead.
+  - kind: Group
+    name: system:authenticated
+    apiGroup: rbac.authorization.k8s.io
 ```
 
 ---

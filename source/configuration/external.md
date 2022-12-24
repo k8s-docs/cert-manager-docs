@@ -1,30 +1,20 @@
----
-title: External
-description: 'cert-manager configuration: External Issuers'
----
+# 外部
 
-cert-manager supports external `Issuer` types. While external issuers are not
-implemented in the main cert-manager repository, they are otherwise treated the
-same as any other issuer.
+cert-manager 支持外部`Issuer`类型。
+虽然外部颁发者没有在主证书管理器存储库中实现，但它们在其他方面与任何其他颁发者相同。
 
-External issuers are typically deployed as a pod which is configured
-to watch for `CertificateRequest` resources in the cluster whose `issuerRef`
-matches the name of the issuer. External issuers exist outside of the
-`cert-manager.io` group.
+外部发行者通常部署为一个 pod，它被配置为监视集群中`CertificateRequest`源，这些源的`issuerRef`与发行者的名称匹配。
+外部发行者存在于`cert-manager.io`组之外。
 
-Installation for each issuer may differ; check the documentation for each
-external issuer for more details on installing, configuring and using it.
+每个发行者的安装可能不同;请查看每个外部发行者的文档，以获得有关安装、配置和使用它的更多详细信息。
 
-## Known External Issuers
+## 已知的外部发行人
 
-If you've created an external issuer which you'd like to share,
-[raise a Pull Request](https://github.com/cert-manager/website/pulls) to have
-it added here!
+如果您已经创建了一个想要共享的外部发行者，[提出一个 Pull Request](https://github.com/cert-manager/website/pulls)将它添加到这里!
 
-These external issuers are known to support and honor [approval](https://cert-manager.io/docs/concepts/certificaterequest/#approval).
+众所周知，这些外部发行人支持并尊重[批准](https://cert-manager.io/docs/concepts/certificaterequest/#approval).
 
-- [kms-issuer](https://github.com/Skyscanner/kms-issuer): Requests
-  certificates signed using an [AWS KMS](https://aws.amazon.com/kms/) asymmetric key.
+- [kms-issuer](https://github.com/Skyscanner/kms-issuer): 请求使用[AWS KMS](https://aws.amazon.com/kms/)非对称密钥签名的证书。
 - [aws-privateca-issuer](https://github.com/cert-manager/aws-privateca-issuer): Requests
   certificates from [AWS Private Certificate Authority](https://aws.amazon.com/certificate-manager/private-certificate-authority/)
   for cloud native/hybrid environments.
@@ -46,6 +36,6 @@ These external issuers are known to support and honor [approval](https://cert-ma
 - [ncm-issuer](https://github.com/nokia/ncm-issuer): Requests certificates from the [Nokia](https://www.nokia.com/) [Netguard Certificate Manager](https://www.nokia.com/networks/security-portfolio/netguard/certificate-manager)
 - [tcs-issuer](https://github.com/intel/trusted-certificate-issuer) Requests certificates signed securely using [Intel's SGX technology](https://www.intel.com/content/www/us/en/developer/tools/software-guard-extensions/overview.html).
 
-## Building New External Issuers
+## 建立新的外部发行人
 
-If you're interested in building a new external issuer, check the [development documentation](../contributing/external-issuers.md).
+如果您对构建一个新的外部发行方感兴趣，请查看[开发文档](../contributing/external-issuers.md).

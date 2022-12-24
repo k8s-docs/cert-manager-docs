@@ -1,49 +1,44 @@
----
-title: Supported Releases
-description: Supported releases, Kubernetes versions, OpenShift versions and upcoming release timeline
----
+# 支持的版本
 
-{/*
-Inspired by https://istio.io/latest/about/supported-releases/
-*/}
+支持的版本，Kubernetes 版本，OpenShift 版本和即将发布的时间表
 
-This page lists the status, timeline and policy for currently supported releases.
+受到 <https://istio.io/latest/about/supported-releases/> 启发
 
-Each release is supported for a period of four months, and we aim to create a new
-release roughly every two months, accounting for holiday periods, major conferences
-and other world events.
+本页列出当前支持版本的状态、时间轴和策略。
 
-cert-manager expects that ServerSideApply is enabled in the cluster for all version of Kubernetes from 1.24 and above.
+每个版本支持四个月的时间，我们的目标是大约每两个月创建一个新版本，包括假日期间、主要会议和其他世界事件。
 
-<h2 id="supported-releases">Currently supported releases</h2>
+cert-manager 希望所有 Kubernetes(1.24 及以上版本)的集群中都启用 ServerSideApply。
+
+<h2 id="supported-releases">当前支持的版本</h2>
 
 | Release  | Release Date |   End of Life   | [Supported Kubernetes versions][s] | [Supported OpenShift versions][s] |
-|----------|:------------:|:---------------:|:----------------------------------:|:---------------------------------:|
+| -------- | :----------: | :-------------: | :--------------------------------: | :-------------------------------: |
 | [1.10][] | Oct 17, 2022 | Release of 1.12 |            1.20 → 1.26             |            4.7 → 4.13             |
 | [1.9][]  | Jul 22, 2022 | Release of 1.11 |            1.20 → 1.24             |            4.7 → 4.11             |
 
-\*ServerSideApply should be enabled in the cluster
+_应该在集群中启用 ServerSideApply_
 
-## Upcoming releases
+## 即将发布的
 
-| Release  |  Release Date  |  End of Life   | [Supported Kubernetes versions][s]  | [Supported OpenShift versions][s] |
-|----------|:--------------:|:--------------:|:-----------------------------------:|:---------------------------------:|
-| [1.11][] |  Jan 11, 2023  |  Mid May, 2023 |            1.21 → 1.26              |            4.8 → 4.13             |
-| [1.12][] | ~Mar 15, 2023  | Mid July, 2023 |            1.22 → 1.26              |            4.9 → 4.13             |
+| Release  | Release Date  |  End of Life   | [Supported Kubernetes versions][s] | [Supported OpenShift versions][s] |
+| -------- | :-----------: | :------------: | :--------------------------------: | :-------------------------------: |
+| [1.11][] | Jan 11, 2023  | Mid May, 2023  |            1.21 → 1.26             |            4.8 → 4.13             |
+| [1.12][] | ~Mar 15, 2023 | Mid July, 2023 |            1.22 → 1.26             |            4.9 → 4.13             |
 
-Dates in the future are uncertain and might change.
+未来的日期是不确定的，可能会改变。
 
-## Old releases
+## 旧的版本
 
 | Release  | Release Date |     EOL      | Compatible Kubernetes versions | Compatible OpenShift versions |
-|----------|:------------:|:------------:|:------------------------------:|:-----------------------------:|
+| -------- | :----------: | :----------: | :----------------------------: | :---------------------------: |
 | [1.8][]  | Apr 05, 2022 | Oct 17, 2022 |          1.19 → 1.24           |          4.6 → 4.11           |
-| [1.7][]  | Jan 26, 2021 | Jul 22, 2022 |          1.18 → 1.23           |          4.5 → 4.9            |
-| [1.6][]  | Oct 26, 2021 | Apr 05, 2022 |          1.17 → 1.22           |          4.4 → 4.9            |
-| [1.5][]  | Aug 11, 2021 | Jan 26, 2022 |          1.16 → 1.22           |          4.3 → 4.8            |
-| [1.4][]  | Jun 15, 2021 | Oct 26, 2021 |          1.16 → 1.21           |          4.3 → 4.7            |
-| [1.3][]  | Apr 08, 2021 | Aug 11, 2021 |          1.16 → 1.21           |          4.3 → 4.7            |
-| [1.2][]  | Feb 10, 2021 | Jun 15, 2021 |          1.16 → 1.21           |          4.3 → 4.7            |
+| [1.7][]  | Jan 26, 2021 | Jul 22, 2022 |          1.18 → 1.23           |           4.5 → 4.9           |
+| [1.6][]  | Oct 26, 2021 | Apr 05, 2022 |          1.17 → 1.22           |           4.4 → 4.9           |
+| [1.5][]  | Aug 11, 2021 | Jan 26, 2022 |          1.16 → 1.22           |           4.3 → 4.8           |
+| [1.4][]  | Jun 15, 2021 | Oct 26, 2021 |          1.16 → 1.21           |           4.3 → 4.7           |
+| [1.3][]  | Apr 08, 2021 | Aug 11, 2021 |          1.16 → 1.21           |           4.3 → 4.7           |
+| [1.2][]  | Feb 10, 2021 | Jun 15, 2021 |          1.16 → 1.21           |           4.3 → 4.7           |
 | [1.1][]  | Nov 24, 2020 | Apr 08, 2021 |          1.11 → 1.21           |          3.11 → 4.7           |
 | [1.0][]  | Sep 02, 2020 | Feb 10, 2021 |          1.11 → 1.21           |          3.11 → 4.7           |
 | [0.16][] | Jul 23, 2020 | Nov 24, 2020 |          1.11 → 1.21           |          3.11 → 4.7           |
@@ -54,6 +49,7 @@ Dates in the future are uncertain and might change.
 | [0.11][] | Oct 10, 2019 | Jan 21, 2020 |           1.9 → 1.21           |          3.09 → 4.7           |
 
 [s]: #kubernetes-supported-versions
+[1.12]: https://github.com/cert-manager/cert-manager/release-notes-1.12
 [1.11]: https://github.com/cert-manager/cert-manager/milestone/32
 [1.10]: https://cert-manager.io/docs/release-notes/release-notes-1.10
 [1.9]: https://cert-manager.io/docs/release-notes/release-notes-1.9
@@ -78,9 +74,9 @@ and release notes on [cert-manager.io](https://cert-manager.io/docs/release-note
 
 We also maintain detailed [upgrade instructions](https://cert-manager.io/docs/installation/upgrading/).
 
-## Support policy
+## 支持政策
 
-### What we mean by support
+### 支持是什么意思
 
 Our support window is four months for each release branch. In the below
 diagram, `release-1.2` is an example of a release branch. The support
@@ -116,7 +112,7 @@ branch is actually supported.
                                                        April 1, 2021
 ```
 
-<h3 id="technical-support">Technical support</h3>
+<h3 id="technical-support">技术支持</h3>
 
 Technical assistance is offered on a best-effort basis for supported
 releases only. You can request support from the community on [Kubernetes
@@ -199,7 +195,6 @@ Generally we'll seek to be pragmatic. A rule of thumb might be to ask:
 [#3644]: https://github.com/cert-manager/cert-manager/issues/3644 "Helm upgrade from v1.2 to v1.2 impossible due to a Helm bug"
 [#5209]: https://github.com/cert-manager/cert-manager/pull/5209 "release-1.8: rclone"
 
-
 <h2 id="kubernetes-supported-versions">How we determine supported Kubernetes versions</h2>
 
 The list of supported Kubernetes versions displayed in the [Supported Releases](#supported-releases) section
@@ -209,12 +204,12 @@ In practice, this is largely determined based on what versions of [kind](https:/
 are available for testing, and which versions of Kubernetes are provided by major upstream cloud Kubernetes vendors
 including EKS, GKE, AKS and OpenShift.
 
-|      Vendor       | Oldest Kubernetes Release\*  |               Other Older Kubernetes Releases                 |
-|:-----------------:|------------------------------|---------------------------------------------------------------|
-|    [EKS][eks]     | 1.21 (EOL Feb 2023)          | 1.22 (EOL May 2023)                                           |
-|    [GKE][gke]     | 1.21 (EOL Feb 2023)          | 1.22 (EOL May 2023)                                           |
-|    [AKS][aks]     | 1.23 (EOL ~Feb 2023)         |                                                               |
-| [OpenShift 4][os] | 1.21 (4.8 EUS, EOL Feb 2023) | 1.22 (4.9, EOL Apr 2023)                                      |
+|      Vendor       | Oldest Kubernetes Release\*  | Other Older Kubernetes Releases |
+| :---------------: | ---------------------------- | ------------------------------- |
+|    [EKS][eks]     | 1.21 (EOL Feb 2023)          | 1.22 (EOL May 2023)             |
+|    [GKE][gke]     | 1.21 (EOL Feb 2023)          | 1.22 (EOL May 2023)             |
+|    [AKS][aks]     | 1.23 (EOL ~Feb 2023)         |                                 |
+| [OpenShift 4][os] | 1.21 (4.8 EUS, EOL Feb 2023) | 1.22 (4.9, EOL Apr 2023)        |
 
 \*Oldest release relevant to the next cert-manager release, as of 2022-07-18
 
@@ -225,13 +220,12 @@ including EKS, GKE, AKS and OpenShift.
 
 ### OpenShift
 
-cert-manager supports versions of OpenShift 4 based on the version of Kubernetes
-that each version maps to.
+cert-manager 支持基于 Kubernetes 版本的 OpenShift 4 版本。
 
 For convenience, the following table shows these version mappings:
 
 | OpenShift versions | Kubernetes version |
-|--------------------|--------------------|
+| ------------------ | ------------------ |
 | 4.13               | 1.26               |
 | 4.12               | 1.25               |
 | 4.11               | 1.24               |
@@ -247,7 +241,7 @@ not yet be available for the latest Kubernetes releases.
 The last version of cert-manager to support OpenShift 3 was cert-manager 1.2, which is
 no longer maintained.
 
-## Terminology
+## 术语
 
 The term "release" (or "minor release") refers to one minor version of
 cert-manager. For example, 1.2 and 1.3 are two releases. Note that we do

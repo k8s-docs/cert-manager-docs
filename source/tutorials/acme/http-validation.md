@@ -1,15 +1,14 @@
 ---
 title: HTTP Validation
-description: 'cert-manager tutorials: Issuing an ACME certificate using HTTP validation'
+description: "cert-manager tutorials: Issuing an ACME certificate using HTTP validation"
 ---
 
-## Issuing an ACME certificate using HTTP validation
+# HTTP 验证
 
-cert-manager can be used to obtain certificates from a CA using the
-[ACME](https://en.wikipedia.org/wiki/Automated_Certificate_Management_Environment)
-protocol.  The ACME protocol supports various challenge mechanisms which are
-used to prove ownership of a domain so that a valid certificate can be issued
-for that domain.
+## 使用 HTTP 验证颁发 ACME 证书
+
+cert-manager 可以通过[ACME](https://en.wikipedia.org/wiki/Automated_Certificate_Management_Environment)协议从 CA 获取证书。
+ACME 协议支持各种挑战机制，这些机制用于证明域的所有权，以便为该域颁发有效的证书。
 
 One such challenge mechanism is the HTTP01 challenge. With a HTTP01 challenge,
 you prove ownership of a domain by ensuring that a particular file is present at
@@ -37,11 +36,11 @@ spec:
       name: letsencrypt-staging
     # Enable the HTTP-01 challenge provider
     solvers:
-    # An empty 'selector' means that this solver matches all domains
-    - selector: {}
-      http01:
-        ingress:
-          class: nginx
+      # An empty 'selector' means that this solver matches all domains
+      - selector: {}
+        http01:
+          ingress:
+            class: nginx
 ```
 
 We have specified the ACME server URL for Let's Encrypt's [staging
@@ -79,12 +78,12 @@ spec:
     name: letsencrypt-staging
   commonName: example.com
   dnsNames:
-  - www.example.com
+    - www.example.com
 ```
 
 The Certificate resource describes our desired certificate and the possible
 methods that can be used to obtain it. You can learn more about the Certificate
-resource in the [docs](../../concepts/certificate.md).  If the certificate is
+resource in the [docs](../../concepts/certificate.md). If the certificate is
 obtained successfully, the resulting key pair will be stored in a secret called
 `example-com-tls` in the same namespace as the Certificate.
 
@@ -95,14 +94,14 @@ Alternative Names
 by TLS clients.
 
 In our Certificate we have referenced the `letsencrypt-staging` Issuer above.
-The Issuer must be in the same namespace as the Certificate.  If you want to
+The Issuer must be in the same namespace as the Certificate. If you want to
 reference a `ClusterIssuer`, which is a cluster-scoped version of an Issuer, you
 must add `kind: ClusterIssuer` to the `issuerRef` stanza.
 
 For more information on `ClusterIssuers`, read the [`ClusterIssuer`
 docs](../../concepts/issuer.md).
 
-The `acme` stanza defines the configuration for our ACME challenges.  Here we
+The `acme` stanza defines the configuration for our ACME challenges. Here we
 have defined the configuration for our HTTP01 challenges which will be used to
 verify domain ownership. To verify ownership of each domain mentioned in an
 `http01` stanza, cert-manager will create a Pod, Service and Ingress that
@@ -114,8 +113,8 @@ control how cert-manager interacts with Ingress resources:
 - If the `ingress` field is specified, then an Ingress resource with the same
   name in the same namespace as the Certificate must already exist and it will
   be modified only to add the appropriate rules to solve the challenge.
-  This field is useful for the Google Cloud Loadbalancer ingress controller, 
-  as well as a number of others, that assign a single public IP address for 
+  This field is useful for the Google Cloud Loadbalancer ingress controller,
+  as well as a number of others, that assign a single public IP address for
   each ingress resource.
   Without manual intervention, creating a new ingress resource would cause any
   challenges to fail.

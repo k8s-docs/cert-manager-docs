@@ -1,7 +1,6 @@
----
-title: Migrating Deprecated API Resources
-description: 'cert-manager installation: Removal of deprecated APIs'
----
+# 迁移废弃的 API 源
+
+'cert-manager installation: Removal of deprecated APIs'
 
 The following cert-manager APIs were deprecated in cert-manager `v1.4`:
 

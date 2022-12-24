@@ -1,21 +1,21 @@
 ---
 title: csi-driver-spiffe
-description: ''
+description: ""
 ---
 
-csi-driver-spiffe is a Container Storage Interface (CSI) driver plugin for
-Kubernetes to work along [cert-manager](https://cert-manager.io/). This CSI driver
-transparently delivers [SPIFFE](https://spiffe.io/)
-[SVIDs](https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid)
-in the form of X.509 certificate key pairs to mounting Kubernetes Pods.
+csi-driver-spiffe 是一个容器存储接口(CSI)驱动插件，用于 Kubernetes 与[cert-manager](https://cert-manager.io/)一起工作。
+这个 CSI 驱动程序以 X.509 证书密钥对的形式透明地交付 [SPIFFE][spiffe] [SVIDs][svids] 来安装 Kubernetes Pods。
 
-The end result is all and any Pod running in Kubernetes can securely request
-their SPIFFE identity document from a Trust Domain with minimal configuration.
-These documents are:
-- automatically renewed; ✔️
-- private key never leaves the node's virtual memory; ✔️
-- each Pod's document is unique; ✔️
-- the document shares the same life cycle as the Pod and is destroyed on Pod termination. ✔️
+[spiffe]: https://spiffe.io/
+[svids]: https://spiffe.io/docs/latest/spiffe-about/spiffe-concepts/#spiffe-verifiable-identity-document-svid
+
+最终的结果是，运行在 Kubernetes 中的所有 Pod 都可以通过最小的配置安全地从信任域请求他们的 SPIFFE 身份文档。
+这些文件是:
+
+- 自动更新; ✔️
+- 私钥永远不会离开节点的虚拟内存; ✔️
+- 每个 Pod 的文档都是唯一的; ✔️
+- 文档与 Pod 共享相同的生命周期，并在 Pod 终止时销毁。 ✔️
 
 ```yaml
 ...
@@ -29,12 +29,11 @@ These documents are:
             readOnly: true
 ```
 
-SPIFFE documents can be used for mutual TLS (mTLS) or authentication by Pod's
-within its Trust Domain.
+SPIFFE 文档可用于相互 TLS (mTLS)或 Pod 在其信任域内进行身份验证。
 
-### Components
+### 组件
 
-The project is split into two components;
+该项目分为两个部分;
 
 ##### CSI Driver
 
@@ -75,7 +74,7 @@ signer. The approver ensures that requests have:
    identifiable attributes except a single [URI SANs](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier);
 5. the single URI SAN is the SPIFFE identity of the ServiceAccount who created
    the CertificateRequest;
-5. the SPIFFE ID Trust Domain is the same as configured.
+6. the SPIFFE ID Trust Domain is the same as configured.
 
 If any of these checks do not pass, the CertificateRequest will be marked as
 Denied, else it will be marked as Approved. The approver will only manage
@@ -83,8 +82,7 @@ CertificateRequests who request from the same
 [IssuerRef](https://cert-manager.io/docs/concepts/certificaterequest/) that has
 been configured.
 
-
-## Installation
+## 安装
 
 :warning: Requires Kubernetes version `v1.21`+ or `v1.20` with the
 `--feature-gates=CSIServiceAccountToken=true` flag.
@@ -122,14 +120,14 @@ been configured.
    [Google CAS](https://github.com/jetstack/google-cas-issuer),
    [Small Step](https://github.com/smallstep/step-issuer). Issuers such as
    [SelfSigned](https://cert-manager.io/docs/configuration/selfsigned/) or
-   [ACME](https://cert-manager.io/docs/configuration/acme/) *will not work*.
+   [ACME](https://cert-manager.io/docs/configuration/acme/) _will not work_.
 
    An example demo
    [ClusterIssuer](https://cert-manager.io/docs/concepts/issuer/#namespaces) can
    be found
    [here](https://github.com/cert-manager/csi-driver-spiffe/blob/main/deploy/example/clusterissuer.yaml).
-   This Trust Domain's root CA is self-signed by cert-manager and *private key
-   is stored in the cluster*.
+   This Trust Domain's root CA is self-signed by cert-manager and _private key
+   is stored in the cluster_.
 
 ```terminal
 $ kubectl apply -f https://raw.githubusercontent.com/cert-manager/csi-driver-spiffe/main/deploy/example/clusterissuer.yaml
@@ -142,8 +140,9 @@ $ kubectl cert-manager approve -n cert-manager $(kubectl get cr -n cert-manager 
    configured so that the approver has
    [permissions to approve referencing CertificateRequests](https://cert-manager.io/docs/concepts/certificaterequest/#rbac-syntax).
 
-  - Change signer name to match your issuer type.
-  - Change name, kind, and group to your issuer.
+- Change signer name to match your issuer type.
+- Change name, kind, and group to your issuer.
+
 ```terminal
 $ helm upgrade -i -n cert-manager cert-manager-csi-driver-spiffe jetstack/cert-manager-csi-driver-spiffe --wait \
   --set "app.logLevel=1" \
@@ -155,7 +154,7 @@ $ helm upgrade -i -n cert-manager cert-manager-csi-driver-spiffe jetstack/cert-m
   --set "app.issuer.group=cert-manager.io"
 ```
 
-## Usage
+## 使用
 
 Once the driver is successfully installed, Pods can begin to request and mount
 their key and SPIFFE certificate. Since the Pod's ServiceAccount is impersonated
@@ -180,17 +179,17 @@ readable by default due to Unix based file system permissions. The mounting
 volumes file group can be specified using the following volume attribute:
 
 ```yaml
-...
-      securityContext:
-        runAsUser: 123
-        runAsGroup: 456
-      volumes:
-        - name: spiffe
-          csi:
-            driver: spiffe.csi.cert-manager.io
-            readOnly: true
-            volumeAttributes:
-              spiffe.csi.cert-manager.io/fs-group: "456"
+---
+securityContext:
+  runAsUser: 123
+  runAsGroup: 456
+volumes:
+  - name: spiffe
+    csi:
+      driver: spiffe.csi.cert-manager.io
+      readOnly: true
+      volumeAttributes:
+        spiffe.csi.cert-manager.io/fs-group: "456"
 ```
 
 ```terminal
@@ -200,7 +199,7 @@ $ kubectl exec -n sandbox $(kubectl get pod -n sandbox -l app=my-csi-app-fs-grou
                 URI:spiffe://foo.bar/ns/sandbox/sa/fs-group-app
 ```
 
-### Root CA Bundle
+### 根 CA 包
 
 By default, the CSI driver will only mount the Pod's private key and signed
 certificate. csi-driver-spiffe can be optionally configured to also mount a

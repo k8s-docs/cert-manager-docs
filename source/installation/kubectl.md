@@ -1,41 +1,34 @@
----
-title: kubectl apply
-description: Learn how to install cert-manager using kubectl and static manifests
----
+# kubectl apply
 
-Learn how to install cert-manager using kubectl and static manifests.
+学习如何使用 kubectl 和静态清单安装 cert-manager。
 
-## Prerequisites
+## 先决条件
 
-- [Install `kubectl` version `>= v1.19.0`](https://kubernetes.io/docs/tasks/tools/). (otherwise, you'll have issues updating the CRDs - see [v0.16 upgrade notes](./upgrading/upgrading-0.15-0.16.md#issue-with-older-versions-of-kubectl))
-- Install a [supported version of Kubernetes or OpenShift](./supported-releases.md).
-- Read [Compatibility with Kubernetes Platform Providers](./compatibility.md) if you are using Kubernetes on a cloud platform.
+- [安装 `kubectl` 版本 `>= v1.19.0`](https://kubernetes.io/docs/tasks/tools/). (否则，你将在更新 CRDs 时遇到问题 - 参见[v0.16 升级说明](./upgrading/upgrading-0.15-0.16.md#issue-with-older-versions-of-kubectl))
+- 安装[受支持的 Kubernetes 或 OpenShift 版本](./supported-releases.md).
+- 如果您正在云平台上使用 Kubernetes，请阅读[与 Kubernetes 平台提供商的兼容性](./compatibility.md)。
 
-## Steps
+## 步骤
 
-All resources (the [`CustomResourceDefinitions`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) and the cert-manager, cainjector and webhook components)
-are included in a single YAML manifest file:
+所有源( [`CustomResourceDefinitions`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions)和 cert-manager, caainjector 和 webhook 组件)都包含在单个 YAML 清单文件中:
 
-Install all cert-manager components:
+安装所有 cert-manager 组件:
 
 ```bash
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.1/cert-manager.yaml
 ```
 
-By default, cert-manager will be installed into the `cert-manager`
-namespace. It is possible to run cert-manager in a different namespace, although
-you'll need to make modifications to the deployment manifests.
+默认情况下，cert-manager 将安装在`cert-manager`命名空间中。
+可以在不同的名称空间中运行 cert-manager，不过需要对部署清单进行修改。
 
-Once you have deployed cert-manager, you can [verify the installation](./verify.md).
+一旦部署了 cert-manager，就可以[验证安装](./verify.md).
 
-## Permissions Errors on Google Kubernetes Engine
+## 谷歌 Kubernetes 引擎权限错误
 
-When running on GKE (Google Kubernetes Engine), you might encounter a 'permission denied' error when creating some
-of the required resources. This is a nuance of the way GKE handles RBAC and IAM permissions,
-and as such you might need to elevate your own privileges to that of a "cluster-admin" **before**
-running `kubectl apply`.
+当运行在 GKE(谷歌 Kubernetes 引擎)上时，您可能会在创建一些所需的源时遇到'permission denied'错误。
+这是 GKE 处理 RBAC 和 IAM 权限的细微差别，因此，在运行`kubectl apply`之前，您可能需要将自己的权限提升到"cluster-admin"的权限。
 
-If you have already run `kubectl apply`, you should run it again after elevating your permissions:
+如果你已经运行了`kubectl apply`，你应该在提升你的权限后再次运行它:
 
 ```bash
 kubectl create clusterrolebinding cluster-admin-binding \
@@ -43,81 +36,77 @@ kubectl create clusterrolebinding cluster-admin-binding \
     --user=$(gcloud config get-value core/account)
 ```
 
-## Uninstalling
-> **Warning**: To uninstall cert-manager you should always use the same process for
-> installing but in reverse. Deviating from the following process whether
-> cert-manager has been installed from static manifests or Helm can cause issues
-> and potentially broken states. Please ensure you follow the below steps when
-> uninstalling to prevent this happening.
+## 卸载
 
-Before continuing, ensure that unwanted cert-manager resources that have been created
-by users have been deleted. You can check for any existing resources with the
-following command:
+!!! warning
+
+    要卸载cert-manager，您应该始终使用与安装相同的过程，但是相反。
+    无论从静态清单还是Helm安装cert-manager，偏离以下过程都可能导致问题和潜在的破坏状态。
+    请确保在卸载时遵循以下步骤，以防止这种情况发生。
+
+在继续之前，请确保用户创建的不需要的 cert-manager 源已经删除。
+您可以使用以下命令检查任何现有的源:
 
 ```bash
 kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces
 ```
-It is recommended that you delete all these resources before uninstalling cert-manager.
-If plan on reinstalling later and don't want to lose some custom resources, you can keep them.
-However, this can potentially lead to problems with finalizers. Some resources, like
-`Challenges`, should be deleted to avoid [getting stuck in a pending state](#namespace-stuck-in-terminating-state).
 
-Once the unneeded resources have been deleted, you are ready to uninstall
-cert-manager using the procedure determined by how you installed.
+建议在卸载 cert-manager 之前删除所有这些源。
+如果计划稍后重新安装，并且不想失去一些自定义源，您可以保留它们。
+然而，这可能会导致终结器出现问题。
+一些源，比如`Challenges`，应该被删除，以避免[陷入挂起状态](#namespace-stuck-in-terminating-state).
 
-> **Warning**: Uninstalling cert-manager or simply deleting a `Certificate` resource can result in
-> TLS `Secret`s being deleted if they have `metadata.ownerReferences` set by cert-manager.
-> You can control whether owner references are added to `Secret`s using the `--enable-certificate-owner-ref` controller flag.
-> By default, this flag is set to false, which means that no owner references are added.
-> However, in cert-manager v1.8 and older, changing the flag's value from true to false _did not_
-> result in existing owner references being removed. This behavior was fixed in cert-manager v1.8.
-> Do check the owner references to confirm that they actually are removed.
+一旦删除了不需要的源，就可以使用由安装方式决定的过程卸载 cert-manager 了。
 
-### Uninstalling with regular manifests
+!!! warning
 
-Uninstalling from an installation with regular manifests is a case of running
-the installation process, *in reverse*, using the delete command of `kubectl`.
+    卸载证书管理器或简单地删除`Certificate`源可以导致TLS的`Secret`被删除，如果他们有`metadata.ownerReferences`设置的证书管理器。
+    您可以使用`--enable-certificate-owner-ref` 控制器标志来控制是否将所有者引用添加到`Secret`中。
+    默认情况下，该标志被设置为false，这意味着没有添加任何所有者引用。
+    但是，在cert-manager v1.8及更老版本中，将标志的值从true更改为false _并不会_ 删除现有的所有者引用。
+    在cert-manager v1.8中修复了此行为。
+    请检查所有者引用，以确认它们确实被删除了。
 
-Delete the installation manifests using a link to your currently running version
-`vX.Y.Z` like so:
-> **Warning**: This command will also remove installed cert-manager CRDs. All
-> cert-manager resources (e.g. `certificates.cert-manager.io` resources) will
-> be removed by Kubernetes' garbage collector.
-> You cannot keep any custom resources if you delete the `CustomResourceDefinition`s.
-> If you want to keep resources, you should manage `CustomResourceDefinition`s separately.
+### 使用常规清单卸载
+
+从具有常规清单的安装中卸载是使用`kubectl`的`delete`命令*反向*运行安装过程的情况。
+
+使用当前运行版本`vX.Y.Z`的链接删除安装清单，如下所示:
+
+!!! Warning
+
+    此命令还将删除已安装的cert-manager CRDs。
+    所有证书管理器源(例如:`certificates.cert-manager.io`源)将被Kubernetes的垃圾收集器删除。
+    如果删除`CustomResourceDefinition`，则不能保留任何自定义源。
+    如果你想保留源，你应该单独管理`CustomResourceDefinition`。
 
 ```bash
 kubectl delete -f https://github.com/cert-manager/cert-manager/releases/download/vX.Y.Z/cert-manager.yaml
 ```
 
-### Namespace Stuck in Terminating State
+### 命名空间处于终止状态
 
-If the namespace has been marked for deletion without deleting the cert-manager
-installation first, the namespace may become stuck in a terminating state. This
-is typically due to the fact that the [`APIService`](https://kubernetes.io/docs/tasks/access-kubernetes-api/setup-extension-api-server) resource still exists
-however the webhook is no longer running so is no longer reachable. To resolve
-this, ensure you have run the above commands correctly, and if you're still
-experiencing issues then run:
+如果命名空间被标记为删除，而没有首先删除 cert-manager 安装，则命名空间可能会处于终止状态。
+这通常是由于[`APIService`](https://kubernetes.io/docs/tasks/access-kubernetes-api/setup-extension-api-server)源仍然存在，但 webhook 不再运行，因此不再可达。
+要解决这个问题，请确保正确运行了上述命令，如果仍然遇到问题，请运行:
 
 ```bash
 kubectl delete apiservice v1beta1.webhook.cert-manager.io
 ```
 
-#### Deleting pending challenges
+#### 删除挂起的 Challenge
 
-`Challenge`s can get stuck in a pending state when the finalizer is unable to complete
-and Kubernetes is waiting for the cert-manager controller to finish.
-This happens when the controller is no longer running to remove the flag,
-and the resources are defined as needing to wait.
-You can fix this problem by doing what the controller does manually.
+当终结器无法完成，而 Kubernetes 正在等待 cert-manager 控制器完成时，Challenge 可能会陷入悬而未决的状态。
+当控制器不再运行以删除标志，并且源被定义为需要等待时，就会发生这种情况。
+您可以通过手动执行控制器的操作来修复此问题。
 
-First, delete existing cert-manager webhook configurations, if any:
+首先，删除现有的 cert-manager webhook 配置，如果有的话:
 
 ```bash
 kubectl delete mutatingwebhookconfigurations cert-manager-webhook
 ```
 
-Then change the `.metadata.finalizers` field to an empty list by editing the challenge resource:
+然后通过编辑 Challenge 源将`.metadata.finalizers`字段更改为空列表:
 
 ```bash
 kubectl edit challenge <the-challenge>

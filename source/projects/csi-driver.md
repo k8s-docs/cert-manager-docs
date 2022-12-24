@@ -1,15 +1,15 @@
 ---
 title: csi-driver
-description: ''
+description: ""
 ---
 
-csi-driver is a Container Storage Interface (CSI) driver plugin for Kubernetes
-to work along cert-manager. The goal for this plugin is to seamlessly request
-and mount certificate key pairs to pods. This is useful for facilitating mTLS,
-or otherwise securing connections of pods with guaranteed present certificates
-whilst having all of the features that cert-manager provides.
+# csi-driver
 
-## Why a CSI Driver?
+csi-driver 是一个容器存储接口(CSI)驱动插件，用于 Kubernetes 与 cert-manager 一起工作。
+这个插件的目标是无缝地请求并将证书密钥对挂载到 pods。
+这对于促进 mTLS，或以其他方式保护具有保证现有证书的 pods 的连接，同时具有证书管理器提供的所有功能是有用的。
+
+## 为什么是 CSI Driver?
 
 - Ensure private keys never leave the node and are never sent over the network.
   All private keys are stored locally on the node.
@@ -23,11 +23,12 @@ whilst having all of the features that cert-manager provides.
 - Scope for extending plugin behavior with visibility on each replica's
   certificate request and termination.
 
-## Requirements and Installation
+## 要求及安装
 
 This CSI driver plugin makes use of the 'CSI inline volume' feature - Alpha as
 of `v1.15` and beta in `v1.16`. Kubernetes versions `v1.16` and higher require
 no extra configuration however `v1.15` requires the following feature gate set:
+
 ```
 --feature-gates=CSIInlineVolume=true
 ```
@@ -49,7 +50,6 @@ Or apply the static manifests to your cluster:
 helm repo add jetstack https://charts.jetstack.io --force-update
 helm template jetstack/cert-manager-csi-driver | kubectl apply -n cert-manager -f -
 ```
-
 
 You can verify the installation has completed correctly by checking the presence
 of the CSIDriver resource as well as a CSINode resource present for each node,
@@ -82,7 +82,7 @@ items:
 
 The CSI driver is now installed and is ready to be used for pods in the cluster.
 
-## Requesting and Mounting Certificates
+## 请求和挂载证书
 
 To request certificates from cert-manager, simply define a volume mount where
 the key and certificate will be written to, along with a volume with attributes
@@ -129,14 +129,14 @@ containing the private key that signed the certificate request to sign the end
 certificate. This secret is not used and so not available in the CSI driver use
 case.
 
-## Supported Volume Attributes
+## 支持的卷属性
 
 The csi-driver driver aims to have complete feature parity with all possible
 values available through the cert-manager API however currently supports the
 following values;
 
 | Attribute                               | Description                                                                                                                    | Default                              | Example                          |
-|-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|----------------------------------|
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------ | -------------------------------- |
 | `csi.cert-manager.io/issuer-name`       | The Issuer name to sign the certificate request.                                                                               |                                      | `ca-issuer`                      |
 | `csi.cert-manager.io/issuer-kind`       | The Issuer kind to sign the certificate request.                                                                               | `Issuer`                             | `ClusterIssuer`                  |
 | `csi.cert-manager.io/issuer-group`      | The group name the Issuer belongs to.                                                                                          | `cert-manager.io`                    | `out.of.tree.foo`                |
@@ -158,7 +158,7 @@ following values;
 | `csi.cert-manager.io/pkcs12-filename`   | File location to write the PKCS12 file. Requires `csi.cert-manager.io/keystore-pkcs12-enable` be set to `true`.                | `keystore.p12`                       | `tls.p12`                        |
 | `csi.cert-manager.io/pkcs12-password`   | Password used to encode the PKCS12 file. Required when PKCS12 is enabled (`csi.cert-manager.io/keystore-pkcs12-enable: true`). |                                      | `my-password`                    |
 
-### Variables
+### 变量
 
 The following attributes support variables that are evaluated when a request is
 made for the mounting Pod. These variables are useful for constructing requests
@@ -181,7 +181,7 @@ ${POD_UID}
 ${SERVICE_ACCOUNT_NAME}
 ```
 
-#### Example Usage
+#### 示例使用
 
 ```yaml
 volumeAttributes:
@@ -191,7 +191,7 @@ volumeAttributes:
   csi.cert-manager.io/common-name: "${SERVICE_ACCOUNT_NAME}.${POD_NAMESPACE}"
 ```
 
-## Requesting Certificates using the mounting Pod's ServiceAccount
+## 使用挂载 Pod 的 ServiceAccount 请求证书
 
 If the flag `--use-token-request` is enabled on the csi-driver DaemonSet, the
 [CertificateRequest](../concepts/certificaterequest/) resource will be created
@@ -212,9 +212,9 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: cert-manager-csi-driver-all-cr-create
 rules:
-- apiGroups: ["cert-manager.io"]
-  resources: ["certificaterequests"]
-  verbs: [ "create" ]
+  - apiGroups: ["cert-manager.io"]
+    resources: ["certificaterequests"]
+    verbs: ["create"]
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -225,7 +225,7 @@ roleRef:
   kind: ClusterRole
   name: cert-manager-csi-driver-all-cr-create
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: system:authenticated
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: system:authenticated
 ```
