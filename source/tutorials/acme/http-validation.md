@@ -41,9 +41,9 @@ spec:
             class: nginx
 ```
 
-我们已经为 Let’s Encrypt 的[登台环境](https://letsencrypt.org/docs/staging-environment/)指定了 ACME 服务器 URL。
-登台环境不会颁发受信任的证书，但用于确保在转移到生产环境之前验证过程正常工作。
-让我们加密的生产环境强加更严格的[速率限制](https://letsencrypt.org/docs/rate-limits/)，所以为了减少您达到这些限制的机会，强烈建议从使用登台环境开始。
+我们已经为 Let’s Encrypt 的[预演环境](https://letsencrypt.org/docs/staging-environment/)指定了 ACME 服务器 URL。
+预演环境不会颁发受信任的证书，但用于确保在转移到生产环境之前验证过程正常工作。
+让我们加密的生产环境强加更严格的[速率限制](https://letsencrypt.org/docs/rate-limits/)，所以为了减少您达到这些限制的机会，强烈建议从使用预演环境开始。
 要进入生产环境，只需将 URL 设置为`https://acme-v02.api.letsencrypt.org/directory`创建一个新的 Issuer。
 
 ACME 协议的第一个阶段是客户端向 ACME 服务器注册。

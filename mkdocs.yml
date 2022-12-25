@@ -176,6 +176,8 @@ nav:
               - 外部负载均衡器: configuration/acme/http01/externalloadbalancer.md
           - DNS01:
               - 简介: configuration/acme/dns01/README.md
+              - ALIDNS: configuration/acme/dns01/alidns-webhook.md
+              - CMAW: configuration/acme/dns01/cert-manager-alidns-webhook.md
               - ACMEDNS: configuration/acme/dns01/acme-dns.md
               - Akamai: configuration/acme/dns01/akamai.md
               - AzureDNS: configuration/acme/dns01/azuredns.md
@@ -202,6 +204,7 @@ nav:
       - cert-manager 证书的策略: usage/approver-policy.md
   - 手册:
       - 介绍: tutorials/README.md
+      - 阿里云K8s部署: tutorials/kubenetes-aliyun-https.md
       - HTTP 验证: tutorials/acme/http-validation.md
       - DNS 验证: tutorials/acme/dns-validation.md
       - NGINX-ingress: tutorials/acme/nginx-ingress.md
