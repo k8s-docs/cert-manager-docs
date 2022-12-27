@@ -14,4 +14,4 @@ description: 参考资料包括TLS术语、API文档和关于证书管理器组�
   了解证书管理器 Docker 镜像的命令行标志:`controller`, `webhook`, `cainjector`, `acmesolver`，它们运行在集群的容器中。
 
 - [API 参考](./api-docs.md):
-  了解证书管理器 API，包括自定义资源，如 Certificate, CertificateRequest, Issuer 和 ClusterIssuer。
+  了解证书管理器 API，包括自定义源，如 Certificate, CertificateRequest, Issuer 和 ClusterIssuer。

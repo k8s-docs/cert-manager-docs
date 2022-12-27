@@ -15,7 +15,7 @@ ACME 协议支持各种挑战机制，这些机制用于证明域的所有权，
 如果您能够在给定路径下发布给定文件，则假定您控制了域。
 
 下面的发布者定义了启用 HTTP 验证所需的信息。
-您可以在[Issuer docs](../../concepts/issuer.md)中阅读更多关于 Issuer 资源的信息。
+您可以在[Issuer docs](../../concepts/issuer.md)中阅读更多关于 Issuer 源的信息。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -74,7 +74,7 @@ spec:
 ```
 
 Certificate 源描述了我们所需的证书以及可用于获取该证书的可能方法。
-您可以在[docs](../../concepts/certificate.md)中了解更多关于 Certificate 资源的信息。
+您可以在[docs](../../concepts/certificate.md)中了解更多关于 Certificate 源的信息。
 如果成功获得证书，生成的密钥对将存储在名为`example-com-tls`的秘密中，与证书位于相同的名称空间中。
 
 证书将有一个通用名称`example.com`，[主题替代名称(SANs)](https://en.wikipedia.org/wiki/Subject_Alternative_Name) 将是`example.com`和`www.example.com`。
@@ -90,18 +90,18 @@ Certificate 源描述了我们所需的证书以及可用于获取该证书的�
 在这里，我们已经定义了用于验证域所有权的 HTTP01 挑战的配置。
 为了验证`http01`节中提到的每个域的所有权，cert-manager 将创建一个 Pod、Service 和 Ingress，以公开一个满足 HTTP01 挑战的 HTTP 端点。
 
-`http01` 节中的`ingress` 和 `ingressClass`字段可以用来控制 cert-manager 如何与 ingress 资源交互:
+`http01` 节中的`ingress` 和 `ingressClass`字段可以用来控制 cert-manager 如何与 ingress 源交互:
 
-- 如果指定了`ingress`字段，则必须已经存在与 Certificate 在同一名称空间中的同名 ingress 资源，并且只会修改它以添加适当的规则来解决挑战。
-  该字段对于谷歌 Cloud Loadbalancer 入口控制器以及许多其他为每个入口资源分配单个公共 IP 地址的控制器非常有用。
-  如果没有人工干预，创建新的入口资源将导致任何挑战失败。
-- 如果指定了`ingressClass`字段，则将创建一个具有随机生成名称的新入口资源以解决该挑战。
-  这个新资源将有一个带有`kubernetes.io/ingress.class`键的注释，值设置为`ingressClass`字段的值。
+- 如果指定了`ingress`字段，则必须已经存在与 Certificate 在同一名称空间中的同名 ingress 源，并且只会修改它以添加适当的规则来解决挑战。
+  该字段对于谷歌 Cloud Loadbalancer 入口控制器以及许多其他为每个入口源分配单个公共 IP 地址的控制器非常有用。
+  如果没有人工干预，创建新的入口源将导致任何挑战失败。
+- 如果指定了`ingressClass`字段，则将创建一个具有随机生成名称的新入口源以解决该挑战。
+  这个新源将有一个带有`kubernetes.io/ingress.class`键的注释，值设置为`ingressClass`字段的值。
   这适用于 NGINX 入口控制器。
-- 如果两者都没有指定，则将使用随机生成的名称创建新的入口资源，但它们将没有入口类注释集。
+- 如果两者都没有指定，则将使用随机生成的名称创建新的入口源，但它们将没有入口类注释集。
 - 如果两者都指定了，那么`ingress`字段将优先。
 
-一旦验证了域所有权，任何受证书管理器影响的资源都将被清除或删除。
+一旦验证了域所有权，任何受证书管理器影响的源都将被清除或删除。
 
 !!! Note
 

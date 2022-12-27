@@ -39,17 +39,17 @@ HTTP01 发行者支持许多附加选项。有关可用选项范围的完整详�
 
 如果指定了`class`字段，cert-manager 将创建新的`Ingress`源，以便将流量路由到`acmesolver` pod，这些 pod 负责响应 ACME 挑战验证请求。
 
-如果没有指定该字段，并且`name`也没有指定，cert-manager 将默认创建 _新_ 的`Ingress`源，但 **不会** 在这些资源上设置入口类，这意味着集群中安装的 _所有_ 入口控制器将为挑战求解器提供流量，可能会产生额外的成本。
+如果没有指定该字段，并且`name`也没有指定，cert-manager 将默认创建 _新_ 的`Ingress`源，但 **不会** 在这些源上设置入口类，这意味着集群中安装的 _所有_ 入口控制器将为挑战求解器提供流量，可能会产生额外的成本。
 
 ### `name`
 
-如果指定了`name`字段，cert-manager 将编辑命名的入口资源以解决 HTTP01 挑战。
+如果指定了`name`字段，cert-manager 将编辑命名的入口源以解决 HTTP01 挑战。
 
 这对于兼容入口控制器很有用，比如`ingress-gce`，它为每个创建的`Ingress`源使用唯一的 IP 地址。
 
-当使用为所有入口资源公开单个 IP 的入口控制器时，应该避免这种模式，因为它会与某些入口控制器特定的注释产生兼容性问题。
+当使用为所有入口源公开单个 IP 的入口控制器时，应该避免这种模式，因为它会与某些入口控制器特定的注释产生兼容性问题。
 
-<h3 id="ingress-service-type">`serviceType`</h3>
+### `serviceType`
 
 在极少数情况下，可能不可能/不希望使用`NodePort`作为 HTTP01 挑战响应服务的类型，例如，由于 Kubernetes 的 limit 限制。
 要定义在挑战响应期间使用哪种 Kubernetes 服务类型，请指定以下 HTTP01 配置:
@@ -66,7 +66,7 @@ http01:
 
 ### `podTemplate`
 
-您可能希望更改或添加解算器荚的标签和注释。
+您可能希望更改或添加解算器 Pod 的标签和注释。
 这些可以在`podTemplate`下的`metadata`字段下配置。
 
 类似地，你可以通过在`podTemplate`的`spec`字段下配置来设置`nodeSelector`，公差和求解器 pods 的亲和性。
@@ -103,7 +103,7 @@ spec:
 
 ### `ingressTemplate`
 
-可以向求解器入口资源添加标签和注释。
+可以向求解器入口源添加标签和注释。
 当你在整个集群中管理多个入口控制器，并且你想要确保正确的一个将拾取并暴露解算器(用于即将解决的挑战)时，它非常有用。
 这些可以在`ingressTemplate`下的`metadata`字段下配置:
 
@@ -138,7 +138,7 @@ spec:
 
 **功能状态**: cert-manager 1.5 [alpha]
 
-Gateway 和 HTTPRoute 资源是[Gateway API][gwapi]的一部分，这是一组可以安装在 Kubernetes 集群上的 CRDs，它提供了对 Ingress API 的各种改进。
+Gateway 和 HTTPRoute 源是[Gateway API][gwapi]的一部分，这是一组可以安装在 Kubernetes 集群上的 CRDs，它提供了对 Ingress API 的各种改进。
 
 [gwapi]: https://gateway-api.sigs.k8s.io
 
@@ -176,7 +176,7 @@ Gateway 和 HTTPRoute 资源是[Gateway API][gwapi]的一部分，这是一组�
 !!! info
 
     🚧 cert-manager 1.8+使用v1alpha2 Kubernetes Gateway API进行测试。
-    由于资源转换，它也可以与v1beta1一起工作，但还没有使用它进行测试。
+    由于源转换，它也可以与v1beta1一起工作，但还没有使用它进行测试。
 
 HTTP-01 求解器使用给定的标签创建一个临时的 HTTPRoute。
 这些标签必须与在端口 80 上包含侦听器的 Gateway 匹配。
@@ -200,7 +200,7 @@ spec:
                 kind: Gateway
 ```
 
-颁发者依赖于集群上现有的网关。cert-manager 不编辑网关资源。
+颁发者依赖于集群上现有的网关。cert-manager 不编辑网关源。
 
 例如，以下网关将允许发行者解决挑战:
 
@@ -273,7 +273,7 @@ spec:
 
 ### `labels`
 
-这些标签被复制到证书管理器为解决 HTTP-01 挑战而创建的临时 HTTPRoute 中。这些标签必须与集群上的一个 Gateway 资源相匹配。匹配的 Gateway 在端口 80 上有一个监听器。
+这些标签被复制到证书管理器为解决 HTTP-01 挑战而创建的临时 HTTPRoute 中。这些标签必须与集群上的一个 Gateway 源相匹配。匹配的 Gateway 在端口 80 上有一个监听器。
 
 请注意，当标签与集群上的任何 Gateway 不匹配时，cert-manager 将创建临时 HTTPRoute 挑战，并且不会发生任何事情。
 

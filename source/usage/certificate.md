@@ -25,14 +25,13 @@ metadata:
   name: example-com
   namespace: sandbox
 spec:
-  # Secret names are always required.
+  # 总是需要使用秘密名称。
   secretName: example-com-tls
 
-  # secretTemplate is optional. If set, these annotations and labels will be
-  # copied to the Secret named example-com-tls. These labels and annotations will
-  # be re-reconciled if the Certificate's secretTemplate changes. secretTemplate
-  # is also enforced, so relevant label and annotation changes on the Secret by a
-  # third party will be overwriten by cert-manager to match the secretTemplate.
+  # secretTemplate是可选参数。
+  # 如果设置了，这些注释和标签将被复制到名为example-com-tls的Secret。
+  # 如果证书的secretTemplate发生变化，这些标签和注释将重新协调。
+  # secretTemplate也是强制的，因此第三方对Secret的相关标签和注释更改将被cert-manager覆盖以匹配secretTemplate。
   secretTemplate:
     annotations:
       my-secret-annotation-1: "foo"
@@ -45,8 +44,7 @@ spec:
   subject:
     organizations:
       - jetstack
-  # The use of the common name field has been deprecated since 2000 and is
-  # discouraged from being used.
+  # 自2000年以来，通用名称字段的使用已被弃用，不鼓励使用。
   commonName: example.com
   isCA: false
   privateKey:
@@ -56,7 +54,7 @@ spec:
   usages:
     - server auth
     - client auth
-  # At least one of a DNS Name, URI, or IP address is required.
+  # 至少需要DNS名称、URI或IP地址中的一个。
   dnsNames:
     - example.com
     - www.example.com
@@ -64,14 +62,13 @@ spec:
     - spiffe://cluster.local/ns/sandbox/sa/example
   ipAddresses:
     - 192.168.0.5
-  # Issuer references are always required.
+  # 始终需要发行者引用。
   issuerRef:
     name: ca-issuer
-    # We can reference ClusterIssuers by changing the kind here.
-    # The default value is Issuer (i.e. a locally namespaced Issuer)
+    # 我们可以通过更改这里的类型来引用 ClusterIssuers。
+    # 默认值是Issuer(即本地命名空间的Issuer)。
     kind: Issuer
-    # This is optional since cert-manager will default to this value however
-    # if you are using an external issuer, change this to that issuer group.
+    # 这是可选的，因为cert-manager将默认为此值，但如果您使用外部颁发者，请将此更改为该颁发者组。
     group: cert-manager.io
 ```
 

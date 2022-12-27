@@ -7,15 +7,15 @@ description: "cert-manager tutorials: Backing up your cert-manager installation"
 
 如果需要卸载 cert-manager，或将安装转移到新的集群，可以备份所有 cert-manager 的配置，以便稍后重新安装。
 
-## 备份 cert-manager 资源配置
+## 备份 cert-manager 源配置
 
-以下命令将备份`cert-manager`资源的配置。
+以下命令将备份`cert-manager`源的配置。
 在升级`cert-manager`之前，这样做可能很有用。
 由于此备份不包括包含 X.509 证书的`Secrets`，因此还原到尚未拥有这些`Secrets`对象的集群将导致重新颁发证书。
 
 ### 备份
 
-备份所有 cert-manager 配置资源，执行:
+备份所有 cert-manager 配置源，执行:
 
 ```bash
 kubectl get --all-namespaces -oyaml issuer,clusterissuer,cert > backup.yaml
@@ -47,7 +47,7 @@ kubectl apply -f <(awk '!/^ *(resourceVersion|uid): [^ ]+$/' backup.yaml)
 
 ## 全集群备份和恢复
 
-本节涉及备份和恢复集群中的“所有”Kubernetes 资源(包括一些`cert-manager`资源)，用于 isaster 恢复、集群迁移等场景。
+本节涉及备份和恢复集群中的“所有”Kubernetes 源(包括一些`cert-manager`源)，用于 isaster 恢复、集群迁移等场景。
 
 !!! note
 
@@ -65,7 +65,7 @@ reissuance after a restore, ensure that `Secret`s are restored before
 `Certificate`s. Similarly, `Secret`s should be restored before `Ingress`es if you
 are using [`ingress-shim`](../usage/ingress.md).
 
-#### 从备份中排除一些证书管理器资源
+#### 从备份中排除一些证书管理器源
 
 `cert-manager` has a number of custom resources that are designed to represent a
 point-in-time operation. An example would be a `CertificateRequest` that

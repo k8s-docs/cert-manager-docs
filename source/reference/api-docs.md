@@ -1,11 +1,13 @@
 ---
-title: API Reference
-description: >-
-  Learn about the cert-manager API which includes Custom Resources such as
-  Certificate, CertificateRequest, Issuer and ClusterIssuer.
+title: API 参考
+description: 了解证书管理器API，包括自定义资源，如Certificate, CertificateRequest, Issuer和ClusterIssuer。
 ---
-Learn about the cert-manager API which includes Custom Resources such as Certificate, CertificateRequest, Issuer and ClusterIssuer.
-<p>Packages:</p>
+
+# API 参考
+
+了解证书管理器 API，包括自定义资源，如 Certificate, CertificateRequest, Issuer 和 ClusterIssuer。
+
+<p>包:</p>
 <ul>
   <li>
     <a href="#acme.cert-manager.io%2fv1">acme.cert-manager.io/v1</a>
@@ -22,9 +24,9 @@ Learn about the cert-manager API which includes Custom Resources such as Certifi
 </ul>
 <h2 id="acme.cert-manager.io/v1">acme.cert-manager.io/v1</h2>
 <div>
-  <p>Package v1 is the v1 version of the API.</p>
+  <p>包v1是API的v1版本。</p>
 </div>
-Resource Types:
+资源类型:
 <ul>
   <li>
     <a href="#acme.cert-manager.io/v1.Challenge">Challenge</a>
@@ -33,9 +35,10 @@ Resource Types:
     <a href="#acme.cert-manager.io/v1.Order">Order</a>
   </li>
 </ul>
-<h3 id="acme.cert-manager.io/v1.Challenge">Challenge</h3>
+<a id="acme.cert-manager.io/v1.Challenge"></a>
+### Challenge
 <div>
-  <p>Challenge is a type to represent a Challenge request with an ACME server</p>
+  <p>Challenge是一种表示使用ACME服务器的Challenge请求的类型</p>
 </div>
 <table>
   <thead>
@@ -74,8 +77,7 @@ Resource Types:
         </em>
       </td>
       <td>
-        Refer to the Kubernetes API documentation for the fields of the
-        <code>metadata</code> field.
+        关于<code>元数据</code>字段的字段，请参考Kubernetes API文档。
       </td>
     </tr>
     <tr>
@@ -97,7 +99,7 @@ Resource Types:
               <em>string</em>
             </td>
             <td>
-              <p>The URL of the ACME Challenge resource for this challenge. This can be used to lookup details about the status of this challenge.</p>
+              <p>此挑战的ACME挑战资源的URL。这可用于查找关于此挑战状态的详细信息。</p>
             </td>
           </tr>
           <tr>
@@ -107,7 +109,7 @@ Resource Types:
               <em>string</em>
             </td>
             <td>
-              <p>The URL to the ACME Authorization resource that this challenge is a part of.</p>
+              <p>指向此挑战所属的ACME授权资源的URL。</p>
             </td>
           </tr>
           <tr>
@@ -117,7 +119,7 @@ Resource Types:
               <em>string</em>
             </td>
             <td>
-              <p> dnsName is the identifier that this challenge is for, e.g. example.com. If the requested DNSName is a &lsquo;wildcard&rsquo;, this field MUST be set to the non-wildcard domain, e.g. for <code>*.example.com</code>, it must be <code>example.com</code>. </p>
+              <p>dnsName是这个挑战的标识符，例如example.com。如果请求的DNSName是一个&lsquo;通配符&rsquo;，这个字段必须设置为非通配符域，例如<code>*.example.com</code>，它必须是<code>example.com</code>。</p>
             </td>
           </tr>
           <tr>
@@ -209,7 +211,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.Order">Order</h3>
+<a id="acme.cert-manager.io/v1.Order"></a>
+### Order
 <div>
   <p>Order is a type to represent an Order with an ACME server</p>
 </div>
@@ -250,8 +253,7 @@ Resource Types:
         </em>
       </td>
       <td>
-        Refer to the Kubernetes API documentation for the fields of the
-        <code>metadata</code> field.
+        关于<code>元数据</code>字段的字段，请参考Kubernetes API文档。
       </td>
     </tr>
     <tr>
@@ -273,7 +275,7 @@ Resource Types:
               <em>[]byte</em>
             </td>
             <td>
-              <p>Certificate signing request bytes in DER encoding. This will be used when finalizing the order. This field must be set on the order.</p>
+              <p>DER编码中的证书签名请求字节。这将在最终确定订单时使用。此字段必须按顺序设置。</p>
             </td>
           </tr>
           <tr>
@@ -285,7 +287,7 @@ Resource Types:
               </em>
             </td>
             <td>
-              <p>IssuerRef references a properly configured ACME-type Issuer which should be used to create this Order. If the Issuer does not exist, processing will be retried. If the Issuer is not an &lsquo;ACME&rsquo; Issuer, an error will be returned and the Order will be marked as failed.</p>
+              <p>IssuerRef引用一个正确配置的acme类型颁发者，该颁发者应用于创建此订单。如果颁发者不存在，将重试处理。如果发行人不是ACME&rsquo;发布者，将返回一个错误，订单将被标记为失败。</p>
             </td>
           </tr>
           <tr>
@@ -296,7 +298,7 @@ Resource Types:
             </td>
             <td>
               <em>(Optional)</em>
-              <p> CommonName is the common name as specified on the DER encoded CSR. If specified, this value must also be present in <code>dnsNames</code> or <code>ipAddresses</code>. This field must match the corresponding field on the DER encoded CSR. </p>
+              <p>CommonName是在DER编码的CSR上指定的公共名称。如果指定，该值也必须出现在<code>dnsNames</code>或<code>ipAddresses</code>中。该字段必须与DER编码的CSR上的相应字段匹配。</p>
             </td>
           </tr>
           <tr>
@@ -307,7 +309,7 @@ Resource Types:
             </td>
             <td>
               <em>(Optional)</em>
-              <p>DNSNames is a list of DNS names that should be included as part of the Order validation process. This field must match the corresponding field on the DER encoded CSR.</p>
+              <p>DNSNames是一个DNS名称列表，应该包括在订单验证过程中。该字段必须与DER编码的CSR上的相应字段匹配。</p>
             </td>
           </tr>
           <tr>
@@ -318,7 +320,7 @@ Resource Types:
             </td>
             <td>
               <em>(Optional)</em>
-              <p>IPAddresses is a list of IP addresses that should be included as part of the Order validation process. This field must match the corresponding field on the DER encoded CSR.</p>
+              <p>IPAddresses是一个IP地址列表，应该包括在订单验证过程中。该字段必须与DER编码的CSR上的相应字段匹配。</p>
             </td>
           </tr>
           <tr>
@@ -331,7 +333,7 @@ Resource Types:
             </td>
             <td>
               <em>(Optional)</em>
-              <p>Duration is the duration for the not after date for the requested certificate. this is set on order creation as pe the ACME spec.</p>
+              <p>持续时间是请求证书的未过期日期的持续时间。这是根据ACME规范在订单创建时设置的。</p>
             </td>
           </tr>
         </table>
@@ -351,10 +353,11 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEAuthorization">ACMEAuthorization</h3>
+<a id="acme.cert-manager.io/v1.ACMEAuthorization"></a>
+### ACMEAuthorization
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.OrderStatus">OrderStatus</a>) </p>
 <div>
-  <p>ACMEAuthorization contains data returned from the ACME server on an authorization that must be completed in order validate a DNS name on an ACME Order resource.</p>
+  <p>ACMEAuthorization包含授权时从ACME服务器返回的数据，必须完成授权才能在ACME order资源上验证DNS名称。</p>
 </div>
 <table>
   <thead>
@@ -371,7 +374,7 @@ Resource Types:
         <em>string</em>
       </td>
       <td>
-        <p>URL is the URL of the Authorization that must be completed</p>
+        <p>URL是必须完成的授权的URL</p>
       </td>
     </tr>
     <tr>
@@ -382,7 +385,7 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p>Identifier is the DNS name to be validated as part of this authorization</p>
+        <p>标识符是作为此授权的一部分进行验证的DNS名称</p>
       </td>
     </tr>
     <tr>
@@ -393,7 +396,9 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p> Wildcard will be true if this authorization is for a wildcard DNS name. If this is true, the identifier will be the <em>non-wildcard</em> version of the DNS name. For example, if &lsquo;*.example.com&rsquo; is the DNS name being validated, this field will be &lsquo;true&rsquo; and the &lsquo;identifier&rsquo; field will be &lsquo;example.com&rsquo;. </p>
+        <p> 如果此授权用于通配符DNS名称，则通配符将为true。
+如果这是真的，标识符将是<em>非通配符</em>版本的DNS名称。
+例如，如果&lsquo;*.example.com&rsquo;是正在验证的DNS名称，这个字段将是&lsquo;true&rsquo;标识符&rsquo;字段将是&lsquo;example.com&rsquo; </p>
       </td>
     </tr>
     <tr>
@@ -424,7 +429,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallenge">ACMEChallenge</h3>
+<a id="acme.cert-manager.io/v1.ACMEChallenge"></a>
+### ACMEChallenge
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEAuthorization">ACMEAuthorization</a>) </p>
 <div>
   <p>Challenge specifies a challenge offered by the ACME server for an Order. An appropriate Challenge resource can be created to perform the ACME challenge process.</p>
@@ -469,7 +475,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallengeSolver">ACMEChallengeSolver</h3>
+<a id="acme.cert-manager.io/v1.ACMEChallengeSolver"></a>
+### ACMEChallengeSolver
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEIssuer">ACMEIssuer</a>, <a href="#acme.cert-manager.io/v1.ChallengeSpec">ChallengeSpec</a>) </p>
 <div>
   <p>An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.</p>
@@ -523,7 +530,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallengeSolverDNS01">ACMEChallengeSolverDNS01</h3>
+<a id="acme.cert-manager.io/v1.ACMEChallengeSolverDNS01"></a>
+### ACMEChallengeSolverDNS01
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolver">ACMEChallengeSolver</a>) </p>
 <div>
   <p>Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.</p>
@@ -668,10 +676,11 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01">ACMEChallengeSolverHTTP01</h3>
+<a id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01"></a>
+### ACMEChallengeSolverHTTP01
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolver">ACMEChallengeSolver</a>) </p>
 <div>
-  <p>ACMEChallengeSolverHTTP01 contains configuration detailing how to solve HTTP01 challenges within a Kubernetes cluster. Typically this is accomplished through creating &lsquo;routes&rsquo; of some description that configure ingress controllers to direct traffic to &lsquo;solver pods&rsquo;, which are responsible for responding to the ACME server&rsquo;s HTTP requests. Only one of Ingress / Gateway can be specified.</p>
+  <p>ACMEChallengeSolverHTTP01包含详细介绍如何在Kubernetes集群中解决HTTP01挑战的配置。这通常是通过创建&lsquo;routes&rsquo;的一些描述，这些描述配置入口控制器将流量引导到求解器pod，它负责响应ACME服务器的HTTP请求。Ingress / Gateway中只能指定一个。</p>
 </div>
 <table>
   <thead>
@@ -691,7 +700,7 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p>The ingress based HTTP01 challenge solver will solve challenges by creating or modifying Ingress resources in order to route requests for &lsquo;/.well-known/acme-challenge/XYZ&rsquo; to &lsquo;challenge solver&rsquo; pods that are provisioned by cert-manager for each Challenge to be completed.</p>
+        <p>基于入口的HTTP01挑战解决器将通过创建或修改入口资源来解决挑战，以便路由&lsquo;/.well-known/acme-challenge/XYZ&rsquo;挑战解决者;由cert-manager为每个要完成的挑战提供的pod。</p>
       </td>
     </tr>
     <tr>
@@ -704,12 +713,13 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p> The Gateway API is a sig-network community API that models service networking in Kubernetes (<a href="https://gateway-api.sigs.k8s.io/">https://gateway-api.sigs.k8s.io/</a>). The Gateway solver will create HTTPRoutes with the specified labels in the same namespace as the challenge. This solver is experimental, and fields / behaviour may change in the future. </p>
+        <p>Gateway API是一个sig-network社区API，用于在Kubernetes中建模服务网络(<a href="https://gateway-api.sigs.k8s.io/">https://gateway-api.sigs.k8s.io/</a>)。网关求解器将在与挑战相同的名称空间中创建带有指定标签的HTTPRoutes。这个解算器是实验性的，字段/行为在未来可能会改变。</p>
       </td>
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01GatewayHTTPRoute">ACMEChallengeSolverHTTP01GatewayHTTPRoute</h3>
+<a id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01GatewayHTTPRoute"></a>
+### ACMEChallengeSolverHTTP01GatewayHTTPRoute
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01">ACMEChallengeSolverHTTP01</a>) </p>
 <div>
   <p>The ACMEChallengeSolverHTTP01GatewayHTTPRoute solver will create HTTPRoute objects for a Gateway class routing to an ACME challenge solver pod.</p>
@@ -761,7 +771,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01Ingress">ACMEChallengeSolverHTTP01Ingress</h3>
+<a id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01Ingress"></a>
+### ACMEChallengeSolverHTTP01Ingress
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01">ACMEChallengeSolverHTTP01</a>) </p>
 <div></div>
 <table>
@@ -835,7 +846,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressObjectMeta">ACMEChallengeSolverHTTP01IngressObjectMeta</h3>
+<a id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressObjectMeta"></a>
+### ACMEChallengeSolverHTTP01IngressObjectMeta
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressTemplate">ACMEChallengeSolverHTTP01IngressTemplate</a>) </p>
 <div></div>
 <table>
@@ -870,7 +882,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressPodObjectMeta">ACMEChallengeSolverHTTP01IngressPodObjectMeta</h3>
+<a id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressPodObjectMeta"></a>
+### ACMEChallengeSolverHTTP01IngressPodObjectMeta
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressPodTemplate">ACMEChallengeSolverHTTP01IngressPodTemplate</a>) </p>
 <div></div>
 <table>
@@ -905,7 +918,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressPodSpec">ACMEChallengeSolverHTTP01IngressPodSpec</h3>
+<a id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressPodSpec"></a>
+### ACMEChallengeSolverHTTP01IngressPodSpec
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressPodTemplate">ACMEChallengeSolverHTTP01IngressPodTemplate</a>) </p>
 <div></div>
 <table>
@@ -977,7 +991,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressPodTemplate">ACMEChallengeSolverHTTP01IngressPodTemplate</h3>
+<a id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressPodTemplate"></a>
+### ACMEChallengeSolverHTTP01IngressPodTemplate
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01Ingress">ACMEChallengeSolverHTTP01Ingress</a>) </p>
 <div></div>
 <table>
@@ -1079,7 +1094,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressTemplate">ACMEChallengeSolverHTTP01IngressTemplate</h3>
+<a id="acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01IngressTemplate"></a>
+### ACMEChallengeSolverHTTP01IngressTemplate
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverHTTP01Ingress">ACMEChallengeSolverHTTP01Ingress</a>) </p>
 <div></div>
 <table>
@@ -1105,7 +1121,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEChallengeType"> ACMEChallengeType (<code>string</code> alias) </h3>
+<a id="acme.cert-manager.io/v1.ACMEChallengeType"></a>
+###  ACMEChallengeType (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ChallengeSpec">ChallengeSpec</a>) </p>
 <div>
   <p>The type of ACME challenge. Only HTTP-01 and DNS-01 are supported.</p>
@@ -1136,7 +1153,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEExternalAccountBinding">ACMEExternalAccountBinding</h3>
+<a id="acme.cert-manager.io/v1.ACMEExternalAccountBinding"></a>
+### ACMEExternalAccountBinding
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEIssuer">ACMEIssuer</a>) </p>
 <div>
   <p>ACMEExternalAccountBinding is a reference to a CA external account of the ACME server.</p>
@@ -1186,7 +1204,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEIssuer">ACMEIssuer</h3>
+<a id="acme.cert-manager.io/v1.ACMEIssuer"></a>
+### ACMEIssuer
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.IssuerConfig">IssuerConfig</a>) </p>
 <div>
   <p>ACMEIssuer contains the specification for an ACME issuer. This uses the RFC8555 specification to obtain certificates by completing &lsquo;challenges&rsquo; to prove ownership of domain identifiers. Earlier draft versions of the ACME specification are not supported.</p>
@@ -1304,7 +1323,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderAcmeDNS">ACMEIssuerDNS01ProviderAcmeDNS</h3>
+<a id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderAcmeDNS"></a>
+### ACMEIssuerDNS01ProviderAcmeDNS
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverDNS01">ACMEChallengeSolverDNS01</a>) </p>
 <div>
   <p>ACMEIssuerDNS01ProviderAcmeDNS is a structure containing the configuration for ACME-DNS servers</p>
@@ -1337,7 +1357,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderAkamai">ACMEIssuerDNS01ProviderAkamai</h3>
+<a id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderAkamai"></a>
+### ACMEIssuerDNS01ProviderAkamai
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverDNS01">ACMEChallengeSolverDNS01</a>) </p>
 <div>
   <p>ACMEIssuerDNS01ProviderAkamai is a structure containing the DNS configuration for Akamai DNS—Zone Record Management API</p>
@@ -1390,7 +1411,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderAzureDNS">ACMEIssuerDNS01ProviderAzureDNS</h3>
+<a id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderAzureDNS"></a>
+### ACMEIssuerDNS01ProviderAzureDNS
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverDNS01">ACMEChallengeSolverDNS01</a>) </p>
 <div>
   <p>ACMEIssuerDNS01ProviderAzureDNS is a structure containing the configuration for Azure DNS</p>
@@ -1497,7 +1519,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderCloudDNS">ACMEIssuerDNS01ProviderCloudDNS</h3>
+<a id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderCloudDNS"></a>
+### ACMEIssuerDNS01ProviderCloudDNS
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverDNS01">ACMEChallengeSolverDNS01</a>) </p>
 <div>
   <p>ACMEIssuerDNS01ProviderCloudDNS is a structure containing the DNS configuration for Google Cloud DNS</p>
@@ -1543,7 +1566,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderCloudflare">ACMEIssuerDNS01ProviderCloudflare</h3>
+<a id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderCloudflare"></a>
+### ACMEIssuerDNS01ProviderCloudflare
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverDNS01">ACMEChallengeSolverDNS01</a>) </p>
 <div>
   <p> ACMEIssuerDNS01ProviderCloudflare is a structure containing the DNS configuration for Cloudflare. One of <code>apiKeySecretRef</code> or <code>apiTokenSecretRef</code> must be provided. </p>
@@ -1595,7 +1619,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderDigitalOcean">ACMEIssuerDNS01ProviderDigitalOcean</h3>
+<a id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderDigitalOcean"></a>
+### ACMEIssuerDNS01ProviderDigitalOcean
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverDNS01">ACMEChallengeSolverDNS01</a>) </p>
 <div>
   <p>ACMEIssuerDNS01ProviderDigitalOcean is a structure containing the DNS configuration for DigitalOcean Domains</p>
@@ -1620,7 +1645,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderRFC2136">ACMEIssuerDNS01ProviderRFC2136</h3>
+<a id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderRFC2136"></a>
+### ACMEIssuerDNS01ProviderRFC2136
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverDNS01">ACMEChallengeSolverDNS01</a>) </p>
 <div>
   <p>ACMEIssuerDNS01ProviderRFC2136 is a structure containing the configuration for RFC2136 DNS</p>
@@ -1680,7 +1706,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderRoute53">ACMEIssuerDNS01ProviderRoute53</h3>
+<a id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderRoute53"></a>
+### ACMEIssuerDNS01ProviderRoute53
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverDNS01">ACMEChallengeSolverDNS01</a>) </p>
 <div>
   <p>ACMEIssuerDNS01ProviderRoute53 is a structure containing the Route 53 configuration for AWS</p>
@@ -1764,7 +1791,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderWebhook">ACMEIssuerDNS01ProviderWebhook</h3>
+<a id="acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderWebhook"></a>
+### ACMEIssuerDNS01ProviderWebhook
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverDNS01">ACMEChallengeSolverDNS01</a>) </p>
 <div>
   <p>ACMEIssuerDNS01ProviderWebhook specifies configuration for a webhook DNS01 provider, including where to POST ChallengePayload resources.</p>
@@ -1812,7 +1840,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ACMEIssuerStatus">ACMEIssuerStatus</h3>
+<a id="acme.cert-manager.io/v1.ACMEIssuerStatus"></a>
+### ACMEIssuerStatus
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.IssuerStatus">IssuerStatus</a>) </p>
 <div></div>
 <table>
@@ -1847,7 +1876,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.AzureDNSEnvironment"> AzureDNSEnvironment (<code>string</code> alias) </h3>
+<a id="acme.cert-manager.io/v1.AzureDNSEnvironment"></a>
+###  AzureDNSEnvironment (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderAzureDNS">ACMEIssuerDNS01ProviderAzureDNS</a>) </p>
 <div></div>
 <table>
@@ -1884,7 +1914,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.AzureManagedIdentity">AzureManagedIdentity</h3>
+<a id="acme.cert-manager.io/v1.AzureManagedIdentity"></a>
+### AzureManagedIdentity
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderAzureDNS">ACMEIssuerDNS01ProviderAzureDNS</a>) </p>
 <div></div>
 <table>
@@ -1919,12 +1950,14 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.CNAMEStrategy"> CNAMEStrategy (<code>string</code> alias) </h3>
+<a id="acme.cert-manager.io/v1.CNAMEStrategy"></a>
+###  CNAMEStrategy (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolverDNS01">ACMEChallengeSolverDNS01</a>) </p>
 <div>
   <p>CNAMEStrategy configures how the DNS01 provider should handle CNAME records when found in DNS zones. By default, the None strategy will be applied (i.e. do not follow CNAMEs).</p>
 </div>
-<h3 id="acme.cert-manager.io/v1.CertificateDNSNameSelector">CertificateDNSNameSelector</h3>
+<a id="acme.cert-manager.io/v1.CertificateDNSNameSelector"></a>
+### CertificateDNSNameSelector
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEChallengeSolver">ACMEChallengeSolver</a>) </p>
 <div>
   <p>CertificateDNSNameSelector selects certificates using a label selector, and can optionally select individual DNS names within those certificates. If both MatchLabels and DNSNames are empty, this selector will match all certificates and DNS names within them.</p>
@@ -1972,7 +2005,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ChallengeSpec">ChallengeSpec</h3>
+<a id="acme.cert-manager.io/v1.ChallengeSpec"></a>
+### ChallengeSpec
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.Challenge">Challenge</a>) </p>
 <div></div>
 <table>
@@ -2087,7 +2121,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.ChallengeStatus">ChallengeStatus</h3>
+<a id="acme.cert-manager.io/v1.ChallengeStatus"></a>
+### ChallengeStatus
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.Challenge">Challenge</a>) </p>
 <div></div>
 <table>
@@ -2146,7 +2181,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.HMACKeyAlgorithm"> HMACKeyAlgorithm (<code>string</code> alias) </h3>
+<a id="acme.cert-manager.io/v1.HMACKeyAlgorithm"></a>
+###  HMACKeyAlgorithm (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEExternalAccountBinding">ACMEExternalAccountBinding</a>) </p>
 <div>
   <p>HMACKeyAlgorithm is the name of a key algorithm used for HMAC encryption</p>
@@ -2179,14 +2215,15 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.OrderSpec">OrderSpec</h3>
+<a id="acme.cert-manager.io/v1.OrderSpec"></a>
+### OrderSpec
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.Order">Order</a>) </p>
 <div></div>
 <table>
   <thead>
     <tr>
-      <th>Field</th>
-      <th>Description</th>
+      <th>字段</th>
+      <th>描述</th>
     </tr>
   </thead>
   <tbody>
@@ -2197,7 +2234,7 @@ Resource Types:
         <em>[]byte</em>
       </td>
       <td>
-        <p>Certificate signing request bytes in DER encoding. This will be used when finalizing the order. This field must be set on the order.</p>
+        <p>DER编码中的证书签名请求字节。这将在最终确定订单时使用。此字段必须按顺序设置。</p>
       </td>
     </tr>
     <tr>
@@ -2209,7 +2246,7 @@ Resource Types:
         </em>
       </td>
       <td>
-        <p>IssuerRef references a properly configured ACME-type Issuer which should be used to create this Order. If the Issuer does not exist, processing will be retried. If the Issuer is not an &lsquo;ACME&rsquo; Issuer, an error will be returned and the Order will be marked as failed.</p>
+        <p>IssuerRef引用一个正确配置的acme类型颁发者，该颁发者应用于创建此订单。如果颁发者不存在，将重试处理。如果发行人不是ACME&rsquo;发布者，将返回一个错误，订单将被标记为失败。</p>
       </td>
     </tr>
     <tr>
@@ -2231,7 +2268,7 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p>DNSNames is a list of DNS names that should be included as part of the Order validation process. This field must match the corresponding field on the DER encoded CSR.</p>
+        <p>DNSNames是一个DNS名称列表，应该包括在订单验证过程中。该字段必须与DER编码的CSR上的相应字段匹配。</p>
       </td>
     </tr>
     <tr>
@@ -2242,7 +2279,7 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p>IPAddresses is a list of IP addresses that should be included as part of the Order validation process. This field must match the corresponding field on the DER encoded CSR.</p>
+        <p>IPAddresses是一个IP地址列表，应该包括在订单验证过程中。该字段必须与DER编码的CSR上的相应字段匹配。</p>
       </td>
     </tr>
     <tr>
@@ -2255,12 +2292,13 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p>Duration is the duration for the not after date for the requested certificate. this is set on order creation as pe the ACME spec.</p>
+        <p>持续时间是请求证书的未过期日期的持续时间。这是根据ACME规范在订单创建时设置的。</p>
       </td>
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.OrderStatus">OrderStatus</h3>
+<a id="acme.cert-manager.io/v1.OrderStatus"></a>
+### OrderStatus
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.Order">Order</a>) </p>
 <div></div>
 <table>
@@ -2279,7 +2317,7 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p>URL of the Order. This will initially be empty when the resource is first created. The Order controller will populate this field when the Order is first processed. This field will be immutable after it is initially set.</p>
+        <p>该命令的网址。在第一次创建资源时，初始值为空。当Order第一次被处理时，Order控制器将填充此字段。该字段在初始设置后将是不可变的。</p>
       </td>
     </tr>
     <tr>
@@ -2290,7 +2328,7 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p>FinalizeURL of the Order. This is used to obtain certificates for this order once it has been completed.</p>
+        <p>订单的FinalizeURL这用于在订单完成后获取该订单的证书。</p>
       </td>
     </tr>
     <tr>
@@ -2303,7 +2341,7 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p>Authorizations contains data returned from the ACME server on what authorizations must be completed in order to validate the DNS names specified on the Order.</p>
+        <p>授权包含从ACME服务器返回的关于必须完成哪些授权才能验证订单上指定的DNS名称的数据。</p>
       </td>
     </tr>
     <tr>
@@ -2314,7 +2352,7 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p>Certificate is a copy of the PEM encoded certificate for this Order. This field will be populated after the order has been successfully finalized with the ACME server, and the order has transitioned to the &lsquo;valid&rsquo; state.</p>
+        <p>证书是此订单的PEM编码证书的副本。此字段将在订单与ACME服务器成功完成后填充，并且订单已转换为&lsquo;valid&rsquo;状态。</p>
       </td>
     </tr>
     <tr>
@@ -2327,7 +2365,7 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p>State contains the current state of this Order resource. States &lsquo;success&rsquo; and &lsquo;expired&rsquo; are &lsquo;final&rsquo;</p>
+        <p>State包含此Order资源的当前状态。国家《;success&rsquo;和《;expired&rsquo;《;final&rsquo;</p>
       </td>
     </tr>
     <tr>
@@ -2338,7 +2376,7 @@ Resource Types:
       </td>
       <td>
         <em>(Optional)</em>
-        <p>Reason optionally provides more information about a why the order is in the current state.</p>
+        <p>Reason可选地提供关于订单为何处于当前状态的更多信息。</p>
       </td>
     </tr>
     <tr>
@@ -2356,7 +2394,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="acme.cert-manager.io/v1.State"> State (<code>string</code> alias) </h3>
+<a id="acme.cert-manager.io/v1.State"></a>
+###  State (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEAuthorization">ACMEAuthorization</a>, <a href="#acme.cert-manager.io/v1.ChallengeStatus">ChallengeStatus</a>, <a href="#acme.cert-manager.io/v1.OrderStatus">OrderStatus</a>) </p>
 <div>
   <p>
@@ -2458,7 +2497,8 @@ Resource Types:
     <a href="#cert-manager.io/v1.Issuer">Issuer</a>
   </li>
 </ul>
-<h3 id="cert-manager.io/v1.Certificate">Certificate</h3>
+<a id="cert-manager.io/v1.Certificate"></a>
+### Certificate
 <div>
   <p> A Certificate resource should be created to ensure an up to date and signed x509 certificate is stored in the Kubernetes Secret resource named in <code>spec.secretName</code>. </p>
   <p> The stored certificate will be renewed before it expires (as configured by <code>spec.renewBefore</code>). </p>
@@ -2769,7 +2809,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateRequest">CertificateRequest</h3>
+<a id="cert-manager.io/v1.CertificateRequest"></a>
+### CertificateRequest
 <div>
   <p>A CertificateRequest is used to request a signed certificate from one of the configured issuers.</p>
   <p>
@@ -2953,7 +2994,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.ClusterIssuer">ClusterIssuer</h3>
+<a id="cert-manager.io/v1.ClusterIssuer"></a>
+### ClusterIssuer
 <div>
   <p> A ClusterIssuer represents a certificate issuing authority which can be referenced as part of <code>issuerRef</code> fields. It is similar to an Issuer, however it is cluster-scoped and therefore can be referenced by resources that exist in <em>any</em> namespace, not just the same namespace as the referent. </p>
 </div>
@@ -3041,7 +3083,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.Issuer">Issuer</h3>
+<a id="cert-manager.io/v1.Issuer"></a>
+### Issuer
 <div>
   <p> An Issuer represents a certificate issuing authority which can be referenced as part of <code>issuerRef</code> fields. It is scoped to a single namespace and can therefore only be referenced by resources within the same namespace. </p>
 </div>
@@ -3129,7 +3172,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CAIssuer">CAIssuer</h3>
+<a id="cert-manager.io/v1.CAIssuer"></a>
+### CAIssuer
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.IssuerConfig">IssuerConfig</a>) </p>
 <div></div>
 <table>
@@ -3174,7 +3218,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateAdditionalOutputFormat">CertificateAdditionalOutputFormat</h3>
+<a id="cert-manager.io/v1.CertificateAdditionalOutputFormat"></a>
+### CertificateAdditionalOutputFormat
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateSpec">CertificateSpec</a>) </p>
 <div>
   <p>CertificateAdditionalOutputFormat defines an additional output format of a Certificate resource. These contain supplementary data formats of the signed certificate chain and paired private key.</p>
@@ -3201,7 +3246,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateCondition">CertificateCondition</h3>
+<a id="cert-manager.io/v1.CertificateCondition"></a>
+### CertificateCondition
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateStatus">CertificateStatus</a>) </p>
 <div>
   <p>CertificateCondition contains condition information for an Certificate.</p>
@@ -3286,7 +3332,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateConditionType"> CertificateConditionType (<code>string</code> alias) </h3>
+<a id="cert-manager.io/v1.CertificateConditionType"></a>
+###  CertificateConditionType (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateCondition">CertificateCondition</a>) </p>
 <div>
   <p>CertificateConditionType represents an Certificate condition value.</p>
@@ -3321,7 +3368,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateKeystores">CertificateKeystores</h3>
+<a id="cert-manager.io/v1.CertificateKeystores"></a>
+### CertificateKeystores
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateSpec">CertificateSpec</a>) </p>
 <div>
   <p>CertificateKeystores configures additional keystore output formats to be created in the Certificate&rsquo;s output Secret.</p>
@@ -3368,7 +3416,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateOutputFormatType"> CertificateOutputFormatType (<code>string</code> alias) </h3>
+<a id="cert-manager.io/v1.CertificateOutputFormatType"></a>
+###  CertificateOutputFormatType (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateAdditionalOutputFormat">CertificateAdditionalOutputFormat</a>) </p>
 <div>
   <p>
@@ -3405,7 +3454,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificatePrivateKey">CertificatePrivateKey</h3>
+<a id="cert-manager.io/v1.CertificatePrivateKey"></a>
+### CertificatePrivateKey
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateSpec">CertificateSpec</a>) </p>
 <div>
   <p>CertificatePrivateKey contains configuration options for private keys used by the Certificate controller. This allows control of how private keys are rotated.</p>
@@ -3470,7 +3520,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateRequestCondition">CertificateRequestCondition</h3>
+<a id="cert-manager.io/v1.CertificateRequestCondition"></a>
+### CertificateRequestCondition
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateRequestStatus">CertificateRequestStatus</a>) </p>
 <div>
   <p>CertificateRequestCondition contains condition information for a CertificateRequest.</p>
@@ -3544,7 +3595,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateRequestConditionType"> CertificateRequestConditionType (<code>string</code> alias) </h3>
+<a id="cert-manager.io/v1.CertificateRequestConditionType"></a>
+###  CertificateRequestConditionType (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateRequestCondition">CertificateRequestCondition</a>) </p>
 <div>
   <p>CertificateRequestConditionType represents an Certificate condition value.</p>
@@ -3597,7 +3649,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateRequestSpec">CertificateRequestSpec</h3>
+<a id="cert-manager.io/v1.CertificateRequestSpec"></a>
+### CertificateRequestSpec
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateRequest">CertificateRequest</a>) </p>
 <div>
   <p>CertificateRequestSpec defines the desired state of CertificateRequest</p>
@@ -3715,7 +3768,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateRequestStatus">CertificateRequestStatus</h3>
+<a id="cert-manager.io/v1.CertificateRequestStatus"></a>
+### CertificateRequestStatus
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateRequest">CertificateRequest</a>) </p>
 <div>
   <p>CertificateRequestStatus defines the observed state of CertificateRequest and resulting signed certificate.</p>
@@ -3781,7 +3835,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateSecretTemplate">CertificateSecretTemplate</h3>
+<a id="cert-manager.io/v1.CertificateSecretTemplate"></a>
+### CertificateSecretTemplate
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateSpec">CertificateSpec</a>) </p>
 <div>
   <p> CertificateSecretTemplate defines the default labels and annotations to be copied to the Kubernetes Secret resource named in <code>CertificateSpec.secretName</code>. </p>
@@ -3818,7 +3873,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateSpec">CertificateSpec</h3>
+<a id="cert-manager.io/v1.CertificateSpec"></a>
+### CertificateSpec
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.Certificate">Certificate</a>) </p>
 <div>
   <p>CertificateSpec defines the desired state of Certificate. A valid Certificate requires at least one of a CommonName, DNSName, or URISAN to be valid.</p>
@@ -4067,7 +4123,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.CertificateStatus">CertificateStatus</h3>
+<a id="cert-manager.io/v1.CertificateStatus"></a>
+### CertificateStatus
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.Certificate">Certificate</a>) </p>
 <div>
   <p>CertificateStatus defines the observed state of Certificate</p>
@@ -4189,9 +4246,11 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.GenericIssuer">GenericIssuer</h3>
+<a id="cert-manager.io/v1.GenericIssuer"></a>
+### GenericIssuer
 <div></div>
-<h3 id="cert-manager.io/v1.IssuerCondition">IssuerCondition</h3>
+<a id="cert-manager.io/v1.IssuerCondition"></a>
+### IssuerCondition
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.IssuerStatus">IssuerStatus</a>) </p>
 <div>
   <p>IssuerCondition contains condition information for an Issuer.</p>
@@ -4276,7 +4335,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.IssuerConditionType"> IssuerConditionType (<code>string</code> alias) </h3>
+<a id="cert-manager.io/v1.IssuerConditionType"></a>
+###  IssuerConditionType (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.IssuerCondition">IssuerCondition</a>) </p>
 <div>
   <p>IssuerConditionType represents an Issuer condition value.</p>
@@ -4299,7 +4359,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.IssuerConfig">IssuerConfig</h3>
+<a id="cert-manager.io/v1.IssuerConfig"></a>
+### IssuerConfig
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.IssuerSpec">IssuerSpec</a>) </p>
 <div>
   <p>The configuration for the issuer. Only one of these can be set.</p>
@@ -4379,7 +4440,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.IssuerSpec">IssuerSpec</h3>
+<a id="cert-manager.io/v1.IssuerSpec"></a>
+### IssuerSpec
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.ClusterIssuer">ClusterIssuer</a>, <a href="#cert-manager.io/v1.Issuer">Issuer</a>) </p>
 <div>
   <p>IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.</p>
@@ -4406,7 +4468,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.IssuerStatus">IssuerStatus</h3>
+<a id="cert-manager.io/v1.IssuerStatus"></a>
+### IssuerStatus
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.ClusterIssuer">ClusterIssuer</a>, <a href="#cert-manager.io/v1.Issuer">Issuer</a>) </p>
 <div>
   <p>IssuerStatus contains status information about an Issuer</p>
@@ -4447,7 +4510,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.JKSKeystore">JKSKeystore</h3>
+<a id="cert-manager.io/v1.JKSKeystore"></a>
+### JKSKeystore
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateKeystores">CertificateKeystores</a>) </p>
 <div>
   <p>
@@ -4487,7 +4551,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.KeyUsage"> KeyUsage (<code>string</code> alias) </h3>
+<a id="cert-manager.io/v1.KeyUsage"></a>
+###  KeyUsage (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateRequestSpec">CertificateRequestSpec</a>, <a href="#cert-manager.io/v1.CertificateSpec">CertificateSpec</a>) </p>
 <div>
   <p>
@@ -4645,7 +4710,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.PKCS12Keystore">PKCS12Keystore</h3>
+<a id="cert-manager.io/v1.PKCS12Keystore"></a>
+### PKCS12Keystore
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateKeystores">CertificateKeystores</a>) </p>
 <div>
   <p>
@@ -4685,7 +4751,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.PrivateKeyAlgorithm"> PrivateKeyAlgorithm (<code>string</code> alias) </h3>
+<a id="cert-manager.io/v1.PrivateKeyAlgorithm"></a>
+###  PrivateKeyAlgorithm (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificatePrivateKey">CertificatePrivateKey</a>) </p>
 <div></div>
 <table>
@@ -4722,7 +4789,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.PrivateKeyEncoding"> PrivateKeyEncoding (<code>string</code> alias) </h3>
+<a id="cert-manager.io/v1.PrivateKeyEncoding"></a>
+###  PrivateKeyEncoding (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificatePrivateKey">CertificatePrivateKey</a>) </p>
 <div></div>
 <table>
@@ -4754,12 +4822,14 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.PrivateKeyRotationPolicy"> PrivateKeyRotationPolicy (<code>string</code> alias) </h3>
+<a id="cert-manager.io/v1.PrivateKeyRotationPolicy"></a>
+###  PrivateKeyRotationPolicy (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificatePrivateKey">CertificatePrivateKey</a>) </p>
 <div>
   <p>Denotes how private keys should be generated or sourced when a Certificate is being issued.</p>
 </div>
-<h3 id="cert-manager.io/v1.SelfSignedIssuer">SelfSignedIssuer</h3>
+<a id="cert-manager.io/v1.SelfSignedIssuer"></a>
+### SelfSignedIssuer
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.IssuerConfig">IssuerConfig</a>) </p>
 <div>
   <p>Configures an issuer to &lsquo;self sign&rsquo; certificates using the private key used to create the CertificateRequest object.</p>
@@ -4785,7 +4855,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.VaultAppRole">VaultAppRole</h3>
+<a id="cert-manager.io/v1.VaultAppRole"></a>
+### VaultAppRole
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.VaultAuth">VaultAuth</a>) </p>
 <div>
   <p>VaultAppRole authenticates with Vault using the App Role auth mechanism, with the role and secret stored in a Kubernetes Secret resource.</p>
@@ -4832,7 +4903,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.VaultAuth">VaultAuth</h3>
+<a id="cert-manager.io/v1.VaultAuth"></a>
+### VaultAuth
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.VaultIssuer">VaultIssuer</a>) </p>
 <div>
   <p> Configuration used to authenticate with a Vault server. Only one of <code>tokenSecretRef</code>, <code>appRole</code> or <code>kubernetes</code> may be specified. </p>
@@ -4886,7 +4958,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.VaultIssuer">VaultIssuer</h3>
+<a id="cert-manager.io/v1.VaultIssuer"></a>
+### VaultIssuer
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.IssuerConfig">IssuerConfig</a>) </p>
 <div>
   <p>Configures an issuer to sign certificates using a HashiCorp Vault PKI backend.</p>
@@ -4968,7 +5041,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.VaultKubernetesAuth">VaultKubernetesAuth</h3>
+<a id="cert-manager.io/v1.VaultKubernetesAuth"></a>
+### VaultKubernetesAuth
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.VaultAuth">VaultAuth</a>) </p>
 <div>
   <p>Authenticate against Vault using a Kubernetes ServiceAccount token stored in a Secret.</p>
@@ -5016,7 +5090,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.VenafiCloud">VenafiCloud</h3>
+<a id="cert-manager.io/v1.VenafiCloud"></a>
+### VenafiCloud
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.VenafiIssuer">VenafiIssuer</a>) </p>
 <div>
   <p>VenafiCloud defines connection configuration details for Venafi Cloud</p>
@@ -5054,7 +5129,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.VenafiIssuer">VenafiIssuer</h3>
+<a id="cert-manager.io/v1.VenafiIssuer"></a>
+### VenafiIssuer
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.IssuerConfig">IssuerConfig</a>) </p>
 <div>
   <p>Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.</p>
@@ -5105,7 +5181,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.VenafiTPP">VenafiTPP</h3>
+<a id="cert-manager.io/v1.VenafiTPP"></a>
+### VenafiTPP
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.VenafiIssuer">VenafiIssuer</a>) </p>
 <div>
   <p>VenafiTPP defines connection configuration details for a Venafi TPP instance</p>
@@ -5153,7 +5230,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="cert-manager.io/v1.X509Subject">X509Subject</h3>
+<a id="cert-manager.io/v1.X509Subject"></a>
+### X509Subject
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateSpec">CertificateSpec</a>) </p>
 <div>
   <p>X509Subject Full X509 name specification</p>
@@ -5263,7 +5341,8 @@ Resource Types:
 </div>
 Resource Types:
 <ul></ul>
-<h3 id="meta.cert-manager.io/v1.ConditionStatus"> ConditionStatus (<code>string</code> alias) </h3>
+<a id="meta.cert-manager.io/v1.ConditionStatus"></a>
+###  ConditionStatus (<code>string</code> alias) 
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.CertificateCondition">CertificateCondition</a>, <a href="#cert-manager.io/v1.CertificateRequestCondition">CertificateRequestCondition</a>, <a href="#cert-manager.io/v1.IssuerCondition">IssuerCondition</a>) </p>
 <div>
   <p>ConditionStatus represents a condition&rsquo;s status.</p>
@@ -5302,7 +5381,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="meta.cert-manager.io/v1.LocalObjectReference">LocalObjectReference</h3>
+<a id="meta.cert-manager.io/v1.LocalObjectReference"></a>
+### LocalObjectReference
 <p> (<em>Appears on:</em> <a href="#cert-manager.io/v1.VenafiTPP">VenafiTPP</a>, <a href="#meta.cert-manager.io/v1.SecretKeySelector">SecretKeySelector</a>) </p>
 <div>
   <p>A reference to an object in the same namespace as the referent. If the referent is a cluster-scoped resource (e.g. a ClusterIssuer), the reference instead refers to the resource with the given name in the configured &lsquo;cluster resource namespace&rsquo;, which is set as a flag on the controller component (and defaults to the namespace that cert-manager runs in).</p>
@@ -5327,7 +5407,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="meta.cert-manager.io/v1.ObjectReference">ObjectReference</h3>
+<a id="meta.cert-manager.io/v1.ObjectReference"></a>
+### ObjectReference
 <p> (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ChallengeSpec">ChallengeSpec</a>, <a href="#acme.cert-manager.io/v1.OrderSpec">OrderSpec</a>, <a href="#cert-manager.io/v1.CertificateRequestSpec">CertificateRequestSpec</a>, <a href="#cert-manager.io/v1.CertificateSpec">CertificateSpec</a>) </p>
 <div>
   <p>ObjectReference is a reference to an object with a given name, kind and group.</p>
@@ -5374,7 +5455,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="meta.cert-manager.io/v1.SecretKeySelector">SecretKeySelector</h3>
+<a id="meta.cert-manager.io/v1.SecretKeySelector"></a>
+### SecretKeySelector
 <p>
   (<em>Appears on:</em> <a href="#acme.cert-manager.io/v1.ACMEExternalAccountBinding">ACMEExternalAccountBinding</a>, <a href="#acme.cert-manager.io/v1.ACMEIssuer">ACMEIssuer</a>, <a href="#acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderAcmeDNS">ACMEIssuerDNS01ProviderAcmeDNS</a>, <a href="#acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderAkamai">ACMEIssuerDNS01ProviderAkamai</a>, <a href="#acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderAzureDNS">ACMEIssuerDNS01ProviderAzureDNS</a>, <a href="#acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderCloudDNS">ACMEIssuerDNS01ProviderCloudDNS</a>, <a href="#acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderCloudflare">ACMEIssuerDNS01ProviderCloudflare</a>, <a href="#acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderDigitalOcean">ACMEIssuerDNS01ProviderDigitalOcean</a>, <a href="#acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderRFC2136">ACMEIssuerDNS01ProviderRFC2136</a>,
   <a href="#acme.cert-manager.io/v1.ACMEIssuerDNS01ProviderRoute53">ACMEIssuerDNS01ProviderRoute53</a>, <a href="#cert-manager.io/v1.JKSKeystore">JKSKeystore</a>, <a href="#cert-manager.io/v1.PKCS12Keystore">PKCS12Keystore</a>, <a href="#cert-manager.io/v1.VaultAppRole">VaultAppRole</a>, <a href="#cert-manager.io/v1.VaultAuth">VaultAuth</a>, <a href="#cert-manager.io/v1.VaultIssuer">VaultIssuer</a>, <a href="#cert-manager.io/v1.VaultKubernetesAuth">VaultKubernetesAuth</a>, <a href="#cert-manager.io/v1.VenafiCloud">VenafiCloud</a>)
@@ -5423,7 +5505,8 @@ Resource Types:
 </div>
 Resource Types:
 <ul></ul>
-<h3 id="webhook.config.cert-manager.io/v1alpha1.DynamicServingConfig">DynamicServingConfig</h3>
+<a id="webhook.config.cert-manager.io/v1alpha1.DynamicServingConfig"></a>
+### DynamicServingConfig
 <p> (<em>Appears on:</em> <a href="#webhook.config.cert-manager.io/v1alpha1.TLSConfig">TLSConfig</a>) </p>
 <div>
   <p>DynamicServingConfig makes the webhook generate a CA and persist it into Secret resources. This CA will be used by all instances of the webhook for signing serving certificates.</p>
@@ -5468,7 +5551,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="webhook.config.cert-manager.io/v1alpha1.FilesystemServingConfig">FilesystemServingConfig</h3>
+<a id="webhook.config.cert-manager.io/v1alpha1.FilesystemServingConfig"></a>
+### FilesystemServingConfig
 <p> (<em>Appears on:</em> <a href="#webhook.config.cert-manager.io/v1alpha1.TLSConfig">TLSConfig</a>) </p>
 <div>
   <p>FilesystemServingConfig enables using a certificate and private key found on the local filesystem. These files will be periodically polled in case they have changed, and dynamically reloaded.</p>
@@ -5503,7 +5587,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="webhook.config.cert-manager.io/v1alpha1.TLSConfig">TLSConfig</h3>
+<a id="webhook.config.cert-manager.io/v1alpha1.TLSConfig"></a>
+### TLSConfig
 <p> (<em>Appears on:</em> <a href="#webhook.config.cert-manager.io/v1alpha1.WebhookConfiguration">WebhookConfiguration</a>) </p>
 <div>
   <p>TLSConfig configures how TLS certificates are sourced for serving. Only one of &lsquo;filesystem&rsquo; or &lsquo;dynamic&rsquo; may be specified.</p>
@@ -5562,7 +5647,8 @@ Resource Types:
     </tr>
   </tbody>
 </table>
-<h3 id="webhook.config.cert-manager.io/v1alpha1.WebhookConfiguration">WebhookConfiguration</h3>
+<a id="webhook.config.cert-manager.io/v1alpha1.WebhookConfiguration"></a>
+### WebhookConfiguration
 <div></div>
 <table>
   <thead>

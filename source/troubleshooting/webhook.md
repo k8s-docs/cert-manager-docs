@@ -1,29 +1,23 @@
 ---
-title: The Definitive Debugging Guide for the cert-manager Webhook Pod
-description: 'This guide helps you debug communication issues between the Kubernetes API server and the cert-manager webhook Pod.'
+title: 证书管理器Webhook Pod的权威调试指南
+description: "本指南帮助您调试Kubernetes API服务器和cert-manager webhook Pod之间的通信问题。"
+date: 2022-09-08
 ---
 
-> Last verified: 8 Sept 2022
+# 证书管理器 Webhook Pod 的权威调试指南
 
-The cert-manager webhook is a pod that runs as part of your cert-manager
-installation. When applying a manifest with `kubectl`, the Kubernetes API server
-calls the cert-manager webhook over TLS to validate your manifests. This guide
-helps you debug communication issues between the Kubernetes API server and the
-cert-manager webhook pod.
+cert-manager webhook 是一个 pod，作为 cert-manager 安装的一部分运行。
+当使用`kubectl`应用清单时，Kubernetes API 服务器通过 TLS 调用 cert-manager webhook 来验证清单。
+本指南帮助您调试 Kubernetes API 服务器和 cert-manager webhook pod 之间的通信问题。
 
-The error messages listed in this page are encountered while installing or
-upgrading cert-manager, or shortly after installing or upgrading cert-manager
-when trying to create a Certificate, Issuer, or any other cert-manager custom
-resource.
+此页中列出的错误消息是在安装或升级 cert-manager 时遇到的，或者在尝试创建证书、颁发者或任何其他 cert-manager 自定义资源时在安装或升级 cert-manager 后不久遇到的。
 
-In the below diagram, we show the common pattern when debugging an issue with
-the cert-manager webhook: when creating a cert-manager custom resource, the API
-server connects over TLS to the cert-manager webhook pod. The red cross
-indicates that the API server fails talking to the webhook.
+在下图中，我们展示了在使用 cert-manager webhook 调试问题时的常见模式:当创建 cert-manager 自定义资源时，API 服务器通过 TLS 连接到 cert-manager webhook pod。
+红色叉表示 API 服务器与 webhook 通信失败。
 
-<img alt="Diagram that shows a kubectl command that aims to create an issuer resource, and an arrow towards the Kubernetes API server, and an arrow between the API server and the webhook that indicates that the API server tries to connect to the webhook. This last arrow is crossed in red." src="/images/troubleshooting/webhook-pod-networking-diagram.png" width="500"/>
+<img alt="图中显示了旨在创建颁发者资源的kubectl命令，指向Kubernetes API服务器的箭头，以及API服务器和webhook之间的箭头，表示API服务器试图连接到webhook。最后一个箭头用红色划线。" src="/images/troubleshooting/webhook-pod-networking-diagram.png" width="500"/>
 
-The rest of this document presents error messages you may encounter.
+本文的其余部分将介绍您可能遇到的错误消息。
 
 ## Error: `connect: connection refused`
 
@@ -274,10 +268,10 @@ metadata:
   name: cert-manager-webhook
 spec:
   ports:
-  - name: https
-    port: 443           # ❌ This port is not the cause.
-    protocol: TCP
-    targetPort: "https" # 🌟 This port might be the cause.
+    - name: https
+      port: 443 # ❌ This port is not the cause.
+      protocol: TCP
+      targetPort: "https" # 🌟 This port might be the cause.
 ```
 
 The reason the above `port: 443` can't be the cause is because kube-proxy, which
@@ -296,10 +290,10 @@ The output shows that the `containerPort` is not set to `10250`, meaning that
 a new firewall rule will have to be added in Google Cloud.
 
 ```yaml
-        ports:
-        - containerPort: 12345 # 🌟 This port matches neither 10250 nor 443.
-          name: https
-          protocol: TCP
+ports:
+  - containerPort: 12345 # 🌟 This port matches neither 10250 nor 443.
+    name: https
+    protocol: TCP
 ```
 
 To recap, if the above `containerPort` is something other than `443` or `10250` and
@@ -426,7 +420,7 @@ Internal error occurred: failed calling webhook "webhook.cert-manager.io":
 
 > This issue was first reported in
 > [#3237](https://github.com/cert-manager/cert-manager/issues/3237 "Can't
-> create an issuer when cert-manager runs on EKS in Fargate pods (AWS)").
+create an issuer when cert-manager runs on EKS in Fargate pods (AWS)").
 
 This is probably because you are running on EKS with Fargate enabled.
 Fargate creates a microVM per pod, and the VM's kernel is used to run the
@@ -533,7 +527,7 @@ Internal error occurred: failed calling webhook "webhook.cert-manager.io":
 ```
 
 > This error message was reported once in Slack
-([1](https://kubernetes.slack.com/archives/C4NV3DWUC/p1618579222346800)).
+> ([1](https://kubernetes.slack.com/archives/C4NV3DWUC/p1618579222346800)).
 
 Please answer to the above Slack message since we are still unsure as to what
 may cause this issue; to get access to the Kubernetes Slack, visit
@@ -549,13 +543,13 @@ Error from server (InternalError): error when creating "STDIN":
 ```
 
 > This error message was reported once in Slack
-([1](https://kubernetes.slack.com/archives/C4NV3DWUC/p1632849763397100)).
+> ([1](https://kubernetes.slack.com/archives/C4NV3DWUC/p1632849763397100)).
 
 <a id="context-deadline-exceeded"></a>
 
 ## Error: `context deadline exceeded`
 
-> This error message was reported in GitHub issues ([2319](https://github.com/cert-manager/cert-manager/issues/2319 "Documenting context deadline exceeded errors relating to the webhook, on bare metal"), [2706](https://github.com/cert-manager/cert-manager/issues/2706 "") [5189](https://github.com/cert-manager/cert-manager/issues/5189 "Post https://cert-manager-webhook.cert-manager.svc:443/mutate?timeout=10s: context deadline exceeded"), [5004](https://github.com/cert-manager/cert-manager/issues/5004 "After installing cert-manager using kubectl, cmctl check api fails with https://cert-manager-webhook.cert-manager.svc:443/mutate?timeout=10s: context deadline exceeded")), and once [on Stack Overflow](https://stackoverflow.com/questions/72059332/how-can-i-fix-failed-calling-webhook-webhook-cert-manager-io).
+> This error message was reported in GitHub issues ([2319](https://github.com/cert-manager/cert-manager/issues/2319 "Documenting context deadline exceeded errors relating to the webhook, on bare metal"), [2706](https://github.com/cert-manager/cert-manager/issues/2706) [5189](https://github.com/cert-manager/cert-manager/issues/5189 "Post https://cert-manager-webhook.cert-manager.svc:443/mutate?timeout=10s: context deadline exceeded"), [5004](https://github.com/cert-manager/cert-manager/issues/5004 "After installing cert-manager using kubectl, cmctl check api fails with https://cert-manager-webhook.cert-manager.svc:443/mutate?timeout=10s: context deadline exceeded")), and once [on Stack Overflow](https://stackoverflow.com/questions/72059332/how-can-i-fix-failed-calling-webhook-webhook-cert-manager-io).
 
 This error appears with cert-manager 0.12 and above when trying to apply an
 Issuer or any other cert-manager custom resource after having installed or
@@ -581,7 +575,7 @@ Error from server (InternalError): error when creating "STDIN":
 > ```
 
 > ℹ️ The message `context deadline exceeded` also appears when using `cmctl
-> check api`. The cause is identical, you can continue reading this section to
+check api`. The cause is identical, you can continue reading this section to
 > debug it.
 >
 > ```text
@@ -646,7 +640,7 @@ specific" errors:
   appears after the API server sent the `SYN` packet and waited for 10 seconds
   for the `SYN-ACK` packet to be received from the cert-manager webhook.
 - `net/http: request canceled while waiting for connection (Client.Timeout
-  exceeded while awaiting headers)` is the HTTP response timeout and comes from
+exceeded while awaiting headers)` is the HTTP response timeout and comes from
   [here](https://github.com/kubernetes/kubernetes/blob/abba1492f/staging/src/k8s.io/apiserver/pkg/util/webhook/webhook.go#L96-L101)
   and is configured to [30
   seconds](https://github.com/kubernetes/kubernetes/blob/abba1492f/staging/src/k8s.io/apiserver/pkg/util/webhook/webhook.go#L36-L38).
@@ -661,8 +655,8 @@ We can sort these three messages in two categories: either it is a connectivity
 issue (`SYN` is dropped), or it is a webhook issue (i.e., the TLS certificate is
 wrong, or the webhook is not returning any HTTP response):
 
-|                   Timeout message                   |      Category      |
-|-----------------------------------------------------|--------------------|
+| Timeout message                                     | Category           |
+| --------------------------------------------------- | ------------------ |
 | `i/o timeout`                                       | connectivity issue |
 | `net/http: TLS handshake timeout`                   | webhook-side issue |
 | `net/http: request canceled while awaiting headers` | webhook-side issue |
@@ -832,8 +826,8 @@ cert-manager.io/inject-ca-from-secret: cert-manager/cert-manager-webhook-ca
 ```
 
 > **Note 1:** this bug in the cert-manager Helm chart was [was
-fixed](https://github.com/cert-manager/cert-manager/commit/f33beefc) in
-cert-manager 0.15.
+> fixed](https://github.com/cert-manager/cert-manager/commit/f33beefc) in
+> cert-manager 0.15.
 >
 > **Note 2:** since cert-manager 1.6, this annotation is [no longer
 > used](https://github.com/cert-manager/cert-manager/pull/4841) on the
@@ -1008,8 +1002,8 @@ Content-Type: text/plain; charset=utf-8
 
 > This message was reported in GitHub issue
 > [3717](https://github.com/cert-manager/cert-manager/issues/3717 "Cannot
-> install on GKE autopilot cluster due to mutatingwebhookconfigurations access
-> denied").
+install on GKE autopilot cluster due to mutatingwebhookconfigurations access
+denied").
 
 While installing cert-manager on GKE Autopilot, you will see the following
 message:

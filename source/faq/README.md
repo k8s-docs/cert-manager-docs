@@ -13,51 +13,50 @@ description: Find answers to some frequently asked questions about cert-manager
 
     这些术语的定义见[TLS术语页](../reference/tls-terminology.md).
 
-??? question "What do the terms `root`, `intermediate` and `leaf` _certificate_ mean?"
+??? question "“根证书”、“中间证书”和“叶证书”是什么意思?"
 
     These terms are defined in the [TLS Terminology page](../reference/tls-terminology.md).
 
 ## 证书
 
-??? question "Can I trigger a renewal from cert-manager at will?"
+??? question "我可以随意从证书管理器触发续签吗?"
 
     This is a feature in cert-manager starting in `v0.16` using the `cmctl` CLI. More information can be found on [the renew command's page](../reference/cmctl.md#renew)
 
-??? question "When do certs get re-issued?"
+??? question "证书什么时候重新颁发?"
 
-    To determine if a certificate needs to be re-issued, cert-manager looks at the the spec of `Certificate` resource and latest `CertificateRequest`s as well as the data in `Secret` containing the X.509 certificate.
+    为了确定是否需要重新颁发证书，证书管理器会查看`Certificate`源规范和最新的`CertificateRequest`规范，
+    以及`Secret`中包含X.509证书的数据。
 
-    The issuance process will always get triggered if the:
+    如果出现以下情况，发行过程将始终被触发:
 
-    - `Secret` named on `Certificate`'s spec, does not exist, is missing private key or certificate data or contains corrupt data
-    - private key stored in the `Secret` does not match the private key spec on `Certificate`
-    - public key of the issued certificate does not match the private key stored in the `Secret`
-    - cert-manager issuer annotations on the `Secret` do not match the issuer specified on the `Certificate`
-    - DNS names, IP addresses, URLS or email addresses on the issued certificate do not match those on the `Certificate` spec
-    - certificate needs to be renewed (because it has expired or the renewal time is now or in the past)
-    - certificate has been marked for renewal manually [using `cmctl`](../reference/cmctl.md#renew)
+    - 在`Certificate`规范上命名的`Secret`，不存在，缺少私钥或证书数据或包含损坏的数据
+    - 存储在`Secret` 中的私钥与`Certificate`上的私钥规格不匹配
+    - 已发出证书的公开密匙与储存在`Secret`内的私钥不相符。
+    - `Secret`上的cert-manager颁发者注释与`Certificate`上指定的颁发者不匹配
+    - 颁发证书上的DNS名称、IP地址、url或电子邮件地址与`Certificate`规范上的不匹配
+    - 证书需要更新(因为已过期或更新时间已过)
+    - 证书已被标记为手动更新[使用`cmctl`](../reference/cmctl.md#renew)
 
-    Additionally, if the latest `CertificateRequest` for the `Certificate` is found, cert-manager will also re-issue if:
+    此外，如果找到了`Certificate`的最新`CertificateRequest`，在以下情况下，证书管理器也会重新颁发:
 
-    - the common name on the CSR found on the `CertificateRequest` does not match that on the `Certificate` spec
-    - the subject fields on the CSR found on the `CertificateRequest` do not match the subject fields of the `Certificate` spec
-    - the duration on the `CertificateRequest` does not match the duration on the `Certificate` spec
-    - `isCA` field value on the `Certificate` spec does not match that on the `CertificateRequest`
-    - the DNS names, IP addresses, URLS or email addresses on the `CertificateRequest` spec do not match those on the `Certificate` spec
-    - key usages on the `CertificateRequest` spec do not match those on the `Certificate` spec
+    - 在`CertificateRequest`中发现的CSR上的通用名称与`Certificate`规范上的不匹配
+    - 在`CertificateRequest`中发现的CSR的主题字段与`Certificate`规范的主题字段不匹配
+    - `CertificateRequest`上的持续时间与`Certificate`规范上的持续时间不匹配
+    - `Certificate`规范上的 `isCA` 字段值与`CertificateRequest`不匹配
+    - `CertificateRequest`规范中的DNS名称、IP地址、url或电子邮件地址与`Certificate`规范中的不匹配
+    - `CertificateRequest`规范上的关键用法与`Certificate`规范上的不匹配
 
-    Note that for certain fields re-issuance on change gets triggered only if there
-    is a `CertificateRequest` that cert-manager can use to determine whether
-    `Certificate`'s spec has changed since the previous issuance. This is because
-    some issuers may not respect the requested values for these fields, so we cannot
-    rely on the values in the issued X.509 certificates. One such field is
-    `.spec.duration`- change to this field will only trigger re-issuance if there is
-    a `CertificateRequest` to compare with. In case where you need to re-issue, but
-    re-issuance does not get triggered automatically due to there being no
-    `CertificateRequest` (i.e after backup and restore), you can use [`cmctl
-    renew`](../reference/cmctl.md#renew) to trigger it manually.
+    !!! note
 
-??? question "Why isn't my root certificate in my issued Secret's `tls.crt`?"
+        请注意，对于某些字段，只有当存在`CertificateRequest`时才会触发更改后的重新发布，
+        证书管理器可以使用`CertificateRequest`来确定`Certificate`的规范自上次发布以来是否发生了更改。
+        这是因为某些颁发者可能不尊重这些字段的请求值，因此我们不能依赖已颁发的X.509证书中的值。
+        一个这样的字段是`.spec.duration`——如果有一个`CertificateRequest`进行比较，对该字段的更改只会触发重新发布。
+        如果您需要重新签发，但由于没有`CertificateRequest`(即在备份和恢复之后)而无法自动触发重新签发，
+        您可以使用[`cmctl renew`](../reference/cmctl.md#renew)手动触发它。
+
+??? question "为什么我的根证书不在我颁发的 Secret `tls.crt`中?"
 
     Occasionally, people work with systems which have made a flawed choice regarding TLS chains. The [TLS spec](https://datatracker.ietf.org/doc/html/rfc5246#section-7.4.2)
     has the following section for the "Server Certificate" section of the TLS handshake:
@@ -87,13 +86,13 @@ description: Find answers to some frequently asked questions about cert-manager
     The same logic with not sending root certificates applies for servers trying to validate client certificates;
     the [same justification](https://datatracker.ietf.org/doc/html/rfc5246#section-7.4.6) is given in the TLS RFC.
 
-??? question "How can I see all the historic events related to a certificate object?"
+??? question "如何查看与证书对象相关的所有历史事件?"
 
     cert-manager publishes all events to the Kubernetes events mechanism, you can get the events for your specific resources using `kubectl describe <resource> <name>`.
 
     Due to the nature of the Kubernetes event mechanism these will be purged after a while. If you're using a dedicated logging system it might be able or is already also storing Kubernetes events.
 
-??? question "What happens if issuance fails? Will it be retried?"
+??? question "如果发行失败会发生什么?它会被重新审判吗?"
 
     {/_ This empty link preserves old links to #what-happens-if-a-renewal-doesn't happen?-will-it-be-tried-again-after-some-time?", which matched the old title of this section _/}
 
@@ -107,7 +106,7 @@ description: Find answers to some frequently asked questions about cert-manager
 
     You can always trigger immediate renewal using the [`cmctl renew` command](../reference/cmctl.md#renew)
 
-??? question "Is ECC (elliptic-curve cryptography) supported?"
+??? question "是否支持 ECC(椭圆曲线加密)?"
 
     cert-manager supports ECDSA key pairs! You can set your certificate to use ECDSA in the `privateKey` part of your Certificate resource.
 
@@ -129,13 +128,13 @@ description: Find answers to some frequently asked questions about cert-manager
       issuerRef: [...]
     ```
 
-??? question "If `renewBefore` or `duration` is not defined, what will be the default value?"
+??? question "如果`renewBefore` 或 `duration`没有定义，那么默认值是什么?"
 
     Default `duration` is [90 days](https://github.com/cert-manager/cert-manager/blob/v1.2.0/pkg/apis/certmanager/v1/const.go#L26). If `renewBefore` has not been set, `Certificate` will be renewed 2/3 through its _actual_ duration.
 
 ## 杂项
 
-??? question "Kubernetes has a builtin `CertificateSigningRequest` API. Why not use that?"
+??? question "Kubernetes 有一个内置的`CertificateSigningRequest`API。为什么不用呢?"
 
     Kubernetes has a [Certificate Signing Requests API],
     and a [`kubectl certificates` command] which allows you to approve certificate signing requests

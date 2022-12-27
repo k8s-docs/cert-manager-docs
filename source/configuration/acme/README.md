@@ -74,7 +74,7 @@ cert-manager 支持对您的 ACME 帐户使用外部帐户绑定。
     $ echo 'my-secret-key' | base64 -w0 | sed -e 's/+/-/g' -e 's/\//_/g' -e 's/=//g'
     ```
 
-    然后，您可以创建Secret资源:
+    然后，您可以创建Secret源:
 
     ```console
     $ kubectl create secret generic eab-secret --from-literal \

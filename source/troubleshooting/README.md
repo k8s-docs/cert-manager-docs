@@ -1,27 +1,28 @@
 ---
-title: Troubleshooting
-description: |
-    Learn how to debug common problems with cert-manager
+title: 故障排除
+description: 了解如何使用cert-manager调试常见问题
 ---
 
-In this section, you will learn troubleshooting techniques that will help you find the root cause if your Certificate fails to be issued or renewed.
+# 故障排除
 
-This section also includes the following guides:
+在本节中，您将学习故障排除技术，这些技术将帮助您在证书颁发或更新失败时查找根本原因。
 
-* [Troubleshooting Problems with ACME / Let's Encrypt Certificates](./acme.md):
-  Learn more about how the ACME issuer works and how to diagnose problems with it.
-* [Troubleshooting Problems with the Webhook](./webhook.md):
-  Learn how to diagnose problems with the cert-manager webhook.
+本节还包括以下指南:
 
-## Overview
+- [解决 ACME / Let's Encrypt 证书问题](./acme.md): 了解有关 ACME 发布程序如何工作以及如何诊断问题的更多信息。
+- [解决 Webhook 的问题](./webhook.md): 学习如何使用 cert-manager webhook 诊断问题。
 
-When troubleshooting cert-manager your best friend is `kubectl describe`, this will give you information on the resources as well as recent events. It is not advised to use the logs as these are quite verbose and only should be looked at if the following steps do not provide help.
+## 概述
 
-cert-manager consists of multiple custom resources that live inside your Kubernetes cluster, these resources are linked together and are often created by one another. When such an event happens it will be reflected in a Kubernetes event, you can see these per-namespace using `kubectl get event`, or in the output of `kubectl describe` when looking at a single resource.
+当对 cert-manager 进行故障排除时，您最好的朋友是`kubectl describe`，这将为您提供有关源以及最近事件的信息。
+不建议使用日志，因为这些日志相当冗长，只有在以下步骤不能提供帮助时才应该查看。
 
-## Troubleshooting a failed certificate request
+cert-manager 由多个位于 Kubernetes 集群中的自定义源组成，这些源链接在一起，通常是由彼此创建的。
+当这样的事件发生时，它将反映在 Kubernetes 事件中，您可以使用`kubectl get event`看到这些每个命名空间，或者在查看单个源时，在`kubectl describe`的输出中看到这些。
 
-There are several resources that are involved in requesting a certificate.
+## 解决证书请求失败的问题
+
+在请求证书时涉及到几个源。
 
 ```
 
@@ -35,20 +36,24 @@ There are several resources that are involved in requesting a certificate.
                                                                |
 ```
 
-The cert-manager flow all starts at a `Certificate` resource, you can create this yourself or your Ingress resource will do this for you if you have the [correct annotations](../usage/ingress.md) set.
+证书管理器流都始于一个`Certificate`源，你可以自己创建这个源，如果你有[正确的注释](../usage/ingress.md)设置，你的 Ingress 源会为你做这件事。
 
-### 1. Checking the Certificate resource
-First we have to check if we have a `Certificate` resource created in our namespace. We can get these using `kubectl get certificate`.
+### 1. 检查 Certificate 源
+
+首先，我们必须检查是否在命名空间中创建了`Certificate`源。
+我们可以使用`kubectl get certificate`来获得这些。
+
 ```console
 $ kubectl get certificate
 NAME                READY   AGE
 example-com-tls     False   1h
 ```
 
-If none is present and you plan to use the [ingress-shim](../usage/ingress.md): check the ingress annotations more about that is in the [ingress troubleshooting guide](../usage/ingress.md#troubleshooting).
-If you are not using the ingress-shim: check the output of the command you used to create the certificate.
+如果没有，并且您计划使用[ingress-shim](../usage/ingress.md):请检查[ingress 故障排除指南](../usage/ingress.md#troubleshooting)中的入 ingress 注释。
+如果您没有使用 ingress-shim:请检查创建证书命令的输出。
 
-If you see one with ready status `False` you can get more info using `kubectl describe certificate`, if the status is `True` that means that cert-manager has successfully issued a certificate.
+如果你看到一个就绪状态为`False`，你可以使用`kubectl describe certificate`获得更多信息，如果状态为`True`，这意味着证书管理器已经成功颁发了证书。
+
 ```console
 $ kubectl describe certificate <certificate-name>
 [...]
@@ -68,14 +73,16 @@ Events:
   Normal  Requested  104s  cert-manager  Created new CertificateRequest resource "example-tls-bw5t9"
 ```
 
-Here you will find more info about the current certificate status under `Status` as well as detailed information about what happened to it under `Events`. Both will help you determine the current state of the certificate.
-The last status is `Created new CertificateRequest resource`, it is worth taking a look at in which state `CertificateRequest` is to get more info on why our `Certificate` isn't getting issued.
+在这里，您将在`Status`下找到有关当前证书状态的更多信息，以及在`Events`下关于发生了什么的详细信息。两者都将帮助您确定证书的当前状态。
+最后一个状态是`Created new CertificateRequest resource`，值得看看`CertificateRequest`处于哪个状态，以获得关于为什么我们的`Certificate`没有得到颁发的更多信息。
 
-### 2. Checking the `CertificateRequest`
-The `CertificateRequest` resource represents a CSR in cert-manager and passes this CSR on onto the issuer.
-You can find the name of the `CertificateRequest` in the `Certificate` event log or using `kubectl get certificaterequest`
+### 2. 检查 `CertificateRequest`
 
-To get more info we again run `kubectl describe`:
+`CertificateRequest`源表示证书管理器中的 CSR，并将此 CSR 传递给颁发者。
+您可以在`Certificate` 事件日志中找到`CertificateRequest`的名称，或者使用`kubectl get certificaterequest`
+
+为了获得更多信息，我们再次运行`kubectl describe`:
+
 ```console
 $ kubectl describe certificaterequest <CertificateRequest name>
 API Version:  cert-manager.io/v1
@@ -99,18 +106,21 @@ Events:
   Normal  OrderCreated  8m20s  cert-manager  Created Order resource example-tls-fqtfg-1165244518
 ```
 
-Here we will see any issue regarding the Issuer configuration as well as Issuer responses.
+在这里，我们将看到有关发行者配置和发行者响应的任何问题。
 
-### 3. Check the issuer state
-If in the above steps you saw an issuer not ready error you can do the same steps again for (cluster)issuer resources:
+### 3. 检查发行者状态
+
+如果在上面的步骤中，你看到一个发行者没有准备好错误，你可以对(集群)发行者源执行相同的步骤:
+
 ```console
 $ kubectl describe issuer <Issuer name>
 $ kubectl describe clusterissuer <ClusterIssuer name>
 ```
 
-These will allow you to get any error messages regarding accounts or network issues with your issuer.
-Troubleshooting ACME issuers is described in more detail in [Troubleshooting Issuing ACME Certificates](./acme.md).
+这将允许您获得有关您的发行者的帐户或网络问题的任何错误消息。
+ACME 颁发者的故障诊断详见[颁发 ACME 证书的故障诊断](./acme.md)。
 
-### 4. ACME Troubleshooting
-ACME (e.g. Let's Encrypt) issuers have 2 additional resources inside cert-manager: `Orders` and `Challenges`.
-Troubleshooting these is described in [Troubleshooting Issuing ACME Certificates](./acme.md).
+### 4. ACME 故障排除
+
+ACME(例如，Let's Encrypt)发行者在证书管理器中有 2 个额外的源:`Orders` 和 `Challenges`。
+在[颁发 ACME 证书的疑难解答](./acme.md)中描述了如何解决这些问题。

@@ -151,7 +151,7 @@ kuard     *         203.0.113.2   80        9m
     ingress上的IP地址可能与`ingress-nginx-controller`拥有的IP地址不匹配。
     这很好，这是托管Kubernetes集群的服务提供者的一个怪癖/实现细节。
     由于我们使用`ingress-nginx-controller`而不是任何云提供商特定的入口后端，
-    使用为`quickstart-ingress-nginx-controller ` `LoadBalancer`资源定义和分配的IP地址作为您服务的主要接入点。
+    使用为`quickstart-ingress-nginx-controller ` `LoadBalancer`源定义和分配的IP地址作为您服务的主要接入点。
 
 确保您可以通过上面添加的域名访问该服务，例如 `http://www.example.com`。
 最简单的方法是打开浏览器，输入您在 DNS 中设置的名称，我们刚刚为其添加了入口。
@@ -180,8 +180,8 @@ $ curl -kivL -H 'Host: www.example.com' 'http://203.0.113.2'
 因为我们之前安装了 Helm，我们会假设你想要使用 Helm;按照 [Helm guide](../../installation/helm.md)。
 其他方法请参考 cert-manager 的[安装文档](../../installation/README.md)。
 
-cert-manager 主要使用两种不同的自定义 Kubernetes 资源(称为[`CRDs`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/))来配置和控制它的操作方式，以及存储状态。
-这些资源是颁发者和证书。
+cert-manager 主要使用两种不同的自定义 Kubernetes 源(称为[`CRDs`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/))来配置和控制它的操作方式，以及存储状态。
+这些源是颁发者和证书。
 
 ### Issuers(颁发者)
 
@@ -191,7 +191,7 @@ cert-manager 主要使用两种不同的自定义 Kubernetes 资源(称为[`CRDs
 注意确保您的颁发者与要创建的证书在相同的名称空间中创建。
 您可能需要在`kubectl create`命令中添加`-n my-namespace` 。
 
-你的另一个选择是用`ClusterIssuers`替换你的`issuer`;`ClusterIssuers`源适用于集群中的所有 Ingress 资源。
+你的另一个选择是用`ClusterIssuers`替换你的`issuer`;`ClusterIssuers`源适用于集群中的所有 Ingress 源。
 如果使用`ClusterIssuers`，请记住将 Ingress 注释`cert-manager.io/issuer` 更新为 `cert-manager.io/cluster-issuer`。
 
 如果您发现颁发者有问题，请遵循[故障排除颁发 ACME 证书](../../troubleshooting/acme.md)指南。
@@ -200,7 +200,7 @@ cert-manager 主要使用两种不同的自定义 Kubernetes 资源(称为[`CRDs
 
 ### Certificate(证书)
 
-证书资源允许您指定要请求的证书的详细信息。
+证书源允许您指定要请求的证书的详细信息。
 它们引用颁发者来定义它们将*如何*发行。
 
 有关更多信息，请参见[证书概念](../../concepts/certificate.md).
@@ -222,7 +222,7 @@ Let's Encrypt 产品发行方有[非常严格的速率限制](https://letsencryp
 --8<-- "staging-issuer.yaml"
 ```
 
-编辑完成后，应用自定义资源:
+编辑完成后，应用自定义源:
 
 ```bash
 kubectl create --edit -f https://raw.githubusercontent.com/cert-manager/website/master/content/docs/tutorials/acme/example/staging-issuer.yaml
@@ -285,13 +285,13 @@ Events:                    <none>
 
 您应该看到颁发者列出了一个注册帐户。
 
-## 步骤 7 - 部署 TLS 入口资源
+## 步骤 7 - 部署 TLS 入口源
 
 所有必要的配置就绪之后，我们现在就可以开始请求 TLS 证书了。
-主要有两种方法:在入口上使用[`ingress-shim`](../../usage/ingress.md)注释或直接创建证书资源。
+主要有两种方法:在入口上使用[`ingress-shim`](../../usage/ingress.md)注释或直接创建证书源。
 
-在本例中，我们将向入口添加注释，并利用 ingress-shim 让它代表我们创建证书资源。
-创建证书后，证书管理器将更新或创建入口资源，并使用该资源验证域。
+在本例中，我们将向入口添加注释，并利用 ingress-shim 让它代表我们创建证书源。
+创建证书后，证书管理器将更新或创建入口源，并使用该源验证域。
 验证和颁发后，证书管理器将创建或更新证书中定义的秘密。
 
 !!! Note
@@ -373,10 +373,10 @@ Events:
   Normal   CertIssued      7m                 cert-manager  Certificate issued Successfully
 ```
 
-与此资源相关并列在`describe`结果底部的事件显示了请求的状态。
+与此源相关并列在`describe`结果底部的事件显示了请求的状态。
 在上面的示例中，证书在几分钟内被验证并颁发。
 
-完成后，证书管理器将根据入口资源中使用的秘密创建一个包含证书详细信息的秘密。
+完成后，证书管理器将根据入口源中使用的秘密创建一个包含证书详细信息的秘密。
 你也可以使用 describe 命令来查看一些细节:
 
 ```bash
@@ -461,7 +461,7 @@ Events:
   Normal  OrderCreated  18s   cert-manager  Created Order resource "quickstart-example-tls-889745041"
 ```
 
-您可以通过在证书管理器为您的证书创建的订单资源上运行`kubectl describe`来查看 ACME 订单的当前状态:
+您可以通过在证书管理器为您的证书创建的订单源上运行`kubectl describe`来查看 ACME 订单的当前状态:
 
 ```bash
 $ kubectl describe order quickstart-example-tls-889745041
@@ -491,7 +491,7 @@ Events:
 ```
 
 从上面，我们可以看到挑战已经'presented'，cert-manager 正在等待挑战记录传播到入口控制器。
-你应该留意挑战资源上的新事件，因为'success'事件应该在一分钟左右打印出来(取决于你的入口控制器更新规则的速度):
+你应该留意挑战源上的新事件，因为'success'事件应该在一分钟左右打印出来(取决于你的入口控制器更新规则的速度):
 
 ```bash
 $ kubectl describe challenge quickstart-example-tls-889745041-0

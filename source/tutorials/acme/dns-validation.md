@@ -14,7 +14,7 @@ DNS01 就是这样一个挑战机制。通过 DNS01 挑战，您可以通过证�
 这是通过创建具有特定内容的 TXT 记录来完成的，该记录证明您已经控制了域 DNS 记录。
 
 以下颁发者定义了启用 DNS 验证所需的信息。
-您可以在[Issuer docs](../../configuration/README.md)中阅读更多关于 Issuer 资源的信息。
+您可以在[Issuer docs](../../configuration/README.md)中阅读更多关于 Issuer 源的信息。
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -98,9 +98,9 @@ spec:
 
 Certificate 源描述了我们所需的证书以及可用于获取该证书的可能方法。
 您可以像其他域一样获取通配符域的证书。
-确保在 YAML 资源中用星号包装通配符域，以避免格式问题。
+确保在 YAML 源中用星号包装通配符域，以避免格式问题。
 如果在同一个证书上同时指定`example.com` 和 `*.example.com`，执行验证所需的时间会稍微长一些，因为每个域都必须一个接一个地进行验证。
-您可以在[docs](../../usage/README.md)中了解更多关于 Certificate 资源的信息。
+您可以在[docs](../../usage/README.md)中了解更多关于 Certificate 源的信息。
 如果成功获得证书，生成的密钥对将存储在名为`example-com-tls`的秘密中，与证书位于相同的名称空间中。
 
 证书将有一个通用名称`*.example.com`，[主题替代名称(san)](https://en.wikipedia.org/wiki/Subject_Alternative_Name)将是`*.example.com`, `example.com` 和 `example.org`。
