@@ -228,7 +228,7 @@ cert-manager 将通过查询集群的 DNS 解决程序来检查 DNS 记录是否
 
 [thekelleys]: http://www.thekelleys.org.uk/dnsmasq/docs/setup.html
 [openwrt]: https://openwrt.org/docs/guide-user/base-system/dhcp#all_options
-[dhcp]: (https://github.com/openwrt/luci/blob/15757dd5b18f9e00ba3c9b38af4d46702a31fe33/modules/luci-mod-network/htdocs/luci-static/resources/view/network/dhcp.js#L217-L219)
+[dhcp]: https://github.com/openwrt/luci/blob/15757dd5b18f9e00ba3c9b38af4d46702a31fe33/modules/luci-mod-network/htdocs/luci-static/resources/view/network/dhcp.js#L217-L219
 
 ## 2020 年 3 月 Let's Encrypt CAA 复查漏洞
 
