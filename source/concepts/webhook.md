@@ -29,46 +29,42 @@ webhook 组件作为另一个 pod 部署，与主要的 cert-manager 控制器�
 
 为了让 API 服务器与 webhook 组件通信，webhook 需要 apisserver 配置为信任的 TLS 证书。
 
-The [`cainjector`](./ca-injector.md) creates `secret/cert-manager-webhook-ca`, a self-signed root CA certificate which is used to sign certificates for the webhook pod.
+[`cainjector`](./ca-injector.md)创建了`secret/cert-manager-webhook-ca`，这是一个自签名根 CA 证书，用于为 webhook pod 签署证书。
 
-Then the webhook can be configured with either
+然后 webhook 可以配置为任意一个
 
-1. paths to a TLS certificate and key signed by the webhook CA, or
-2. a reference to the CA Secret for dynamic generation of the certificate and key on webhook startup
+1. 由 webhook CA 签名的 TLS 证书和密钥的路径，或者
+2. 用于在 webhook 启动时动态生成证书和密钥的 CA Secret 引用
 
 ## 已知问题及解决方法
 
 ### GKE 私有集群的 Webhook 连接问题
 
-If errors occur around the webhook but the webhook is running then the webhook
-is most likely not reachable from the API server. In this case, ensure that the
-API server can communicate with the webhook by following the [GKE private
-cluster explanation](../installation/compatibility.md#gke).
+如果 webhook 周围发生了错误，但该 webhook 正在运行，那么该 webhook 很可能无法从 API 服务器访问。
+在这种情况下，请按照[GKE 私有集群解释](../installation/compatibility.md#gke)确保 API 服务器可以与 webhook 通信。
 
 ### AWS EKS 上的 Webhook 连接问题
 
-When using a custom CNI (such as Weave or Calico) on EKS, the webhook cannot be reached by cert-manager.
-This happens because the control plane cannot be configured to run on a custom CNI on EKS,
-so the CNIs differ between control plane and worker nodes.
-The solution is to [run the webhook in the host network](../installation/compatibility.md#aws-eks) so it can be reached by cert-manager.
+当在 EKS 上使用自定义 CNI(如 Weave 或 Calico)时，证书管理器无法访问该 webhook。
+这是因为控制平面不能配置为在 EKS 上的自定义 CNI 上运行，所以控制平面和工作节点之间的 CNI 不同。
+解决方案是[在主机网络中运行 webhook](../installation/compatibility.md#aws-eks)，这样 cert-manager 就可以访问它。
 
 ### 安装 cert-manager 后不久出现 Webhook 连接问题
 
-When you first install cert-manager, it will take a few seconds before the cert-manager API is usable.
-This is because the cert-manager API requires the cert-manager webhook server, which takes some time to start up.
-Here's why:
+当您第一次安装 cert-manager 时，需要几秒钟才能使用 cert-manager API。
+这是因为 cert-manager API 需要 cert-manager webhook 服务器，这需要一些时间来启动。
+原因如下:
 
-- The webhook server performs a leader election at startup which may take a few seconds.
-- The webhook server may take a few seconds to start up and to generate its self-signed CA and serving certificate and to publish those to a Secret.
-- `cainjector` performs a leader election at start up which can take a few seconds.
-- `cainjector`, once started, will take a few seconds to update the `caBundle` in all the webhook configurations.
+- webhook 服务器在启动时执行 leader 选举，这可能需要几秒钟。
+- webhook 服务器可能需要几秒钟的时间来启动并生成其自签名 CA 和服务证书，并将其发布到 Secret。
+- `cainjector`在启动时执行领导选举，这可能需要几秒钟。
+- `cainjector`, 一旦启动，将需要几秒钟更新所有 webhook 配置中的`caBundle`。
 
-For these reasons, after installing cert-manager and when performing post-installation cert-manager API operations,
-you will need to check for temporary API configuration errors and retry.
+由于这些原因，在安装 cert-manager 之后以及在执行安装后的 cert-manager API 操作时，需要检查临时 API 配置错误并重试。
 
-You could also add a post-installation check which performs `kubectl --dry-run` operations on the cert-manager API.
-Or you could add a post-installation check which automatically retries the [Installation Verification](../installation/verify.md) steps until they succeed.
+您还可以添加一个安装后检查，在 cert-manager API 上执行 `kubectl --dry-run`操作。
+或者您可以添加安装后检查，自动重试[安装验证](../installation/verify.md)步骤，直到它们成功为止。
 
 ### 其他 Webhook 问题
 
-If you encounter any other problems with the webhook, please refer to the [webhook troubleshooting guide](../troubleshooting/webhook/).
+如果您在 webhook 上遇到任何其他问题，请参考[webhook 故障排除指南](../troubleshooting/webhook/)。

@@ -75,20 +75,14 @@ helm install \
 当在 EKS 上使用自定义 CNI(如 Weave 或 Calico)时，证书管理器无法访问网络钩子。
 这是因为控制平面不能配置为在 EKS 上的自定义 CNI 上运行，因此控制平面和工作节点之间的 CNI 是不同的。
 
-To address this, the webhook can be run in the host network so it can be reached
-by cert-manager, by setting the `webhook.hostNetwork` key to true on your
-deployment, or, if using Helm, configuring it in your `values.yaml` file.
+为了解决这个问题，webhook 可以在主机网络中运行，这样 cert-manager 就可以访问它，方法是在你的部署中将`webhook.hostNetwork`键设置为 true，或者，如果使用 Helm，在你的`values.yaml`文件中配置它。
 
-Note that running on the host network will necessitate changing the webhook's
-port; see the warning at the top of the page for details.
+注意，在主机网络上运行将需要更改 webhook 的端口;有关详细信息，请参阅页面顶部的警告。
 
 ### AWS Fargate
 
 值得注意的是，使用 AWS Fargate 不允许太多的网络配置，并且会导致 webhook 的端口与运行在端口 10250 上的 kubelet 冲突，如[#3237](https://github.com/cert-manager/cert-manager/issues/3237)所示。
 
-When deploying cert-manager on Fargate, you _must_ change the port on which
-the webhook listens. See the warning at the top of this page for more details.
+在 Fargate 上部署 cert-manager 时，必须更改 webhook 侦听的端口。有关详细信息，请参阅本页顶部的警告。
 
-Because Fargate forces you to use its networking, you cannot manually set the networking
-type and options such as `webhook.hostNetwork` on the helm chart will cause your
-cert-manager deployment to fail in surprising ways.
+因为 Fargate 强迫你使用它的网络，你不能手动设置网络类型和选项，如`webhook.hostNetwork`在 helm 图表上将导致您的证书管理器部署以令人惊讶的方式失败。
